@@ -468,7 +468,7 @@ Return ONLY valid JSON matching this schema:
     }
 
     endpoint_url = f"{DEEPSEEK_BASE_URL.rstrip('/')}/chat/completions"
-    model_name = "meta/llama-3.2-11b-vision-instruct" if "nvidia" in DEEPSEEK_BASE_URL else "deepseek-chat"
+    model_name = "nvidia/nemotron-3-super-120b-a12b" if "nvidia" in DEEPSEEK_BASE_URL else "deepseek-chat"
 
     payload = {
         "model": model_name,
@@ -490,14 +490,14 @@ Return ONLY valid JSON matching this schema:
             if not res.ok:
                 raise RuntimeError(f"HTTP {res.status_code}")
         except Exception:
-            _breaking_ai_model = "meta/llama-3.2-90b-vision-instruct"
+            _breaking_ai_model = "z-ai/glm-5.3"
             _breaking_ai_fallback = True
             fallback_key = (
                 os.getenv("NVIDIA_NEMOTRON_KEY") or
                 DEEPSEEK_API_KEY
             ).strip('"')
             fb_headers = {"Authorization": f"Bearer {fallback_key}", "Content-Type": "application/json"}
-            fb_payload = {**payload, "model": "meta/llama-3.2-90b-vision-instruct"}
+            fb_payload = {**payload, "model": "z-ai/glm-5.3"}
             fb_url = "https://integrate.api.nvidia.com/v1/chat/completions"
             res = requests.post(fb_url, headers=fb_headers, json=fb_payload, timeout=35)
 

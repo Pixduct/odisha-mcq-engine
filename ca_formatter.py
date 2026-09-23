@@ -733,7 +733,7 @@ Return ONLY a valid JSON object matching this schema:
     }
 
     endpoint_url = f"{DEEPSEEK_BASE_URL.rstrip('/')}/chat/completions"
-    model_name = "meta/llama-3.2-11b-vision-instruct" if "nvidia" in DEEPSEEK_BASE_URL else "deepseek-chat"
+    model_name = "nvidia/nemotron-3-super-120b-a12b" if "nvidia" in DEEPSEEK_BASE_URL else "deepseek-chat"
 
     # Pass the full balanced multi-stream payload
     payload = {
@@ -797,35 +797,35 @@ Return ONLY a valid JSON object matching this schema:
         content = ""
         import time
 
-        # Use active verified high-throughput NVIDIA NIM models with 75s timeout to allow full multi-slide JSON synthesis
+        # Use active verified high-throughput NVIDIA NIM models
         ai_tiers = [
+            {
+                "name": "NVIDIA Nemotron 3 Super 120B",
+                "model": "nvidia/nemotron-3-super-120b-a12b",
+                "key": DEEPSEEK_API_KEY,
+                "url": "https://integrate.api.nvidia.com/v1/chat/completions",
+                "timeout": 45
+            },
+            {
+                "name": "NVIDIA GLM 5.3",
+                "model": "z-ai/glm-5.3",
+                "key": DEEPSEEK_API_KEY,
+                "url": "https://integrate.api.nvidia.com/v1/chat/completions",
+                "timeout": 45
+            },
             {
                 "name": "NVIDIA Llama 3.2 11B Vision Instruct",
                 "model": "meta/llama-3.2-11b-vision-instruct",
                 "key": DEEPSEEK_API_KEY,
                 "url": "https://integrate.api.nvidia.com/v1/chat/completions",
-                "timeout": 75
+                "timeout": 60
             },
             {
-                "name": "NVIDIA Llama 3.2 90B Vision Instruct",
-                "model": "meta/llama-3.2-90b-vision-instruct",
-                "key": DEEPSEEK_API_KEY,
-                "url": "https://integrate.api.nvidia.com/v1/chat/completions",
-                "timeout": 75
-            },
-            {
-                "name": "NVIDIA Mistral Large",
-                "model": "mistralai/mistral-large",
-                "key": DEEPSEEK_API_KEY,
-                "url": "https://integrate.api.nvidia.com/v1/chat/completions",
-                "timeout": 75
-            },
-            {
-                "name": "NVIDIA Nemotron Nano 3 30B",
-                "model": "nvidia/nemotron-nano-3-30b-a3b",
+                "name": "NVIDIA Nemotron 3.5 Lightning 30B",
+                "model": "nvidia/nemotron-3.5-lightning-30b-a3b",
                 "key": os.getenv("NVIDIA_NEMOTRON_KEY") or DEEPSEEK_API_KEY,
                 "url": "https://integrate.api.nvidia.com/v1/chat/completions",
-                "timeout": 75
+                "timeout": 45
             }
         ]
 

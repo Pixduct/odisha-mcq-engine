@@ -140,8 +140,9 @@ def call_ai_api(messages: list, temperature: float = 0.3) -> Tuple[str, str, boo
     }
 
     models_to_try = [
-        ("meta/llama-3.2-11b-vision-instruct", "https://integrate.api.nvidia.com/v1/chat/completions", False),
-        ("meta/llama-3.2-90b-vision-instruct", "https://integrate.api.nvidia.com/v1/chat/completions", False)
+        ("nvidia/nemotron-3-super-120b-a12b", "https://integrate.api.nvidia.com/v1/chat/completions", False),
+        ("z-ai/glm-5.3", "https://integrate.api.nvidia.com/v1/chat/completions", False),
+        ("meta/llama-3.2-11b-vision-instruct", "https://integrate.api.nvidia.com/v1/chat/completions", False)
     ]
     native_deepseek_key = (os.getenv("DEEPSEEK_API_KEY") or "").strip('"')
     if native_deepseek_key.startswith("sk-"):

@@ -172,7 +172,7 @@ def call_ai_synthesizer(news_item: Dict[str, Any]) -> Optional[Dict[str, Any]]:
         "Content-Type": "application/json"
     }
 
-    model = "meta/llama-3.2-11b-vision-instruct" if "nvidia.com" in base_url else "deepseek-chat"
+    model = "nvidia/nemotron-3-super-120b-a12b" if "nvidia.com" in base_url else "deepseek-chat"
 
     raw_title = news_item.get("title", "")
     raw_summary = news_item.get("summary", "")
@@ -253,15 +253,22 @@ def call_ai_synthesizer(news_item: Dict[str, Any]) -> Optional[Dict[str, Any]]:
 
     ai_tiers = [
         {
-            "name": "NVIDIA Llama 3.2 11B Vision Instruct",
-            "model": "meta/llama-3.2-11b-vision-instruct",
+            "name": "NVIDIA Nemotron 3 Super 120B",
+            "model": "nvidia/nemotron-3-super-120b-a12b",
             "key": clean_api_key,
             "url": "https://integrate.api.nvidia.com/v1/chat/completions",
-            "timeout": 60
+            "timeout": 45
         },
         {
-            "name": "NVIDIA Llama 3.2 90B Vision Instruct",
-            "model": "meta/llama-3.2-90b-vision-instruct",
+            "name": "NVIDIA GLM 5.3",
+            "model": "z-ai/glm-5.3",
+            "key": clean_api_key,
+            "url": "https://integrate.api.nvidia.com/v1/chat/completions",
+            "timeout": 45
+        },
+        {
+            "name": "NVIDIA Llama 3.2 11B Vision Instruct",
+            "model": "meta/llama-3.2-11b-vision-instruct",
             "key": clean_api_key,
             "url": "https://integrate.api.nvidia.com/v1/chat/completions",
             "timeout": 60

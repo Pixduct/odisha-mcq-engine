@@ -349,15 +349,22 @@ def call_deepseek_api(messages: list) -> tuple:
     """Returns (content: str, model_used: str, used_fallback: bool) with 4-tier multi-provider failover."""
     ai_tiers = [
         {
-            "name": "NVIDIA Llama 3.2 11B Vision Instruct",
-            "model": "meta/llama-3.2-11b-vision-instruct",
+            "name": "NVIDIA Nemotron 3 Super 120B",
+            "model": "nvidia/nemotron-3-super-120b-a12b",
             "key": DEEPSEEK_API_KEY,
             "url": "https://integrate.api.nvidia.com/v1/chat/completions",
-            "timeout": 60
+            "timeout": 45
         },
         {
-            "name": "NVIDIA Llama 3.2 90B Vision Instruct",
-            "model": "meta/llama-3.2-90b-vision-instruct",
+            "name": "NVIDIA GLM 5.3",
+            "model": "z-ai/glm-5.3",
+            "key": DEEPSEEK_API_KEY,
+            "url": "https://integrate.api.nvidia.com/v1/chat/completions",
+            "timeout": 45
+        },
+        {
+            "name": "NVIDIA Llama 3.2 11B Vision Instruct",
+            "model": "meta/llama-3.2-11b-vision-instruct",
             "key": DEEPSEEK_API_KEY,
             "url": "https://integrate.api.nvidia.com/v1/chat/completions",
             "timeout": 60

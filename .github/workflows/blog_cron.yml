@@ -1,0 +1,87 @@
+name: Strategic Evergreen Blog Engine (Engine 2)
+
+on:
+  schedule:
+    - cron: '17 05 * * *'  # Daily: 10:47 AM IST (05:17 UTC) — green zone, EU gap before rush
+  workflow_dispatch:
+
+concurrency:
+  group: social-broadcast-channel
+  cancel-in-progress: false
+
+permissions:
+  contents: write
+
+jobs:
+  run-evergreen-blog-engine:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up Python 3.11
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install Dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt || pip install requests duckduckgo-search gspread google-auth supabase python-dotenv beautifulsoup4 lxml pillow
+
+      - name: Run Strategic Evergreen Blog Engine
+        env:
+          DEEPSEEK_API_KEY: ${{ secrets.DEEPSEEK_API_KEY || secrets.NVIDIA_NIM_API_KEY || secrets.OPENAI_API_KEY }}
+          NVIDIA_NIM_API_KEY: ${{ secrets.NVIDIA_NIM_API_KEY || secrets.DEEPSEEK_API_KEY }}
+          NVIDIA_GPT_OSS_KEY: ${{ secrets.NVIDIA_GPT_OSS_KEY }}
+          NVIDIA_NEMOTRON_KEY: ${{ secrets.NVIDIA_NEMOTRON_KEY || secrets.DEEPSEEK_API_KEY }}
+          PEXELS_API_KEY: ${{ secrets.PEXELS_API_KEY }}
+          SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+          SUPABASE_KEY: ${{ secrets.SUPABASE_KEY }}
+          SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
+          GOOGLE_CREDENTIALS_JSON: ${{ secrets.GOOGLE_CREDENTIALS_JSON }}
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+          TELEGRAM_ADMIN_CHAT_ID: ${{ secrets.TELEGRAM_ADMIN_CHAT_ID }}
+        run: |
+          python seo_blog_engine.py
+
+      - name: Commit and Push Updated History
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+          git add history/evergreen_content_history.json published_image_history.json used_blog_images.json history/telegram_sent_history.json public/blog_covers/ 2>/dev/null || true
+          git diff --quiet && git diff --staged --quiet || \
+            (git commit -m "update: Sync evergreen_content_history.json, covers, and telegram_sent_history.json [skip ci]" && \
+             git pull --rebase origin main && \
+             git push)
+
+      - name: Dispatch Comprehensive Execution Status to Admin Telegram
+        if: always()
+        env:
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          TELEGRAM_ADMIN_CHAT_ID: ${{ secrets.TELEGRAM_ADMIN_CHAT_ID }}
+          JOB_STATUS: ${{ job.status }}
+        run: |
+          python -c "
+          import os, requests, re
+          token = os.getenv('TELEGRAM_BOT_TOKEN', '')
+          chat_id = os.getenv('TELEGRAM_ADMIN_CHAT_ID', '')
+          if not token or not chat_id:
+              exit(0)
+          status = os.getenv('JOB_STATUS', 'UNKNOWN')
+          workflow_name = '${{ github.workflow }}'
+          run_url = 'https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}'
+          if status == 'success':
+              msg = f'✅ <b>Automation Execution Notification</b>\n\n⚙️ <b>Workflow:</b> {workflow_name}\n🎯 <b>Status:</b> SUCCESS\n⚡ Runner completed all pipeline steps cleanly.'
+          else:
+              msg = f'🚨 <b>Automation Run Alert</b>\n\n⚙️ <b>Workflow:</b> {workflow_name}\n⚠️ <b>Status:</b> {status.upper()}\n🔍 <b>Workflow Run Logs:</b> {run_url}'
+          url = f'https://api.telegram.org/bot{token}/sendMessage'
+          res = requests.post(url, data={'chat_id': chat_id, 'text': msg, 'parse_mode': 'HTML'}, timeout=15)
+          if not res.ok:
+              plain = re.sub(r'<[^>]+>', '', msg)
+              requests.post(url, data={'chat_id': chat_id, 'text': plain}, timeout=15)
+          "

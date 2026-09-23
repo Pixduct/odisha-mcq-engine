@@ -1,0 +1,17 @@
+google_credentials.json
+yt_profile/
+output_mcq.png
+ca_slide_*.png
+breaking_alert.png
+exam_update_slide.png
+temp.html
+temp_ca.html
+debug_yt.py
+test_yt_upload.py
+test_breaking_engine.py
+yt_*.png
+__pycache__/
+*.log
+.env
+yt_state.json
+

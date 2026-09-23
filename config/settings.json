@@ -1,0 +1,20 @@
+{
+  "max_exam_update_articles_per_run": 5,
+  "max_evergreen_articles_per_run": 3,
+  "max_total_articles_per_run": 8,
+  "quality_thresholds": {
+    "accuracy": 8,
+    "usefulness": 8,
+    "originality": 8,
+    "search_intent": 8,
+    "source_quality": 8,
+    "readability": 7,
+    "student_relevance": 8,
+    "technical_seo": 8,
+    "repetition_risk": 2,
+    "cannibalization_risk": 2
+  },
+  "site_url": "https://www.odishaexamprep.in",
+  "telegram_channel": "@OdishaExamPrepOfficial",
+  "youtube_channel": "@OdishaExamPrep365"
+}

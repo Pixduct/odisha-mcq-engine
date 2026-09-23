@@ -1,0 +1,14 @@
+playwright
+gspread
+google-auth
+requests
+feedparser
+beautifulsoup4
+duckduckgo-search
+google-api-python-client
+python-dotenv
+supabase
+python-dateutil
+lxml
+pillow
+pypdf

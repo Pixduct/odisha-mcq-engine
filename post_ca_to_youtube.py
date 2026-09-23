@@ -1,0 +1,124 @@
+import os
+import sys
+import re
+from playwright.sync_api import sync_playwright
+
+if hasattr(sys.stdout, 'reconfigure'):
+    sys.stdout.reconfigure(encoding='utf-8')
+
+SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
+PROFILE_DIR = os.path.join(SCRIPT_DIR, "yt_profile")
+STATE_FILE = os.path.join(SCRIPT_DIR, "yt_state.json")
+
+def post_ca_to_youtube(image_paths, caption=""):
+    caption = str(caption or "")
+    print("\n--------------------------------------------------")
+    print("[VERBOSE LOG] Publishing Current Affairs Image Carousel to YouTube Community...")
+    print("--------------------------------------------------")
+
+    env_state = os.getenv("YOUTUBE_STORAGE_STATE") or os.getenv("YT_STATE_BASE64")
+    if env_state and not os.path.exists(STATE_FILE):
+        try:
+            raw_val = env_state.strip()
+            if raw_val.startswith("{"):
+                with open(STATE_FILE, "w", encoding="utf-8") as f:
+                    f.write(raw_val)
+            else:
+                import base64
+                decoded = base64.b64decode(raw_val).decode("utf-8")
+                with open(STATE_FILE, "w", encoding="utf-8") as f:
+                    f.write(decoded)
+            print("🔑 Restored yt_state.json from environment variable.")
+        except Exception as e:
+            print(f"⚠️ Failed to write YOUTUBE_STORAGE_STATE: {e}")
+
+    if not os.path.exists(PROFILE_DIR) and not os.path.exists(STATE_FILE):
+        print(f"⚠️ YouTube Session profile/state not found. YouTube Community post skipped.")
+        return False
+
+    is_headless = os.getenv("HEADLESS", "true").lower() == "true" or os.getenv("GITHUB_ACTIONS") == "true"
+    print(f"🚀 Launching Chromium browser for YouTube (Headless={is_headless})...")
+
+    try:
+        with sync_playwright() as p:
+            if os.path.exists(STATE_FILE):
+                print("🔑 Using storage state file...")
+                browser = p.chromium.launch(headless=is_headless, slow_mo=200)
+                context = browser.new_context(
+                    storage_state=STATE_FILE,
+                    viewport={"width": 1280, "height": 800},
+                    user_agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/128.0.0.0 Safari/537.36"
+                )
+                page = context.new_page()
+            elif os.path.exists(PROFILE_DIR):
+                print("👤 Using persistent Chromium user profile...")
+                context = p.chromium.launch_persistent_context(
+                    user_data_dir=PROFILE_DIR,
+                    headless=is_headless,
+                    viewport={"width": 1280, "height": 800},
+                    args=["--disable-blink-features=AutomationControlled"]
+                )
+                page = context.pages[0] if context.pages else context.new_page()
+
+            page.add_init_script("Object.defineProperty(navigator, 'webdriver', {get: () => undefined})")
+
+            channel_url = "https://www.youtube.com/channel/UCXHAJIDI-ZNiDRadIAHBSPQ/posts"
+            print(f"🌐 Navigating to {channel_url}...")
+            page.goto(channel_url, wait_until="domcontentloaded", timeout=40000)
+            page.wait_for_timeout(4000)
+
+            if "accounts.google.com" in page.url or "signin" in page.url:
+                print("⚠️ Redirected to Google Sign-In! Login required for YouTube posting.")
+                context.close()
+                return False
+
+            print("✅ Logged into YouTube Community page!")
+
+            print("✏️ Opening Community post composer...")
+            placeholder = page.locator("#commentbox-placeholder, #placeholder-area").first
+            placeholder.click()
+            page.wait_for_timeout(2500)
+
+            valid_images = [img for img in image_paths if (img and os.path.exists(img))]
+            if valid_images:
+                print(f"🖼️ Activating Image Post mode for {len(valid_images)} images...")
+                img_btn = page.locator("button[aria-label='Add an image']:visible, #image-post-button:visible, button:has-text('Image'):visible").first
+                if img_btn.count() > 0:
+                    img_btn.click()
+                    page.wait_for_timeout(2500)
+
+                print("📤 Uploading slide images to YouTube multi-image dropzone...")
+                file_input = page.locator("input[type='file'][multiple]").first
+                if file_input.count() == 0:
+                    file_input = page.locator("input[type='file']").first
+
+                file_input.set_input_files(valid_images)
+                print("⏳ Waiting 10 seconds for image thumbnails to upload and render...")
+                page.wait_for_timeout(10000)
+            else:
+                print("ℹ️ No valid images provided — proceeding with Text-Only YouTube Community Post...")
+
+            print("📝 Filling Post Caption & Website Link...")
+            editor = page.locator("#contenteditable-root[contenteditable='true'], div[contenteditable='true']#contenteditable-root, #textbox").first
+            editor.focus()
+            
+            clean_caption = re.sub(r'<[^>]+>', '', caption)
+            editor.fill(clean_caption)
+            page.wait_for_timeout(2000)
+
+            print("🚀 Publishing YouTube Image Post...")
+            post_btn = page.locator("button:has-text('Post'), [aria-label='Post']").last
+            post_btn.click()
+            page.wait_for_timeout(6000)
+
+            print("🎉 YouTube Current Affairs Image Carousel published successfully!")
+            context.close()
+            return True
+    except Exception as e:
+        print(f"⚠️ Error publishing to YouTube Community: {e}")
+        return False
+
+if __name__ == "__main__":
+    sample_slides = [os.path.join(SCRIPT_DIR, f"ca_slide_{i}.png") for i in range(1, 6)]
+    sample_caption = "📰 Daily Current Affairs Update — 13 August 2026\n\nTop exam-relevant highlights for OPSC, OSSC, OSSSC & Odisha State Exams:\n\n1. [Schemes And Policies] Odisha Cabinet Approves ₹10,000 Cr Subhadra Yojana\n2. [Appointments And Honours] Manoj Ahuja Appointed as Chief Secretary of Odisha\n3. [Breaking Notices] OPSC Exam Schedule Released for ASO & Civil Services\n4. [Economy And Tech] RBI Keeps Repo Rate Unchanged at 6.5% in MPC Meeting\n5. [General News] Odisha Athletes Win 3 Medals at National Games\n\n🎯 Practice Today's Current Affairs Quiz & Download PDFs:\n👉 https://www.odishaexamprep.in/"
+    post_ca_to_youtube(sample_slides, sample_caption)

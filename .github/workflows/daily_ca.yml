@@ -1,0 +1,101 @@
+name: Daily Current Affairs Engine
+
+on:
+  schedule:
+    - cron: '17 14 * * *'  # Evening Prime Edition: 7:47 PM IST (14:17 UTC) — clean off-peak minute 17
+    - cron: '47 03 * * *'  # Morning Catchup Slot: 9:17 AM IST (03:47 UTC) — clean off-peak minute 47
+  repository_dispatch:
+    types: [daily_ca_trigger]
+  workflow_dispatch:
+
+concurrency:
+  group: daily-ca-engine
+  cancel-in-progress: false   # Prevents collision while guaranteeing scheduled run
+
+permissions:
+  contents: write
+
+jobs:
+  run-current-affairs:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15         # Playwright cold cache + script = up to 9 min; 15 is safe
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          cache: 'pip'
+
+      - name: Cache Playwright Browsers
+        uses: actions/cache@v4
+        id: playwright-cache
+        with:
+          path: ~/.cache/ms-playwright
+          key: ${{ runner.os }}-playwright-${{ hashFiles('requirements.txt') }}
+          restore-keys: |
+            ${{ runner.os }}-playwright-
+
+      - name: Install Dependencies & Playwright System Libraries
+        run: |
+          pip install -r requirements.txt
+          python -m playwright install --with-deps chromium || true
+
+      - name: Run Current Affairs Engine
+        env:
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+          TELEGRAM_ADMIN_CHAT_ID: ${{ secrets.TELEGRAM_ADMIN_CHAT_ID }}
+          DEEPSEEK_API_KEY: ${{ secrets.DEEPSEEK_API_KEY || secrets.NVIDIA_NIM_API_KEY || secrets.OPENAI_API_KEY }}
+          NVIDIA_NIM_API_KEY: ${{ secrets.NVIDIA_NIM_API_KEY || secrets.DEEPSEEK_API_KEY }}
+          NVIDIA_GPT_OSS_KEY: ${{ secrets.NVIDIA_GPT_OSS_KEY }}
+          NVIDIA_NEMOTRON_KEY: ${{ secrets.NVIDIA_NEMOTRON_KEY || secrets.DEEPSEEK_API_KEY }}
+          PEXELS_API_KEY: ${{ secrets.PEXELS_API_KEY }}
+          META_ACCESS_TOKEN: ${{ secrets.META_ACCESS_TOKEN }}
+          INSTAGRAM_ACCOUNT_ID: ${{ secrets.INSTAGRAM_ACCOUNT_ID }}
+          YOUTUBE_STORAGE_STATE: ${{ secrets.YOUTUBE_STORAGE_STATE }}
+          GREEN_API_ID_INSTANCE: ${{ secrets.GREEN_API_ID_INSTANCE || '710722716124' }}
+          GREEN_API_TOKEN_INSTANCE: ${{ secrets.GREEN_API_TOKEN_INSTANCE }}
+          GREEN_API_HOST: ${{ secrets.GREEN_API_HOST || 'https://7107.api.greenapi.com' }}
+          WHATSAPP_CHANNEL_ID: ${{ secrets.WHATSAPP_CHANNEL_ID || '120363412784897729@g.us' }}
+          PYTHONIOENCODING: "utf-8"
+        run: python ca_publisher.py
+
+      - name: Commit and Push Updated History
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+          git add seen_ca_news.json published_ca_history.json history/telegram_sent_history.json history/ 2>/dev/null || true
+          git diff --quiet && git diff --staged --quiet || \
+            (git commit -m "Auto-update CA sent history and seen news [skip ci]" && \
+             git pull --rebase origin main && \
+             git push)
+
+      - name: Dispatch Comprehensive Execution Status to Admin Telegram
+        if: always()
+        env:
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          TELEGRAM_ADMIN_CHAT_ID: ${{ secrets.TELEGRAM_ADMIN_CHAT_ID }}
+          JOB_STATUS: ${{ job.status }}
+        run: |
+          python -c "
+          import os, requests, re
+          token = os.getenv('TELEGRAM_BOT_TOKEN', '')
+          chat_id = os.getenv('TELEGRAM_ADMIN_CHAT_ID', '')
+          if not token or not chat_id:
+              exit(0)
+          status = os.getenv('JOB_STATUS', 'UNKNOWN')
+          workflow_name = '${{ github.workflow }}'
+          run_url = 'https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}'
+          if status == 'success':
+              msg = f'✅ <b>Automation Execution Notification</b>\n\n⚙️ <b>Workflow:</b> {workflow_name}\n🎯 <b>Status:</b> SUCCESS\n⚡ Runner completed all pipeline steps cleanly.'
+          else:
+              msg = f'🚨 <b>Automation Run Alert</b>\n\n⚙️ <b>Workflow:</b> {workflow_name}\n⚠️ <b>Status:</b> {status.upper()}\n🔍 <b>Workflow Run Logs:</b> {run_url}'
+          url = f'https://api.telegram.org/bot{token}/sendMessage'
+          res = requests.post(url, data={'chat_id': chat_id, 'text': msg, 'parse_mode': 'HTML'}, timeout=15)
+          if not res.ok:
+              plain = re.sub(r'<[^>]+>', '', msg)
+              requests.post(url, data={'chat_id': chat_id, 'text': plain}, timeout=15)
+          "

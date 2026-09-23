@@ -1,0 +1,330 @@
+[
+  {
+    "organization": "OSSSC",
+    "government_level": "ODISHA",
+    "official_domains": ["osssc.gov.in"],
+    "enabled": true,
+    "priority": 10,
+    "notes": "Odisha Sub-Ordinate Staff Selection Commission (RI, ARI, AMIN, Forest Guard, CRE)"
+  },
+  {
+    "organization": "OSSC",
+    "government_level": "ODISHA",
+    "official_domains": ["ossc.gov.in"],
+    "enabled": true,
+    "priority": 10,
+    "notes": "Odisha Staff Selection Commission (CGL, CHSL, CTSRE, Vital Statistics, Ayush)"
+  },
+  {
+    "organization": "OPSC",
+    "government_level": "ODISHA",
+    "official_domains": ["opsc.gov.in"],
+    "enabled": true,
+    "priority": 10,
+    "notes": "Odisha Public Service Commission (OAS, OFS, OJS, AEE, Medical Officer, Asst Prof)"
+  },
+  {
+    "organization": "Odisha Police",
+    "government_level": "ODISHA",
+    "official_domains": ["odishapolice.gov.in"],
+    "enabled": true,
+    "priority": 10,
+    "notes": "Odisha Police State Selection Board (SI, Constable, Sepoy, IRB)"
+  },
+  {
+    "organization": "SSB Odisha",
+    "government_level": "ODISHA",
+    "official_domains": ["ssbodisha.ac.in"],
+    "enabled": true,
+    "priority": 9,
+    "notes": "State Selection Board Odisha (Lecturers, Non-Teaching, PGT)"
+  },
+  {
+    "organization": "BSE Odisha",
+    "government_level": "ODISHA",
+    "official_domains": ["bseodisha.ac.in"],
+    "enabled": true,
+    "priority": 9,
+    "notes": "Board of Secondary Education Odisha (OTET, OSSTET Teacher Eligibility)"
+  },
+  {
+    "organization": "OAVS",
+    "government_level": "ODISHA",
+    "official_domains": ["oav.edu.in"],
+    "enabled": true,
+    "priority": 8,
+    "notes": "Odisha Adarsha Vidyalaya Sangathan (TGT, PGT, Principals)"
+  },
+  {
+    "organization": "Odisha High Court",
+    "government_level": "ODISHA",
+    "official_domains": ["orissahighcourt.nic.in"],
+    "enabled": true,
+    "priority": 8,
+    "notes": "High Court of Orissa (ASO, Junior Stenographer, District Court)"
+  },
+  {
+    "organization": "SSC",
+    "government_level": "CENTRAL",
+    "official_domains": ["ssc.gov.in", "ssc.nic.in"],
+    "enabled": true,
+    "priority": 10,
+    "notes": "Staff Selection Commission (CGL, CHSL, MTS, GD, CPO SI, Stenographer)"
+  },
+  {
+    "organization": "RRB",
+    "government_level": "CENTRAL",
+    "official_domains": ["rrbcdg.gov.in", "rrbbbs.gov.in", "indianrailways.gov.in"],
+    "enabled": true,
+    "priority": 10,
+    "notes": "Railway Recruitment Boards (NTPC, Group D, ALP, Technician, JE, RPF)"
+  },
+  {
+    "organization": "UPSC",
+    "government_level": "CENTRAL",
+    "official_domains": ["upsc.gov.in"],
+    "enabled": true,
+    "priority": 9,
+    "notes": "Union Public Service Commission (CSE, NDA, CDS, CAPF, EPFO)"
+  },
+  {
+    "organization": "IBPS",
+    "government_level": "CENTRAL",
+    "official_domains": ["ibps.in"],
+    "enabled": true,
+    "priority": 9,
+    "notes": "Institute of Banking Personnel Selection (PO, Clerk, SO, RRB Scale I/II/III)"
+  },
+  {
+    "organization": "SBI",
+    "government_level": "CENTRAL",
+    "official_domains": ["sbi.co.in"],
+    "enabled": true,
+    "priority": 9,
+    "notes": "State Bank of India Recruitment (SBI PO, SBI Clerk, Specialist Cadre)"
+  },
+  {
+    "organization": "RBI",
+    "government_level": "CENTRAL",
+    "official_domains": ["rbi.org.in", "opportunities.rbi.org.in"],
+    "enabled": true,
+    "priority": 8,
+    "notes": "Reserve Bank of India (RBI Grade B, RBI Assistant)"
+  },
+  {
+    "organization": "NTA",
+    "government_level": "CENTRAL",
+    "official_domains": ["nta.ac.in"],
+    "enabled": true,
+    "priority": 8,
+    "notes": "National Testing Agency (UGC NET, CSIR NET, CUET, CMAT)"
+  },
+  {
+    "organization": "OPTCL",
+    "government_level": "ODISHA",
+    "official_domains": ["optcl.co.in"],
+    "enabled": true,
+    "priority": 8,
+    "notes": "Odisha Power Transmission Corporation Limited (Management Trainee, Junior Engineer)"
+  },
+  {
+    "organization": "OMC",
+    "government_level": "ODISHA",
+    "official_domains": ["omcltd.in"],
+    "enabled": true,
+    "priority": 8,
+    "notes": "Odisha Mining Corporation (Executive, Non-Executive, Junior Accountant)"
+  },
+  {
+    "organization": "OPGC",
+    "government_level": "ODISHA",
+    "official_domains": ["opgc.co.in"],
+    "enabled": true,
+    "priority": 7,
+    "notes": "Odisha Power Generation Corporation (Assistant Manager, Operator)"
+  },
+  {
+    "organization": "OHPC",
+    "government_level": "ODISHA",
+    "official_domains": ["ohpcltd.com"],
+    "enabled": true,
+    "priority": 7,
+    "notes": "Odisha Hydro Power Corporation (Trainee Officers, Technical Cadre)"
+  },
+  {
+    "organization": "GRIDCO",
+    "government_level": "ODISHA",
+    "official_domains": ["gridco.co.in"],
+    "enabled": true,
+    "priority": 7,
+    "notes": "Grid Corporation of Odisha (Management Trainee, Finance, Legal)"
+  },
+  {
+    "organization": "SCERT Odisha",
+    "government_level": "ODISHA",
+    "official_domains": ["scertodisha.nic.in", "samsodisha.gov.in"],
+    "enabled": true,
+    "priority": 8,
+    "notes": "SCERT Odisha (B.Ed, B.H.Ed, D.El.Ed Entrance & Teacher Recruitment)"
+  },
+  {
+    "organization": "Odisha Prisons",
+    "government_level": "ODISHA",
+    "official_domains": ["prisons.odisha.gov.in"],
+    "enabled": true,
+    "priority": 7,
+    "notes": "Odisha Directorate of Prisons (Jail Warder Recruitment)"
+  },
+  {
+    "organization": "Odisha Fire Service",
+    "government_level": "ODISHA",
+    "official_domains": ["odishafireservices.gov.in"],
+    "enabled": true,
+    "priority": 7,
+    "notes": "Odisha Fire & Emergency Services (Fireman, Driver, Station Officer)"
+  },
+  {
+    "organization": "OFDC",
+    "government_level": "ODISHA",
+    "official_domains": ["odishafdc.com"],
+    "enabled": true,
+    "priority": 7,
+    "notes": "Odisha Forest Development Corporation (Junior Accountant, Field Assistant)"
+  },
+  {
+    "organization": "OSCB",
+    "government_level": "ODISHA",
+    "official_domains": ["oscb.coop", "rcsodisha.nic.in"],
+    "enabled": true,
+    "priority": 8,
+    "notes": "Odisha State Cooperative Bank (Assistant Manager, Banking Assistant)"
+  },
+  {
+    "organization": "NABARD",
+    "government_level": "CENTRAL",
+    "official_domains": ["nabard.org"],
+    "enabled": true,
+    "priority": 8,
+    "notes": "National Bank for Agriculture and Rural Development (Grade A, Grade B, DA)"
+  },
+  {
+    "organization": "SEBI",
+    "government_level": "CENTRAL",
+    "official_domains": ["sebi.gov.in"],
+    "enabled": true,
+    "priority": 8,
+    "notes": "Securities and Exchange Board of India (Grade A Officer Assistant Manager)"
+  },
+  {
+    "organization": "SIDBI",
+    "government_level": "CENTRAL",
+    "official_domains": ["sidbi.in"],
+    "enabled": true,
+    "priority": 8,
+    "notes": "Small Industries Development Bank of India (Assistant Manager Grade A)"
+  },
+  {
+    "organization": "FCI",
+    "government_level": "CENTRAL",
+    "official_domains": ["fci.gov.in"],
+    "enabled": true,
+    "priority": 8,
+    "notes": "Food Corporation of India (Category I, II, III Assistant Grade 3, JE, Steno)"
+  },
+  {
+    "organization": "LIC",
+    "government_level": "CENTRAL",
+    "official_domains": ["licindia.in"],
+    "enabled": true,
+    "priority": 8,
+    "notes": "Life Insurance Corporation of India (LIC AAO, LIC ADO, LIC Assistant)"
+  },
+  {
+    "organization": "NIACL",
+    "government_level": "CENTRAL",
+    "official_domains": ["newindia.co.in"],
+    "enabled": true,
+    "priority": 7,
+    "notes": "New India Assurance Company Limited (Administrative Officer, Assistant)"
+  },
+  {
+    "organization": "DRDO",
+    "government_level": "CENTRAL",
+    "official_domains": ["drdo.gov.in", "rac.gov.in"],
+    "enabled": true,
+    "priority": 8,
+    "notes": "Defence Research & Development Organisation (CEPTAM Senior Technical Assistant, Scientist B)"
+  },
+  {
+    "organization": "ISRO",
+    "government_level": "CENTRAL",
+    "official_domains": ["isro.gov.in"],
+    "enabled": true,
+    "priority": 8,
+    "notes": "Indian Space Research Organisation (ICRB Scientist/Engineer, Technical Assistant)"
+  },
+  {
+    "organization": "BARC",
+    "government_level": "CENTRAL",
+    "official_domains": ["barc.gov.in"],
+    "enabled": true,
+    "priority": 8,
+    "notes": "Bhabha Atomic Research Centre (Scientific Officer OCES/DGFS, Stipendiary Trainee)"
+  },
+  {
+    "organization": "CAPF",
+    "government_level": "CENTRAL",
+    "official_domains": ["crpf.gov.in", "bsf.gov.in", "cisf.gov.in", "itbpolice.nic.in", "ssbrectt.gov.in", "mha.gov.in"],
+    "enabled": true,
+    "priority": 9,
+    "notes": "Central Armed Police Forces (CRPF, BSF, CISF, ITBP, SSB, Assam Rifles)"
+  },
+  {
+    "organization": "Indian Coast Guard",
+    "government_level": "CENTRAL",
+    "official_domains": ["joinindiancoastguard.cdac.in", "indiancoastguard.gov.in"],
+    "enabled": true,
+    "priority": 8,
+    "notes": "Indian Coast Guard (Navik GD, Navik DB, Yantrik, Assistant Commandant)"
+  },
+  {
+    "organization": "EPFO",
+    "government_level": "CENTRAL",
+    "official_domains": ["epfindia.gov.in"],
+    "enabled": true,
+    "priority": 8,
+    "notes": "Employees' Provident Fund Organisation (Social Security Assistant SSA, EO/AO, APFC)"
+  },
+  {
+    "organization": "ESIC",
+    "government_level": "CENTRAL",
+    "official_domains": ["esic.gov.in"],
+    "enabled": true,
+    "priority": 8,
+    "notes": "Employees' State Insurance Corporation (UDC, MTS, Stenographer, Paramedical)"
+  },
+  {
+    "organization": "AAI",
+    "government_level": "CENTRAL",
+    "official_domains": ["aai.aero"],
+    "enabled": true,
+    "priority": 8,
+    "notes": "Airports Authority of India (Junior Executive ATC, Airport Operations, Technical)"
+  },
+  {
+    "organization": "ASRB",
+    "government_level": "CENTRAL",
+    "official_domains": ["asrb.org.in", "icar.org.in"],
+    "enabled": true,
+    "priority": 7,
+    "notes": "Agricultural Scientists Recruitment Board / ICAR (AO, FAO, NET, SMS)"
+  },
+  {
+    "organization": "AIIMS",
+    "government_level": "CENTRAL",
+    "official_domains": ["aiimsexams.ac.in"],
+    "enabled": true,
+    "priority": 8,
+    "notes": "All India Institute of Medical Sciences (NORCET Nursing Officer, Group B & C Non-Faculty)"
+  }
+]

@@ -1,0 +1,306 @@
+[
+  {
+    "date": "2026-08-14",
+    "exam": "OSSSC Nursing Officer",
+    "content_stage": "UNIVERSAL_ASPIRANT",
+    "topic": "active_recall_vs_rereading_1786703358",
+    "question": "You studied a chapter 5 times but still forget it during a mock test. What is most likely missing?",
+    "options": [
+      "More highlighting",
+      "Active recall testing",
+      "Rereading notes",
+      "Longer study sessions"
+    ],
+    "correct_option_index": 1,
+    "explanation": "Rereading creates passive familiarity, while active recall forces brain retrieval, building lasting memory.",
+    "hook": "Why reading notes 5 times still fails in exam hall 💡"
+  },
+  {
+    "date": "2026-08-17",
+    "exam": "OSSSC Nursing Officer",
+    "content_stage": "EXAM_SPECIFIC",
+    "topic": "geography_rivers_agriculture",
+    "question": "Why is the Mahanadi River’s alluvial plain considered the backbone of Odisha’s paddy production?",
+    "options": [
+      "It supplies fertile alluvial soil and a reliable water source throughout the Kharif season.",
+      "Its high‑altitude banks support extensive tea plantations.",
+      "The plain experiences minimal flooding, guaranteeing stable yields.",
+      "Saline water from the Bay of Bengal enriches the rice fields."
+    ],
+    "correct_option_index": 0,
+    "explanation": "Alluvial soil plus steady water are essential for rice; other options misstate crops, flood impact, or salinity effects.",
+    "hook": "Ever wondered why rice fields thrive along the Mahanadi? Test your insight!"
+  },
+  {
+    "date": "2026-08-18",
+    "exam": "OSSSC Nursing Officer",
+    "content_stage": "EXAM_PREPARATION",
+    "topic": "time_management_block_scheduling",
+    "question": "Which study‑scheduling method most effectively balances coverage of all subjects while matching your peak concentration periods?",
+    "options": [
+      "Block scheduling: 90‑minute dedicated slots for each subject aligned with personal energy peaks",
+      "Pomodoro: 25‑minute intervals rotating subjects every cycle",
+      "Study high‑weight topics first, then low‑weight ones",
+      "Randomly pick a different topic each day"
+    ],
+    "correct_option_index": 0,
+    "explanation": "Block scheduling secures deep focus for each subject and aligns with energy highs, ensuring full coverage. The other methods fragment focus or ignore systematic coverage.",
+    "hook": "Master your study clock—pick the scheduling secret that boosts OSSSC scores!"
+  },
+  {
+    "date": "2026-08-19",
+    "exam": "IBPS PO & Clerk",
+    "content_stage": "EXAM_SPECIFIC",
+    "topic": "reasoning_syllogism",
+    "question": "If all cats are animals and some animals are dogs, which conclusion definitely follows?",
+    "options": [
+      "Some cats are dogs",
+      "No cat is a dog",
+      "Some dogs are cats",
+      "None of the above"
+    ],
+    "correct_option_index": 3,
+    "explanation": "The statements only guarantee that cats⊂animals and overlap animals∩dogs≠∅; they do not link cats and dogs, so no definite conclusion about their relation.",
+    "hook": "Test your syllogism skills!"
+  },
+  {
+    "date": "2026-08-20",
+    "exam": "OSSC CGL",
+    "content_stage": "EXAM_SPECIFIC",
+    "topic": "quantitative_aptitude_successive_discount",
+    "question": "A shopkeeper offers a 20% discount followed by an additional 10% discount on the reduced price. What is the overall equivalent single discount?",
+    "options": [
+      "28%",
+      "30%",
+      "25%",
+      "22%"
+    ],
+    "correct_option_index": 0,
+    "explanation": "Successive discounts multiply: (1-0.20)*(1-0.10)=0.72, so total discount=1-0.72=0.28=28%. Adding them (30%) is a common trap.",
+    "hook": "Think discounts add up? Think again!"
+  },
+  {
+    "date": "2026-08-21",
+    "exam": "SSC CGL",
+    "content_stage": "EXAM_SPECIFIC",
+    "topic": "percentage_change_trap_qa_001",
+    "question": "If the price of an article is increased by 20% and then decreased by 20%, what is the net change in its price?",
+    "options": [
+      "No change in price",
+      "Decrease of 4%",
+      "Increase of 4%",
+      "Decrease of 2%"
+    ],
+    "correct_option_index": 1,
+    "explanation": "New price = 1.20 × 0.80 = 0.96 of original → 4% loss. Option A is a trap; equal % up & down don't cancel.",
+    "hook": "Think 20% up then 20% down cancels out? Think again!"
+  },
+  {
+    "date": "2026-08-22",
+    "exam": "Railway RRB NTPC",
+    "content_stage": "EXAM_SPECIFIC",
+    "topic": "mughal_emperors_chronology",
+    "question": "Arrange the following Mughal emperors in chronological order from earliest to latest.",
+    "options": [
+      "Babur, Humayun, Akbar, Shah Jahan, Jahangir, Aurangzeb",
+      "Babur, Humayun, Akbar, Jahangir, Shah Jahan, Aurangzeb",
+      "Babur, Akbar, Humayun, Jahangir, Shah Jahan, Aurangzeb",
+      "Babur, Humayun, Jahangir, Akbar, Shah Jahan, Aurangzeb"
+    ],
+    "correct_option_index": 1,
+    "explanation": "Jahangir ruled after Akbar and before Shah Jahan; option B reflects the correct sequence.",
+    "hook": "Test your Mughal timeline!"
+  },
+  {
+    "date": "2026-08-23",
+    "exam": "BSE Odisha OTET / OSSTET",
+    "content_stage": "EXAM_SPECIFIC",
+    "topic": "piaget_concrete_operational_stage",
+    "question": "In a classroom, a teacher observes that a 7‑year‑old student can solve conservation tasks (e.g., recognizing that liquid amount stays the same despite container shape) but struggles with hypothetical‑deductive reasoning. According to Piaget, which stage best describes the student's cognitive development?",
+    "options": [
+      "Sensorimotor",
+      "Preoperational",
+      "Concrete Operational",
+      "Formal Operational"
+    ],
+    "correct_option_index": 2,
+    "explanation": "Concrete operational stage (7‑11 years) masters conservation and logical thinking about concrete objects; hypothetical‑deductive reasoning appears only in formal operational stage.",
+    "hook": "Spot the stage: Piaget's puzzle!"
+  },
+  {
+    "date": "2026-08-25",
+    "exam": "OPSC ASO",
+    "content_stage": "EXAM_SPECIFIC",
+    "topic": "quantitative_aptitude_average_speed",
+    "question": "A person covers half of his journey at 40 km/h and the other half at 60 km/h. What is his average speed for the entire journey?",
+    "options": [
+      "50 km/h",
+      "48 km/h",
+      "52 km/h",
+      "45 km/h"
+    ],
+    "correct_option_index": 1,
+    "explanation": "Average speed = total distance/total time. For equal halves, avg = 2xy/(x+y) = 2*40*60/(100)=48 km/h, not arithmetic mean.",
+    "hook": "Think you know average speed? Think again!"
+  },
+  {
+    "date": "2026-08-26",
+    "exam": "OSSSC RI / AMIN",
+    "content_stage": "EXAM_SPECIFIC",
+    "topic": "land_records_types_odisha",
+    "question": "Which of the following is NOT a land record maintained by the Odisha Revenue Department?",
+    "options": [
+      "Record of Rights (RoR)",
+      "Land Acquisition Register",
+      "Caste Certificate Register",
+      "Mutation Register"
+    ],
+    "correct_option_index": 2,
+    "explanation": "Caste Certificate Register deals with social categories, not land ownership; the other three are official land records.",
+    "hook": "Spot the odd one out!"
+  },
+  {
+    "date": "2026-09-02",
+    "exam": "Odisha Police SI",
+    "content_stage": "EXAM_SPECIFIC",
+    "topic": "land_records_types_odisha",
+    "question": "What is NOT a type of land record maintained by the Odisha Revenue Department?",
+    "options": [
+      "Land settlement records",
+      "Survey records",
+      "House tax records",
+      "Caste and community certificates"
+    ],
+    "correct_option_index": 2,
+    "explanation": "House tax records are not a type of land record maintained by the Odisha Revenue Department. The other options are all types of land records.",
+    "hook": "Land records are crucial for any police investigation. Can you identify which record is NOT maintained by the Odisha Revenue Department?"
+  },
+  {
+    "date": "2026-09-03",
+    "exam": "Odisha Police SI",
+    "content_stage": "EXAM_SPECIFIC",
+    "topic": "land_records_types_odisha",
+    "question": "What type of land record is NOT maintained by the Odisha Revenue Department?",
+    "options": [
+      "Pahani",
+      "Chauthi",
+      "Raj Badi",
+      "Community Health Report"
+    ],
+    "correct_option_index": 0,
+    "explanation": "Pahani is a type of land record that lists the owner's name and details of the land. Chauthi and Raj Badi are also types of land records maintained by the Odisha Revenue Department. Community Health Report, however, is not a land record but a report maintained by the health department.",
+    "hook": "Land records are crucial for Odisha's land ownership and revenue collection. But can you identify which type is NOT maintained by the Odisha Revenue Department?"
+  },
+  {
+    "date": "2026-09-04",
+    "exam": "BSE Odisha OTET / OSSTET",
+    "content_stage": "EXAM_SPECIFIC",
+    "topic": "child_development_and_pedagogy_differentiated_instruction",
+    "question": "What is the primary advantage of differentiated instruction in teaching children with varying learning abilities?",
+    "options": [
+      "Enhanced student engagement",
+      "Improved teacher efficiency",
+      "Better assessment and evaluation",
+      "More effective learning outcomes for diverse students"
+    ],
+    "correct_option_index": 3,
+    "explanation": "Differentiated instruction allows teachers to tailor their teaching methods to meet the unique needs of each student, leading to more effective learning outcomes for diverse students.",
+    "hook": "Effective teaching strategies can make a significant difference in student learning outcomes."
+  },
+  {
+    "date": "2026-09-08",
+    "exam": "OSSSC Nursing Officer",
+    "content_stage": "EXAM_SPECIFIC",
+    "topic": "pharmacology_dose_administration",
+    "question": "A patient is prescribed a medication with a dose of 500mg to be administered orally twice a day. The medication is available in 250mg tablets. How many tablets should the patient take in 24 hours?",
+    "options": [
+      "2 tablets in the morning and 2 tablets in the evening",
+      "1 tablet in the morning and 2 tablets in the evening",
+      "2 tablets in the morning and 1 tablet in the evening",
+      "1 tablet in the morning and 1 tablet in the evening"
+    ],
+    "correct_option_index": 0,
+    "explanation": "To calculate the total dose, divide the prescribed dose by the tablet strength. 500mg / 250mg = 2. The patient should take 2 tablets in the morning and 2 tablets in the evening to meet the prescribed dose.",
+    "hook": "Dose administration mistake: Can you avoid this common error in patient care?"
+  },
+  {
+    "date": "2026-09-13",
+    "exam": "IBPS PO & Clerk",
+    "content_stage": "EXAM_SPECIFIC",
+    "topic": "logical_syllogism",
+    "question": "If all A are B, and some C are A, which of the following statements is necessarily true?",
+    "options": [
+      "All C are B",
+      "Some C are B",
+      "All A are C",
+      "No conclusion can be drawn"
+    ],
+    "correct_option_index": 1,
+    "explanation": "Only the part of C that overlaps A is guaranteed to be B; hence some C are B is correct, not all C are B.",
+    "hook": "Think before you choose – it’s a classic logic trap!"
+  },
+  {
+    "date": "2026-09-15",
+    "exam": "OSSC CGL",
+    "content_stage": "EXAM_SPECIFIC",
+    "topic": "quantitative_aptitude_percent_change",
+    "question": "If the price of an article is increased by 25% and then decreased by 15%, what is the net change in its price?",
+    "options": [
+      "5% increase",
+      "5% decrease",
+      "10% decrease",
+      "15% increase"
+    ],
+    "correct_option_index": 2,
+    "explanation": "To find the net change in price, calculate the final price after each change and compare it to the original price. The 25% increase followed by a 15% decrease results in a 10% decrease from the original price.",
+    "hook": "Don't fall for the trap: percentage changes can be deceiving!"
+  },
+  {
+    "date": "2026-09-16",
+    "exam": "SSC CGL",
+    "content_stage": "EXAM_SPECIFIC",
+    "topic": "quantitative_aptitude_percent_change",
+    "question": "An article is priced at Rs. 100. Its price is increased by 25% and then decreased by 15%. What is the final price of the article?",
+    "options": [
+      "Rs. 92",
+      "Rs. 93",
+      "Rs. 104",
+      "Rs. 105"
+    ],
+    "correct_option_index": 2,
+    "explanation": "The correct answer is Rs. 104. The price increase of 25% results in a price of Rs. 125. Then, a decrease of 15% results in a final price of Rs. 105.75, but since the options are given as integers, we need to choose the closest option, which is Rs. 104.",
+    "hook": "Can you calculate the final price of an article after two consecutive price changes?"
+  },
+  {
+    "date": "2026-09-17",
+    "exam": "Railway RRB NTPC",
+    "content_stage": "EXAM_SPECIFIC",
+    "topic": "quantitative_aptitude_percentage_change",
+    "question": "An article is priced at Rs. 100. Its price is increased by 25% and then decreased by 20%. What is the net change in its price?",
+    "options": [
+      "25% decrease",
+      "0% change",
+      "5% increase",
+      "15% increase"
+    ],
+    "correct_option_index": 2,
+    "explanation": "To find the net change, first calculate the new price after the 25% increase: 100 + (100 * 0.25) = 125. Then, calculate the new price after the 20% decrease: 125 - (125 * 0.20) = 100. The net change is 0%.",
+    "hook": "Percentage change traps - can you avoid them?"
+  },
+  {
+    "date": "2026-09-18",
+    "exam": "OPSC ASO",
+    "content_stage": "EXAM_SPECIFIC",
+    "topic": "quantitative_aptitude_percentage_change",
+    "question": "An article is priced at Rs. 100. Its price is increased by 15% and then decreased by 5%. What is the final price of the article?",
+    "options": [
+      "Rs. 95",
+      "Rs. 105",
+      "Rs. 109",
+      "Rs. 115"
+    ],
+    "correct_option_index": 2,
+    "explanation": "To calculate the final price, first increase the price by 15% (Rs. 100 * 1.15 = Rs. 115), then decrease it by 5% (Rs. 115 * 0.95 = Rs. 109).",
+    "hook": "Price increase followed by a discount - How will you calculate the final price?"
+  }
+]

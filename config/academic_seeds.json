@@ -1,0 +1,105 @@
+{
+  "version": "2.0.0",
+  "last_updated": "2026-08-21",
+  "seeds": [
+    {
+      "category": "Quantitative Aptitude",
+      "topic": "Alligation & Mixture Shortcut Algorithms",
+      "framework": "The Cross-Difference Ratio Method",
+      "focus": "Solving weighted average, multi-vessel milk-water replacement, and profit-loss mixture problems in under 30 seconds without algebra equations.",
+      "verified_formulas": [
+        "Ratio (Quantity 1 : Quantity 2) = (Cheaper Price - Mean Price) : (Mean Price - Dearer Price)",
+        "Remaining Liquid A = Initial Quantity * (1 - Replacement Quantity / Total Capacity)^n"
+      ],
+      "golden_problem_seed": {
+        "problem": "A container contains 80 liters of pure milk. 8 liters of milk are taken out and replaced with water. This process is repeated 2 more times (total 3 operations). Find the final quantity of milk remaining in the container.",
+        "trap_method": "Students often try to calculate fractions after each round manually (80 - 8 = 72, then 72 - 7.2 = 64.8, etc.), which causes fractional multiplication errors under exam pressure.",
+        "shortcut_algorithm": "Apply the Repeated Replacement Formula: Remaining Milk = 80 * (1 - 8/80)^3 = 80 * (9/10)^3 = 80 * (729/1000) = 58.32 liters.",
+        "final_answer": "58.32 liters"
+      }
+    },
+    {
+      "category": "Quantitative Aptitude",
+      "topic": "Time, Speed & Distance: Relative Speed & Train Crossings",
+      "framework": "The Relative Velocity & Unit Conversion Matrix",
+      "focus": "Eliminating m/s to km/h conversion traps, moving platform crossings, upstream/downstream drift ratios, and circular track overtaking.",
+      "verified_formulas": [
+        "Crossing Moving Object in Same Direction: Time = (Length 1 + Length 2) / (Speed 1 - Speed 2)",
+        "Crossing Moving Object in Opposite Direction: Time = (Length 1 + Length 2) / (Speed 1 + Speed 2)",
+        "km/h to m/s = Multiply by 5/18 | m/s to km/h = Multiply by 18/5"
+      ],
+      "golden_problem_seed": {
+        "problem": "A 180-meter long train moving at 54 km/h crosses a 220-meter long train moving at 36 km/h in the opposite direction on parallel tracks. In how many seconds will they completely cross each other?",
+        "trap_method": "Forgetting to convert relative speed into m/s or subtracting lengths instead of adding total distance.",
+        "shortcut_algorithm": "Total Distance = 180 + 220 = 400 m. Relative Speed (Opposite) = 54 + 36 = 90 km/h. Convert to m/s: 90 * (5/18) = 25 m/s. Time = 400 / 25 = 16 seconds.",
+        "final_answer": "16 seconds"
+      }
+    },
+    {
+      "category": "Quantitative Aptitude",
+      "topic": "Compound vs Simple Interest Difference Hacks",
+      "framework": "The 2-Year and 3-Year Difference Matrix",
+      "focus": "Calculating CI - SI difference for 2 and 3 years using percentage fractionation without multi-step multiplication.",
+      "verified_formulas": [
+        "2-Year Difference (CI - SI) = P * (R / 100)^2",
+        "3-Year Difference (CI - SI) = P * (R / 100)^2 * (3 + R / 100)"
+      ],
+      "golden_problem_seed": {
+        "problem": "If the difference between Compound Interest and Simple Interest on a sum of money at 10% per annum for 3 years is Rs. 155, find the principal amount.",
+        "trap_method": "Calculating 3-year CI with (1 + 0.10)^3 and subtracting 30% SI on variable P, leading to cumbersome decimals.",
+        "shortcut_algorithm": "Apply 3-Year Difference Shortcut: 155 = P * (10/100)^2 * (3 + 10/100) -> 155 = P * (1/100) * (31/10) -> 155 = P * (31/1000) -> P = (155 * 1000) / 31 = Rs. 5,000.",
+        "final_answer": "Rs. 5,000"
+      }
+    },
+    {
+      "category": "Logical Reasoning",
+      "topic": "Syllogisms: Master 'Only A Few' and 'Can Never Be' Cases",
+      "framework": "The Dual-Condition Boundary Verification Model",
+      "focus": "Deconstructing tricky possibility cases, complementary pairs (Either-Or), and modern competitive exam syllogism trap patterns.",
+      "verified_formulas": [
+        "'Only a few A are B' = 'Some A are B' AND 'Some A are NOT B' simultaneously.",
+        "'All A being B is a possibility' is FALSE when 'Only a few A are B' is given."
+      ],
+      "golden_problem_seed": {
+        "problem": "Statements: (1) Only a few Books are Pens. (2) All Pens are Erasers. Conclusions: I. Some Books are not Erasers. II. All Books can never be Pens.",
+        "trap_method": "Assuming 'Only a few' is identical to 'Some', leading to incorrectly treating 'All Books being Pens' as possible.",
+        "shortcut_algorithm": "Rule: 'Only a few Books are Pens' guarantees a portion of Books is strictly barred from Pens. Therefore, Conclusion II ('All Books can never be Pens') is DEFINITELY TRUE. Conclusion I is not definite because the non-Pen books could still overlap with Eraser.",
+        "final_answer": "Only Conclusion II follows"
+      }
+    },
+    {
+      "category": "Language & Grammar",
+      "topic": "Odia Grammar: Master Samasa (ସମାସ) Identification & Traps",
+      "framework": "The Vigraha Vakya Meaning-Anchor Rule",
+      "focus": "Distinguishing between Tatpurusa, Karmadharaya, Bahubrihi, and Dwigu Samasa with classic high-yield Odia literature examples.",
+      "verified_formulas": [
+        "ତତ୍ପୁରୁଷ: ପରପଦର ପ୍ରାଧାନ୍ୟ ଓ ବିଭକ୍ତି ଚିହ୍ନ ଲୋପ (ଉଦାହରଣ: ରାଜପୁତ୍ର = ରାଜାଙ୍କ ପୁତ୍ର)",
+        "ବହୁବ୍ରୀହି: ଅନ୍ୟ ଅର୍ଥର ପ୍ରାଧାନ୍ୟ (ଉଦାହରଣ: ଦଶାନନ = ଦଶ ଆନନ ଯାହାର - ରାବଣ)",
+        "କର୍ମଧାରୟ: ବିଶେଷ୍ୟ-ବିଶେଷଣ ସମ୍ବନ୍ଧ (ଉଦାହରଣ: ନୀଳୋତ୍ପଳ = ନୀଳ ଯେ ଉତ୍ପଳ)"
+      ],
+      "golden_problem_seed": {
+        "problem": "'ପୀତାମ୍ବର' ପଦଟି କେଉଁ ସମାସ ଅନ୍ତର୍ଗତ? (A) କର୍ମଧାରୟ (B) ବହୁବ୍ରୀହି (C) ତତ୍ପୁରୁଷ (D) ଦ୍ଵିଗୁ",
+        "trap_method": "'ପୀତ' (ହଳଦିଆ) ବିଶେଷଣ ଏବଂ 'ଅମ୍ବର' (ବସ୍ତ୍ର) ବିଶେଷ୍ୟ ଦେଖି ଛାତ୍ରମାନେ କର୍ମଧାରୟ ଭାବି ଭୁଲ କରିଥାନ୍ତି।",
+        "shortcut_algorithm": "ବ୍ୟାସବାକ୍ୟ ନିରୂପଣ କରନ୍ତୁ: 'ପୀତ ଅମ୍ବର ଯାହାର ସେ (ଶ୍ରୀକୃଷ୍ଣ/ବିଷ୍ଣୁ)'। ଏଠାରେ ସମସ୍ତ ପଦର ଅର୍ଥ ବସ୍ତ୍ରକୁ ନ ବୁଝାଇ ତୃତୀୟ ବ୍ୟକ୍ତି (ଭଗବାନ ଶ୍ରୀକୃଷ୍ଣ)ଙ୍କୁ ବୁଝାଉଥିବାରୁ ଏହା 'ବହୁବ୍ରୀହି ସମାସ' ଅଟେ।",
+        "final_answer": "(B) ବହୁବ୍ରୀହି ସମାସ"
+      }
+    },
+    {
+      "category": "Test-Taking Strategy",
+      "topic": "The 45-Second Question Triage & Sectional Time Budgeting",
+      "framework": "The 3-Tier Exam Pacing Architecture",
+      "focus": "Categorizing test questions into Tier 1 (Instant direct recall), Tier 2 (Single-step calculation), and Tier 3 (Lengthy trap puzzles) to avoid clock panic.",
+      "verified_formulas": [
+        "Tier 1 (0-25s): Fact recall, vocab, direct GS/Odia rules.",
+        "Tier 2 (25-50s): Straightforward math/reasoning formula applications.",
+        "Tier 3 (Mark for Review): Puzzles > 8 variables, missing data DI."
+      ],
+      "golden_problem_seed": {
+        "problem": "In a 100-question exam with 60 minutes, how should an aspirant allocate time across Rounds 1 and 2 to achieve an optimal accuracy-to-attempt ratio?",
+        "trap_method": "Solving questions sequentially from #1 to #100, getting stuck on a lengthy puzzle at question #14 and running out of time before seeing easy questions at #80-100.",
+        "shortcut_algorithm": "Execute 2-Round Triage: Round 1 (0-35 mins) = Sweep all Tier 1 and Tier 2 questions (target 55-60 attempts). Round 2 (35-55 mins) = Target verified Tier 3 questions. Final 5 mins = Verify un-answered bubbles and high-confidence marked questions.",
+        "final_answer": "2-Round Systematic Triage"
+      }
+    }
+  ]
+}

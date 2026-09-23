@@ -665,67 +665,32 @@ def format_current_affairs(raw_text_payload):
     from datetime import timedelta
     yesterday_date_iso = (datetime.now() - timedelta(days=1)).strftime("%Y-%m-%d")
 
-    system_prompt = f"""
-You are an Elite Senior Current Affairs Editor & Paper Setter for top-tier competitive examination prep platforms (UPSC CSE, OPSC OAS/OFS, Odisha Police SI, OSSC, SSC CGL, Banking, and Defence).
-TODAY'S DATE IS: {today_date_str_prompt}.
+    system_prompt = f"""You are an Elite Senior Current Affairs Editor for UPSC, OPSC, and Odisha competitive exams. Today's date is: {today_date_str_prompt}.
+CRITICAL INSTRUCTIONS:
+1. Select ONLY genuine, factual, and exam-relevant news from the provided candidates published in the last 24-48 hours.
+2. Filter out all celebrity gossip, local petty crime, political mudslinging, and opinion essays.
+3. Every slide must focus on high-yield topics (Odisha Schemes/Cabinet, National Polity, Economy/RBI, Science/ISRO, Defense, Sports).
+4. Output ONLY valid pure JSON starting with {{ and ending with }}. Zero introductory words, zero reasoning preamble.
 
-CRITICAL INSTRUCTION:
-1. Analyze the provided raw candidate news articles. Select ONLY genuine, factual, and exam-relevant current affairs news items published within the last 24-48 hours.
-2. NEVER invent, hallucinate, or fabricate unverified facts or news.
-3. Every slide MUST have strong competitive exam significance (Odisha State governance/schemes, National Polity, Constitutional amendments, Statutory rulings, Economy/RBI, Science/ISRO/DRDO, Defense exercises, Global Summits).
-   - Select the highest-yield stories organically across Odisha, National, and International events.
-   - Do NOT force artificial category batches. Prioritize genuine substantive merit and exam relevance.
-4. OUTPUT RULE: You MUST return ONLY a pure valid JSON object matching the schema below. DO NOT output any introductory text, thought process, chain-of-thought, or markdown commentary outside the JSON object.
-
-======================================================================
-1. THE GOLDEN RULE OF EXAM INVERTIBILITY (THE MCQ TEST)
-======================================================================
-Before writing any slide, apply the "MCQ Invertibility Test":
-"Can a real paper setter in UPSC/OPSC/OSSC formulate a factual 4-option Multiple Choice Question from this news with 1 unambiguous correct answer?"
-• INVERTIBLE (ACCEPT):
-  - "Which state cabinet approved ₹10,000 Cr outlay for the Subhadra Yojana?" ➔ YES (Odisha)
-  - "Which Earth Observation Satellite was launched by ISRO using the SSLV launcher?" ➔ YES (EOS-08)
-  - "Who won the Gold Medal in the Open Section at the 45th Chess Olympiad?" ➔ YES (Gukesh D / India)
-  - "Which body conducts the Monetary Policy Committee meetings in India?" ➔ YES (RBI)
-• NOT INVERTIBLE / ZERO EXAM VALUE (REJECT IMMEDIATELY):
-  - Commercial film production disputes, celebrity tax cases (Dharma Productions, Karan Johar, etc.) ➔ REJECT
-  - Philosophical op-eds, opinion essays, personal columns ➔ REJECT
-  - Commercial consumer gadget launches (smartphones, watches) ➔ REJECT
-  - Private corporate executive appointments (Colgate, Swiggy) ➔ REJECT
-  - Routine municipal parking fees or minor road repairs ➔ REJECT
-  - Ceremonial temple visits, floral tributes, condolences ➔ REJECT
-  - Local petty crime, minor police arrests, accidents ➔ REJECT
-  - Political rallies, mudslinging, party worker speeches ➔ REJECT
-
-======================================================================
-2. DYNAMIC & NATURAL BULLET POINT HEADINGS
-======================================================================
-Convert approved stories into 3 to 5 precise, highly educational bullet points.
-- Create dynamic bold headings (2-4 words) that naturally match the story (e.g. "Subhadra Outlay Approved:", "Constitutional Mandate (Art 324):", "Mission Trajectory & Specs:").
-- Write in clear, active, simple English.
-- Complete Sentences: Every bullet point sentence must end with a period. Zero truncation or "...".
-
-Output Requirements:
-Return ONLY a valid JSON object matching this schema:
+Output JSON Schema:
 {{
   "top_slides": [
     {{
-      "headline": "Short, powerful headline under 48 chars (Max 45 chars, ZERO '...')",
-      "sovereign_entity": "Exact name of constitutional/statutory authority, state dept, or tournament (e.g. 'Odisha State Cabinet', 'ISRO', 'FIDE Chess Olympiad')",
-      "exam_questionability_fact": "One unambiguous factual statement from which an examiner can formulate an exam MCQ (e.g. 'Odisha Cabinet sanctioned ₹10,000 Cr for Subhadra Yojana')",
+      "headline": "Short headline under 48 characters",
+      "sovereign_entity": "Entity name (e.g. Odisha Cabinet, ISRO, RBI)",
+      "exam_questionability_fact": "One factual MCQ-testable statement",
       "bullets": [
-        "Dynamic Heading 1 (2-4 words): Full detailed sentence (30-40 words) with concrete facts and zero truncation.",
-        "Dynamic Heading 2 (2-4 words): Technical context, geographical/legal background (30-40 words) with zero truncation.",
-        "Dynamic Heading 3 (2-4 words): Clear syllabus relevance, constitutional article, or strategic impact (30-40 words) with zero truncation."
+        "Dynamic Heading 1 (2-4 words): Concrete fact with details.",
+        "Dynamic Heading 2 (2-4 words): Technical/constitutional background.",
+        "Dynamic Heading 3 (2-4 words): Syllabus relevance and impact."
       ]
     }}
   ],
   "extra_highlights": [
-    "Specific news highlight 1 with exact names & figures",
-    "Specific news highlight 2 with exact names & figures"
+    "Specific highlight 1 with exact names & figures",
+    "Specific highlight 2 with exact names & figures"
   ]
-}}
-"""
+}}"""
 
     headers = {
         "Authorization": f"Bearer {DEEPSEEK_API_KEY}",
@@ -735,21 +700,20 @@ Return ONLY a valid JSON object matching this schema:
     endpoint_url = f"{DEEPSEEK_BASE_URL.rstrip('/')}/chat/completions"
     model_name = "nvidia/nemotron-3-super-120b-a12b" if "nvidia" in DEEPSEEK_BASE_URL else "deepseek-chat"
 
-    # Pass the full balanced multi-stream payload
+    # Pass the balanced multi-stream payload
     payload = {
         "model": model_name,
         "messages": [
             {"role": "system", "content": system_prompt.strip()},
             {"role": "user", "content": (
                 f"Today is: {today_date_str_prompt}.\n\n"
-                f"Analyze the following authentic scraped news candidates from official and trusted press feeds.\n"
-                f"Extract the top genuine exam-relevant current affairs slides into JSON format:\n\n"
-                f"{raw_text_payload[:8500]}"
+                f"Extract top exam-relevant current affairs slides into JSON from these authentic news candidates:\n\n"
+                f"{raw_text_payload[:4000]}\n\n"
+                f"CRITICAL: Output ONLY the pure JSON object starting with '{{' and ending with '}}'. Zero intro text."
             )}
         ],
-        "temperature": 0.2,
-        "max_tokens": 3500,
-        "response_format": {"type": "json_object"}
+        "temperature": 0.1,
+        "max_tokens": 2500
     }
 
     global _ca_ai_model_used, _ca_ai_used_fallback
@@ -764,18 +728,24 @@ Return ONLY a valid JSON object matching this schema:
         # Strip reasoning tags like <think>...</think> from newer models
         c_clean = re.sub(r'<think>[\s\S]*?<\/think>', '', c_clean, flags=re.IGNORECASE).strip()
 
-        if "```json" in c_clean:
-            c_clean = c_clean.split("```json")[1].split("```")[0].strip()
-        elif "```" in c_clean:
-            c_clean = c_clean.split("```")[1].split("```")[0].strip()
+        # If there's markdown code block, extract it
+        match = re.search(r'```(?:json)?\s*(\{[\s\S]*?\})\s*```', c_clean)
+        if match:
+            try:
+                return json.loads(match.group(1))
+            except Exception:
+                pass
 
         # Extract strictly from first '{' to last '}'
         if "{" in c_clean:
             first_brace = c_clean.find("{")
-            c_clean = c_clean[first_brace:]
-            if "}" in c_clean:
-                last_brace = c_clean.rfind("}")
-                c_clean = c_clean[:last_brace+1]
+            last_brace = c_clean.rfind("}")
+            if last_brace > first_brace:
+                json_candidate = c_clean[first_brace:last_brace+1]
+                try:
+                    return json.loads(json_candidate)
+                except Exception:
+                    pass
 
         try:
             return json.loads(c_clean)

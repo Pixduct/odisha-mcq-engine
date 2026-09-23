@@ -477,7 +477,8 @@ Return ONLY valid JSON matching this schema:
             {"role": "user", "content": f"Official Link Provided: {link_url}\n\nNotice Text:\n{raw_notice_text[:4000]}"}
         ],
         "temperature": 0.1,
-        "max_tokens": 1000
+        "max_tokens": 1000,
+        "response_format": {"type": "json_object"}
     }
 
     global _breaking_ai_model, _breaking_ai_fallback

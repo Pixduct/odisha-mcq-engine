@@ -394,8 +394,9 @@ Return ONLY valid JSON matching this schema:
     print("[VERBOSE LOG] Invoking AI for 3-Stage Content Selection...")
 
     ai_tiers = [
-        ("meta/llama-3.2-11b-vision-instruct", "https://integrate.api.nvidia.com/v1/chat/completions", DEEPSEEK_API_KEY, 60),
-        ("meta/llama-3.2-90b-vision-instruct", "https://integrate.api.nvidia.com/v1/chat/completions", DEEPSEEK_API_KEY, 60)
+        ("nvidia/nemotron-3-super-120b-a12b", "https://integrate.api.nvidia.com/v1/chat/completions", DEEPSEEK_API_KEY, 45),
+        ("z-ai/glm-5.3", "https://integrate.api.nvidia.com/v1/chat/completions", DEEPSEEK_API_KEY, 45),
+        ("meta/llama-3.2-11b-vision-instruct", "https://integrate.api.nvidia.com/v1/chat/completions", DEEPSEEK_API_KEY, 60)
     ]
     native_deepseek_key = (os.getenv("DEEPSEEK_API_KEY") or "").strip('"')
     if native_deepseek_key.startswith("sk-"):

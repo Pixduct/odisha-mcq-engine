@@ -713,7 +713,8 @@ Output JSON Schema:
             )}
         ],
         "temperature": 0.1,
-        "max_tokens": 2500
+        "max_tokens": 2500,
+        "response_format": {"type": "json_object"}
     }
 
     global _ca_ai_model_used, _ca_ai_used_fallback
@@ -765,6 +766,7 @@ Output JSON Schema:
 
     try:
         content = ""
+        ca_data = None
         import time
 
         # Use active verified high-throughput NVIDIA NIM models
@@ -827,12 +829,17 @@ Output JSON Schema:
                     if res.ok:
                         raw_c = res.json().get('choices', [{}])[0].get('message', {}).get('content', '')
                         if raw_c and raw_c.strip():
-                            content = raw_c
-                            _ca_ai_model_used = model_name
-                            _ca_ai_used_fallback = (tier_idx > 0)
-                            ai_success = True
-                            print(f"✅ [{tier_name}] Responded successfully on attempt {attempt}.")
-                            break
+                            parsed_candidate = parse_ai_json_response(raw_c)
+                            if parsed_candidate and isinstance(parsed_candidate, dict) and "top_slides" in parsed_candidate:
+                                content = raw_c
+                                ca_data = parsed_candidate
+                                _ca_ai_model_used = model_name
+                                _ca_ai_used_fallback = (tier_idx > 0)
+                                ai_success = True
+                                print(f"✅ [{tier_name}] Responded and verified valid slides JSON on attempt {attempt}.")
+                                break
+                            else:
+                                print(f"⚠️ [{tier_name}] Responded on attempt {attempt}, but output could not be parsed into slides JSON. Retrying/Falling over...")
                     else:
                         print(f"⚠️ [{tier_name}] HTTP {res.status_code} on attempt {attempt}")
                 except Exception as tier_err:
@@ -842,12 +849,8 @@ Output JSON Schema:
             if ai_success:
                 break
 
-        if not ai_success or not content:
-            raise RuntimeError(f"All {len(ai_tiers)} AI Fallback Tiers exhausted without response.")
-
-        ca_data = parse_ai_json_response(content)
-        if not ca_data:
-            raise ValueError(f"AI response could not be parsed into valid JSON. Raw content snippet: '{content[:100]}'")
+        if not ai_success or not ca_data:
+            raise RuntimeError(f"All {len(ai_tiers)} AI Fallback Tiers exhausted without a valid slides response.")
         if isinstance(ca_data, dict) and "top_slides" in ca_data:
             print(f"✅ Successfully formatted Current Affairs items & extra highlights via AI.")
             

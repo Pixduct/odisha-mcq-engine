@@ -248,7 +248,8 @@ def call_ai_synthesizer(news_item: Dict[str, Any]) -> Optional[Dict[str, Any]]:
             {"role": "system", "content": system_prompt},
             {"role": "user", "content": user_prompt}
         ],
-        "temperature": 0.3
+        "temperature": 0.3,
+        "response_format": {"type": "json_object"}
     }
 
     ai_tiers = [

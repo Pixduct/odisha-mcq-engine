@@ -60,6 +60,8 @@ jobs:
           GREEN_API_TOKEN_INSTANCE: ${{ secrets.GREEN_API_TOKEN_INSTANCE }}
           GREEN_API_HOST: ${{ secrets.GREEN_API_HOST || 'https://7107.api.greenapi.com' }}
           WHATSAPP_CHANNEL_ID: ${{ secrets.WHATSAPP_CHANNEL_ID || '120363412784897729@g.us' }}
+          SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+          SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
           PYTHONIOENCODING: "utf-8"
         run: python ca_publisher.py
 

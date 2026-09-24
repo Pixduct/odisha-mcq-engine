@@ -14,6 +14,12 @@ from ca_scraper import load_seen_news, save_seen_news, normalize_title
 if hasattr(sys.stdout, 'reconfigure'):
     sys.stdout.reconfigure(encoding='utf-8')
 
+GEMINI_API_KEY = (
+    os.getenv("GEMINI_API_KEY") or
+    os.getenv("VITE_GEMINI_API_KEY") or
+    ""
+).strip('"')
+
 DEEPSEEK_API_KEY = (
     os.getenv("DEEPSEEK_API_KEY") or
     os.getenv("NVIDIA_NIM_API_KEY") or
@@ -29,7 +35,7 @@ DEEPSEEK_BASE_URL = (
 ).strip('"')
 
 # Module-level AI model tracking — read by ca_publisher.py for admin Telegram report
-_ca_ai_model_used = "nvidia/nemotron-3-super-120b-a12b"
+_ca_ai_model_used = "Google Gemini (gemini-3.5-flash) [Primary]"
 _ca_ai_used_fallback = False
 
 # 15-CATEGORY NON-EXAM THREAT MODEL MATRIX & NOISE BLACKLIST PATTERNS
@@ -497,9 +503,22 @@ def validate_slide_quality(slides, raw_text_payload):
         headline = slide.get("headline", "")
         h_lower = headline.lower()
 
-        slide.pop("category", None)
         slide.pop("region", None)
         bullets = slide.get("bullets", [])
+
+        # Assign / clean syllabus category
+        raw_cat = str(slide.get("category", "")).strip().upper()
+        if not raw_cat or raw_cat in ["GENERAL NEWS", "CURRENT AFFAIRS"]:
+            slide["category"] = classify_news_category(headline, bullets, raw_cat)
+        else:
+            slide["category"] = raw_cat
+
+        # Clean and preserve exam_takeaway
+        raw_takeaway = str(slide.get("exam_takeaway", "")).strip()
+        if raw_takeaway:
+            slide["exam_takeaway"] = sanitize_zero_truncation(raw_takeaway)
+        else:
+            slide["exam_takeaway"] = sanitize_zero_truncation(slide.get("exam_questionability_fact", ""))
 
         # PLACEHOLDER CHECK: Drop any slide containing unreplaced brackets like [District Name], [River Name]
         if re.search(r'\[(district|river|block|taluk|ministry|state|agency|department|date|number|name|insert|amount|location)[^\]]*\]', json.dumps(slide).lower()):
@@ -652,8 +671,8 @@ def validate_slide_quality(slides, raw_text_payload):
 def format_current_affairs(raw_text_payload):
     print("[VERBOSE LOG] Formatting current affairs items via AI API...")
 
-    if not DEEPSEEK_API_KEY:
-        print("⚠️ DEEPSEEK_API_KEY is not set in environment or secrets. Skipping public broadcast.")
+    if not GEMINI_API_KEY and not DEEPSEEK_API_KEY:
+        print("⚠️ Neither GEMINI_API_KEY nor DEEPSEEK_API_KEY is set in environment or secrets. Skipping public broadcast.")
         return {"top_slides": [], "extra_highlights": [], "error": "NO_API_KEY"}
 
     if not raw_text_payload or len(raw_text_payload.strip()) == 0:
@@ -668,22 +687,27 @@ def format_current_affairs(raw_text_payload):
     system_prompt = f"""You are an Elite Senior Current Affairs Editor for UPSC, OPSC, and Odisha competitive exams. Today's date is: {today_date_str_prompt}.
 CRITICAL INSTRUCTIONS:
 1. Select ONLY genuine, factual, and exam-relevant news from the provided candidates published in the last 24-48 hours.
-2. Filter out all celebrity gossip, local petty crime, political mudslinging, and opinion essays.
-3. Every slide must focus on high-yield topics (Odisha Schemes/Cabinet, National Polity, Economy/RBI, Science/ISRO, Defense, Sports).
-4. Output ONLY valid pure JSON starting with {{ and ending with }}. Zero introductory words, zero reasoning preamble.
+2. Filter out all celebrity gossip, local petty crime, political party mudslinging/allegations, routine court litigation arguments, and opinion essays.
+3. Every slide must focus on high-yield topics (Odisha Schemes/Cabinet, National Polity, Economy/RBI, Science/ISRO, Defense, Sports & Awards).
+4. CRITICAL RULE FOR BULLETS: Every bullet MUST start with a 2 to 3 word capitalized keyword label followed immediately by a colon (e.g., 'Silver Medal: ...', 'Landfall Zone: ...', 'Financial Outlay: ...').
+5. Include an 'exam_takeaway' containing 1 concise, high-value static syllabus fact or exam tip for aspirants.
+6. Provide an accurate syllabus category tag (e.g., 'SPORTS & GAMES', 'ODISHA & DISASTER', 'INDIAN POLITY', 'ECONOMY & ENERGY', 'SCIENCE & TECH', 'AWARDS & HONOURS').
+7. Output ONLY valid pure JSON starting with {{ and ending with }}. Zero introductory words, zero reasoning preamble.
 
 Output JSON Schema:
 {{
   "top_slides": [
     {{
       "headline": "Short headline under 48 characters",
-      "sovereign_entity": "Entity name (e.g. Odisha Cabinet, ISRO, RBI)",
+      "category": "SYLLABUS CATEGORY (e.g. SPORTS & GAMES, ODISHA & DISASTER, INDIAN POLITY, ECONOMY & ENERGY, SCIENCE & TECH)",
+      "sovereign_entity": "Entity name (e.g. Odisha Cabinet, ISRO, RBI, Ministry of Finance)",
       "exam_questionability_fact": "One factual MCQ-testable statement",
       "bullets": [
-        "Dynamic Heading 1 (2-4 words): Concrete fact with details.",
-        "Dynamic Heading 2 (2-4 words): Technical/constitutional background.",
-        "Dynamic Heading 3 (2-4 words): Syllabus relevance and impact."
-      ]
+        "Keyword Anchor (2-3 words): Concrete fact with details.",
+        "Keyword Anchor (2-3 words): Technical/constitutional background.",
+        "Keyword Anchor (2-3 words): Syllabus relevance and impact."
+      ],
+      "exam_takeaway": "One high-yield static exam syllabus fact related to this topic."
     }}
   ],
   "extra_highlights": [
@@ -700,17 +724,19 @@ Output JSON Schema:
     endpoint_url = f"{DEEPSEEK_BASE_URL.rstrip('/')}/chat/completions"
     model_name = "nvidia/nemotron-3-super-120b-a12b" if "nvidia" in DEEPSEEK_BASE_URL else "deepseek-chat"
 
+    user_prompt_content = (
+        f"Today is: {today_date_str_prompt}.\n\n"
+        f"Extract top exam-relevant current affairs slides into JSON from these authentic news candidates:\n\n"
+        f"{raw_text_payload[:4000]}\n\n"
+        f"CRITICAL: Output ONLY the pure JSON object starting with '{{' and ending with '}}'. Zero intro text."
+    )
+
     # Pass the balanced multi-stream payload
     payload = {
         "model": model_name,
         "messages": [
             {"role": "system", "content": system_prompt.strip()},
-            {"role": "user", "content": (
-                f"Today is: {today_date_str_prompt}.\n\n"
-                f"Extract top exam-relevant current affairs slides into JSON from these authentic news candidates:\n\n"
-                f"{raw_text_payload[:4000]}\n\n"
-                f"CRITICAL: Output ONLY the pure JSON object starting with '{{' and ending with '}}'. Zero intro text."
-            )}
+            {"role": "user", "content": user_prompt_content}
         ],
         "temperature": 0.1,
         "max_tokens": 2500,
@@ -767,90 +793,136 @@ Output JSON Schema:
     try:
         content = ""
         ca_data = None
+        ai_success = False
         import time
 
-        # Use active verified high-throughput NVIDIA NIM models
-        ai_tiers = [
-            {
-                "name": "NVIDIA Nemotron 3 Super 120B",
-                "model": "nvidia/nemotron-3-super-120b-a12b",
-                "key": DEEPSEEK_API_KEY,
-                "url": "https://integrate.api.nvidia.com/v1/chat/completions",
-                "timeout": 45
-            },
-            {
-                "name": "NVIDIA GLM 5.3",
-                "model": "z-ai/glm-5.3",
-                "key": DEEPSEEK_API_KEY,
-                "url": "https://integrate.api.nvidia.com/v1/chat/completions",
-                "timeout": 45
-            },
-            {
-                "name": "NVIDIA Llama 3.2 11B Vision Instruct",
-                "model": "meta/llama-3.2-11b-vision-instruct",
-                "key": DEEPSEEK_API_KEY,
-                "url": "https://integrate.api.nvidia.com/v1/chat/completions",
-                "timeout": 60
-            },
-            {
-                "name": "NVIDIA Nemotron 3.5 Lightning 30B",
-                "model": "nvidia/nemotron-3.5-lightning-30b-a3b",
-                "key": os.getenv("NVIDIA_NEMOTRON_KEY") or DEEPSEEK_API_KEY,
-                "url": "https://integrate.api.nvidia.com/v1/chat/completions",
-                "timeout": 45
-            }
-        ]
+        # =========================================================================
+        # TIER 1 (PRIMARY): Google AI Studio Gemini API (Free Tier Smart Engine)
+        # =========================================================================
+        if GEMINI_API_KEY:
+            gemini_models = ["gemini-3.5-flash", "gemini-3.6-flash"]
+            gemini_prompt = f"{system_prompt.strip()}\n\n{user_prompt_content}"
 
-        # Only add DeepSeek direct API if a native DeepSeek key (starting with sk-) is provided
-        native_deepseek_key = (os.getenv("DEEPSEEK_API_KEY") or "").strip('"')
-        if native_deepseek_key.startswith("sk-"):
-            ai_tiers.append({
-                "name": "DeepSeek Direct API",
-                "model": "deepseek-chat",
-                "key": native_deepseek_key,
-                "url": "https://api.deepseek.com/v1/chat/completions",
-                "timeout": 60
-            })
-
-        ai_success = False
-        for tier_idx, tier in enumerate(ai_tiers):
-            tier_name = tier["name"]
-            model_name = tier["model"]
-            key_val = str(tier["key"]).strip('"')
-            call_url = tier["url"]
-            timeout_val = tier["timeout"]
-
-            call_headers = {"Authorization": f"Bearer {key_val}", "Content-Type": "application/json"}
-            call_payload = {**payload, "model": model_name}
-
-            for attempt in range(1, 3):
+            for g_model in gemini_models:
                 try:
-                    res = requests.post(call_url, headers=call_headers, json=call_payload, timeout=timeout_val)
-                    if res.ok:
-                        raw_c = res.json().get('choices', [{}])[0].get('message', {}).get('content', '')
-                        if raw_c and raw_c.strip():
-                            parsed_candidate = parse_ai_json_response(raw_c)
-                            if parsed_candidate and isinstance(parsed_candidate, dict) and "top_slides" in parsed_candidate:
-                                content = raw_c
-                                ca_data = parsed_candidate
-                                _ca_ai_model_used = model_name
-                                _ca_ai_used_fallback = (tier_idx > 0)
-                                ai_success = True
-                                print(f"✅ [{tier_name}] Responded and verified valid slides JSON on attempt {attempt}.")
-                                break
-                            else:
-                                print(f"⚠️ [{tier_name}] Responded on attempt {attempt}, but output could not be parsed into slides JSON. Retrying/Falling over...")
+                    print(f"🚀 [Primary AI] Calling Google AI Studio Gemini ({g_model})...")
+                    g_url = f"https://generativelanguage.googleapis.com/v1beta/models/{g_model}:generateContent?key={GEMINI_API_KEY}"
+                    g_payload = {
+                        "contents": [{"parts": [{"text": gemini_prompt}]}],
+                        "generationConfig": {
+                            "response_mime_type": "application/json",
+                            "temperature": 0.1,
+                            "maxOutputTokens": 2500
+                        }
+                    }
+                    g_res = requests.post(g_url, headers={"Content-Type": "application/json"}, json=g_payload, timeout=22)
+                    if g_res.ok:
+                        g_json = g_res.json()
+                        candidates = g_json.get("candidates", [])
+                        if candidates:
+                            raw_text = candidates[0].get("content", {}).get("parts", [{}])[0].get("text", "")
+                            if raw_text and raw_text.strip():
+                                parsed_candidate = parse_ai_json_response(raw_text)
+                                if parsed_candidate and isinstance(parsed_candidate, dict) and "top_slides" in parsed_candidate:
+                                    ca_data = parsed_candidate
+                                    _ca_ai_model_used = f"Google Gemini ({g_model}) [Primary]"
+                                    _ca_ai_used_fallback = False
+                                    ai_success = True
+                                    print(f"✅ [Google AI Studio - {g_model}] Responded and verified valid slides JSON.")
+                                    break
+                                else:
+                                    print(f"⚠️ [Google AI Studio - {g_model}] Output could not be parsed into slides JSON. Retrying/Falling over...")
                     else:
-                        print(f"⚠️ [{tier_name}] HTTP {res.status_code} on attempt {attempt}")
-                except Exception as tier_err:
-                    print(f"⚠️ [{tier_name}] Attempt {attempt} failed ({tier_err}). Retrying/Failing over...")
-                time.sleep(1.5)
+                        print(f"⚠️ [Google AI Studio - {g_model}] HTTP {g_res.status_code}: {g_res.text[:120]}. Failing over...")
+                except Exception as g_err:
+                    print(f"⚠️ [Google AI Studio - {g_model}] Error: {g_err}. Failing over...")
 
-            if ai_success:
-                break
+        # =========================================================================
+        # TIER 2+ (FALLBACK): High-Throughput NVIDIA NIM Models & DeepSeek
+        # =========================================================================
+        if not ai_success and DEEPSEEK_API_KEY:
+            print("🔄 [AI Failover] Transitioning to NVIDIA NIM / Open Fallback Tiers...")
+            ai_tiers = [
+                {
+                    "name": "NVIDIA Nemotron 3 Super 120B",
+                    "model": "nvidia/nemotron-3-super-120b-a12b",
+                    "key": DEEPSEEK_API_KEY,
+                    "url": "https://integrate.api.nvidia.com/v1/chat/completions",
+                    "timeout": 45
+                },
+                {
+                    "name": "NVIDIA GLM 5.3",
+                    "model": "z-ai/glm-5.3",
+                    "key": DEEPSEEK_API_KEY,
+                    "url": "https://integrate.api.nvidia.com/v1/chat/completions",
+                    "timeout": 45
+                },
+                {
+                    "name": "NVIDIA Llama 3.2 11B Vision Instruct",
+                    "model": "meta/llama-3.2-11b-vision-instruct",
+                    "key": DEEPSEEK_API_KEY,
+                    "url": "https://integrate.api.nvidia.com/v1/chat/completions",
+                    "timeout": 60
+                },
+                {
+                    "name": "NVIDIA Nemotron 3.5 Lightning 30B",
+                    "model": "nvidia/nemotron-3.5-lightning-30b-a3b",
+                    "key": os.getenv("NVIDIA_NEMOTRON_KEY") or DEEPSEEK_API_KEY,
+                    "url": "https://integrate.api.nvidia.com/v1/chat/completions",
+                    "timeout": 45
+                }
+            ]
+
+            # Only add DeepSeek direct API if a native DeepSeek key (starting with sk-) is provided
+            native_deepseek_key = (os.getenv("DEEPSEEK_API_KEY") or "").strip('"')
+            if native_deepseek_key.startswith("sk-"):
+                ai_tiers.append({
+                    "name": "DeepSeek Direct API",
+                    "model": "deepseek-chat",
+                    "key": native_deepseek_key,
+                    "url": "https://api.deepseek.com/v1/chat/completions",
+                    "timeout": 60
+                })
+
+        if not ai_success and 'ai_tiers' in locals():
+            for tier_idx, tier in enumerate(ai_tiers):
+                tier_name = tier["name"]
+                model_name = tier["model"]
+                key_val = str(tier["key"]).strip('"')
+                call_url = tier["url"]
+                timeout_val = tier["timeout"]
+
+                call_headers = {"Authorization": f"Bearer {key_val}", "Content-Type": "application/json"}
+                call_payload = {**payload, "model": model_name}
+
+                for attempt in range(1, 3):
+                    try:
+                        res = requests.post(call_url, headers=call_headers, json=call_payload, timeout=timeout_val)
+                        if res.ok:
+                            raw_c = res.json().get('choices', [{}])[0].get('message', {}).get('content', '')
+                            if raw_c and raw_c.strip():
+                                parsed_candidate = parse_ai_json_response(raw_c)
+                                if parsed_candidate and isinstance(parsed_candidate, dict) and "top_slides" in parsed_candidate:
+                                    content = raw_c
+                                    ca_data = parsed_candidate
+                                    _ca_ai_model_used = f"{model_name} (Fallback)"
+                                    _ca_ai_used_fallback = True
+                                    ai_success = True
+                                    print(f"✅ [{tier_name}] Responded and verified valid slides JSON on attempt {attempt}.")
+                                    break
+                                else:
+                                    print(f"⚠️ [{tier_name}] Responded on attempt {attempt}, but output could not be parsed into slides JSON. Retrying/Falling over...")
+                        else:
+                            print(f"⚠️ [{tier_name}] HTTP {res.status_code} on attempt {attempt}")
+                    except Exception as tier_err:
+                        print(f"⚠️ [{tier_name}] Attempt {attempt} failed ({tier_err}). Retrying/Failing over...")
+                    time.sleep(1.5)
+
+                if ai_success:
+                    break
 
         if not ai_success or not ca_data:
-            raise RuntimeError(f"All {len(ai_tiers)} AI Fallback Tiers exhausted without a valid slides response.")
+            raise RuntimeError("All AI Primary (Google Gemini) and Fallback (NVIDIA NIM) Tiers exhausted without a valid slides response.")
         if isinstance(ca_data, dict) and "top_slides" in ca_data:
             print(f"✅ Successfully formatted Current Affairs items & extra highlights via AI.")
             

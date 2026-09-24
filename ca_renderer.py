@@ -318,13 +318,13 @@ HTML_TEMPLATE_BASE = """<!DOCTYPE html>
       list-style: none;
       display: flex;
       flex-direction: column;
-      gap: 22px;
+      gap: 20px;
     }}
     .bullets li {{
       position: relative;
       padding-left: 36px;
-      font-size: 22px;
-      line-height: 1.55;
+      font-size: 24px;
+      line-height: 1.52;
       color: #E2E8F0;
       font-weight: 500;
     }}
@@ -337,8 +337,40 @@ HTML_TEMPLATE_BASE = """<!DOCTYPE html>
       position: absolute;
       left: 4px;
       color: #FFD166;
-      font-size: 14px;
+      font-size: 15px;
       top: 6px;
+    }}
+    .takeaway-box {{
+      margin-top: 26px;
+      background: rgba(255, 255, 255, 0.05);
+      border-left: 5px solid {primary_color};
+      border-radius: 14px;
+      padding: 16px 22px;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.25);
+      backdrop-filter: blur(10px);
+    }}
+    .takeaway-header {{
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 8px;
+    }}
+    .takeaway-badge {{
+      background: rgba(255, 209, 102, 0.16);
+      color: #FFD166;
+      border: 1px solid rgba(255, 209, 102, 0.35);
+      padding: 3px 10px;
+      border-radius: 6px;
+      font-size: 13px;
+      font-weight: 800;
+      letter-spacing: 0.8px;
+      text-transform: uppercase;
+    }}
+    .takeaway-text {{
+      font-size: 21px;
+      line-height: 1.48;
+      color: #F8FAFC;
+      font-weight: 500;
     }}
     .footer {{
       display: flex;
@@ -392,6 +424,7 @@ HTML_TEMPLATE_BASE = """<!DOCTYPE html>
     <ul class="bullets">
       {bullet_items_html}
     </ul>
+    {takeaway_html}
   </div>
 
   <div class="footer">
@@ -429,6 +462,13 @@ def highlight_keypoint_label(text):
         val = parts[1].strip()
         return f"<b>{label}:</b> {val}"
     
+    # Defensive fallback: if no colon was provided, bold the first 2 words
+    words = clean.split()
+    if len(words) >= 4:
+        anchor = " ".join(words[:2])
+        rest = " ".join(words[2:])
+        return f"<b>{anchor}:</b> {rest}"
+    
     return clean
 
 def render_ca_slides(ca_items):
@@ -448,9 +488,23 @@ def render_ca_slides(ca_items):
         browser = p.chromium.launch(headless=True)
         try:
             for idx, item in enumerate(ca_items, start=1):
-                raw_category = item.get("category", "GENERAL NEWS")
+                raw_category = str(item.get("category", "")).strip()
+                category_tag = raw_category.upper() if raw_category and raw_category.upper() != "GENERAL NEWS" else "CURRENT AFFAIRS"
                 headline = item.get("headline", "")
                 bullets = item.get("bullets", [])
+                exam_takeaway = str(item.get("exam_takeaway", "")).strip()
+
+                if exam_takeaway:
+                    takeaway_html = f'''
+    <div class="takeaway-box">
+      <div class="takeaway-header">
+        <span class="takeaway-badge">🎯 EXAM FOCUS &amp; STATIC TAKEAWAY</span>
+      </div>
+      <div class="takeaway-text">{exam_takeaway}</div>
+    </div>
+'''
+                else:
+                    takeaway_html = ""
 
                 # Smooth rotating aesthetic color palette per slide (zero category tags)
                 pal = DYNAMIC_COLOR_PALETTES[(idx - 1) % len(DYNAMIC_COLOR_PALETTES)]
@@ -478,10 +532,12 @@ def render_ca_slides(ca_items):
 
                 final_html = HTML_TEMPLATE_BASE.format(
                     layout_style=layout_style,
-                    category_tag="CURRENT AFFAIRS",
+                    category_tag=category_tag,
                     date_str=today_date_str,
                     headline=headline,
                     bullet_items_html=bullet_items_html,
+                    takeaway_html=takeaway_html,
+                    primary_color=theme_info["primary_color"],
                     bullet_dot=theme_info["bullet_dot"],
                     badge_bg=theme_info["badge_bg"],
                     glow_color=theme_info["glow_color"],
@@ -521,8 +577,9 @@ if __name__ == "__main__":
             "bullets": [
                 "Financial Outlay: State Cabinet approves scheme implementation details.",
                 "Target Beneficiaries: Over 1 Crore women across Odisha eligible.",
-                "Official Portal: Visit official portal for registration steps."
-            ]
+                "Official Portal: Beneficiaries can register via official portal without fee."
+            ],
+            "exam_takeaway": "Subhadra Yojana provides financial assistance of ₹50,000 over 5 years (₹10,000 annually) to eligible women aged 21-60 in Odisha."
         }
     ]
     render_ca_slides(sample_slides)

@@ -289,7 +289,7 @@ def call_ai_synthesizer(news_item: Dict[str, Any]) -> Optional[Dict[str, Any]]:
         # TIER 1 (PRIMARY): Google AI Studio Gemini API (Smart Free Tier)
         if gemini_key:
             gemini_prompt = f"{system_prompt.strip()}\n\n{user_prompt.strip()}"
-            for g_model in ["gemini-3.5-flash", "gemini-3.6-flash"]:
+            for g_model in ["gemini-3.5-flash", "gemini-3.5-flash-lite", "gemini-3.6-flash"]:
                 try:
                     g_url = f"https://generativelanguage.googleapis.com/v1beta/models/{g_model}:generateContent?key={gemini_key}"
                     g_payload = {

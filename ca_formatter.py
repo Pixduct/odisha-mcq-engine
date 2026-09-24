@@ -800,7 +800,7 @@ Output JSON Schema:
         # TIER 1 (PRIMARY): Google AI Studio Gemini API (Free Tier Smart Engine)
         # =========================================================================
         if GEMINI_API_KEY:
-            gemini_models = ["gemini-3.5-flash", "gemini-3.6-flash"]
+            gemini_models = ["gemini-3.5-flash", "gemini-3.5-flash-lite", "gemini-3.6-flash"]
             gemini_prompt = f"{system_prompt.strip()}\n\n{user_prompt_content}"
 
             for g_model in gemini_models:
@@ -812,10 +812,10 @@ Output JSON Schema:
                         "generationConfig": {
                             "response_mime_type": "application/json",
                             "temperature": 0.1,
-                            "maxOutputTokens": 2500
+                            "maxOutputTokens": 6000
                         }
                     }
-                    g_res = requests.post(g_url, headers={"Content-Type": "application/json"}, json=g_payload, timeout=22)
+                    g_res = requests.post(g_url, headers={"Content-Type": "application/json"}, json=g_payload, timeout=40)
                     if g_res.ok:
                         g_json = g_res.json()
                         candidates = g_json.get("candidates", [])

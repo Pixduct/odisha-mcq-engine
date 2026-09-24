@@ -402,7 +402,7 @@ Return ONLY valid JSON matching this schema:
     # TIER 1 (PRIMARY): Google AI Studio Gemini API
     if GEMINI_API_KEY:
         gemini_prompt = f"{system_prompt}\n\nCandidate Input:\n{json.dumps(user_payload, ensure_ascii=False)}\n\nCRITICAL: Output ONLY valid pure JSON starting with '{{' and ending with '}}'."
-        for g_model in ["gemini-3.5-flash", "gemini-3.6-flash"]:
+        for g_model in ["gemini-3.5-flash", "gemini-3.5-flash-lite", "gemini-3.6-flash"]:
             try:
                 g_url = f"https://generativelanguage.googleapis.com/v1beta/models/{g_model}:generateContent?key={GEMINI_API_KEY}"
                 g_payload = {

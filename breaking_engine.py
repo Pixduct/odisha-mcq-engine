@@ -495,7 +495,7 @@ Return ONLY valid JSON matching this schema:
         # TIER 1 (PRIMARY): Google AI Studio Gemini API
         if GEMINI_API_KEY:
             gemini_prompt = f"{system_prompt.strip()}\n\nOfficial Link Provided: {link_url}\n\nNotice Text:\n{raw_notice_text[:4000]}\n\nCRITICAL: Output ONLY valid pure JSON starting with '{{' and ending with '}}'."
-            for g_model in ["gemini-3.5-flash", "gemini-3.6-flash"]:
+            for g_model in ["gemini-3.5-flash", "gemini-3.5-flash-lite", "gemini-3.6-flash"]:
                 try:
                     g_url = f"https://generativelanguage.googleapis.com/v1beta/models/{g_model}:generateContent?key={GEMINI_API_KEY}"
                     g_payload = {
@@ -506,7 +506,7 @@ Return ONLY valid JSON matching this schema:
                             "maxOutputTokens": 1500
                         }
                     }
-                    g_res = requests.post(g_url, headers={"Content-Type": "application/json"}, json=g_payload, timeout=20)
+                    g_res = requests.post(g_url, headers={"Content-Type": "application/json"}, json=g_payload, timeout=35)
                     if g_res.ok:
                         g_json = g_res.json()
                         candidates = g_json.get("candidates", [])
@@ -537,7 +537,8 @@ Return ONLY valid JSON matching this schema:
             _breaking_ai_fallback = True
             fallback_key = (
                 os.getenv("NVIDIA_NEMOTRON_KEY") or
-                DEEPSEEK_API_KEY
+                DEEPSEEK_API_KEY or
+                ""
             ).strip('"')
             fb_headers = {"Authorization": f"Bearer {fallback_key}", "Content-Type": "application/json"}
             fb_payload = {**payload, "model": "z-ai/glm-5.3"}

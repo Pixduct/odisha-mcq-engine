@@ -396,7 +396,7 @@ def call_deepseek_api(messages: list) -> tuple:
     # TIER 1 (PRIMARY): Google AI Studio Gemini API
     if GEMINI_API_KEY:
         gemini_prompt = "\n\n".join([f"Role: {m.get('role')}\n{m.get('content')}" for m in messages])
-        for g_model in ["gemini-3.5-flash", "gemini-3.6-flash"]:
+        for g_model in ["gemini-3.5-flash", "gemini-3.5-flash-lite", "gemini-3.6-flash"]:
             try:
                 g_url = f"https://generativelanguage.googleapis.com/v1beta/models/{g_model}:generateContent?key={GEMINI_API_KEY}"
                 g_payload = {

@@ -400,6 +400,7 @@ Return ONLY valid JSON matching this schema:
     print("[VERBOSE LOG] Invoking AI for 3-Stage Content Selection...")
 
     # TIER 1 (PRIMARY): Google AI Studio Gemini API
+    gemini_last_err = ""
     if GEMINI_API_KEY:
         gemini_prompt = f"{system_prompt}\n\nCandidate Input:\n{json.dumps(user_payload, ensure_ascii=False)}\n\nCRITICAL: Output ONLY valid pure JSON starting with '{{' and ending with '}}'."
         for g_model in ["gemini-3.5-flash", "gemini-3.5-flash-lite", "gemini-3.6-flash"]:
@@ -413,7 +414,7 @@ Return ONLY valid JSON matching this schema:
                         "maxOutputTokens": 2048
                     }
                 }
-                g_res = requests.post(g_url, headers={"Content-Type": "application/json"}, json=g_payload, timeout=20)
+                g_res = requests.post(g_url, headers={"Content-Type": "application/json"}, json=g_payload, timeout=25)
                 if g_res.ok:
                     data = g_res.json()
                     candidates = data.get("candidates", [])
@@ -430,7 +431,11 @@ Return ONLY valid JSON matching this schema:
                         result_json["_ai_fallback"] = False
                         print(f"✅ [EngagementEngine] Google Gemini ({g_model}) generated poll successfully.")
                         return result_json
+                else:
+                    gemini_last_err = f"{g_model}: HTTP {g_res.status_code} - {g_res.text[:100]}"
+                    print(f"⚠️ [EngagementEngine] Google Gemini ({g_model}) HTTP {g_res.status_code}. Falling over...")
             except Exception as g_err:
+                gemini_last_err = f"{g_model}: {g_err}"
                 print(f"⚠️ [EngagementEngine] Google Gemini ({g_model}) failed: {g_err}. Falling over...")
 
     ai_tiers = [
@@ -471,9 +476,22 @@ Return ONLY valid JSON matching this schema:
                     content = content.split("```")[1].split("```")[0].strip()
                 
                 result_json = json.loads(content)
-                result_json["_ai_model"] = m_name
-                result_json["_ai_fallback"] = (tier_idx > 0)
+                result_json["_ai_model"] = f"{m_name} (Fallback)"
+                result_json["_ai_fallback"] = True
+                try:
+                    from shared.telegram import send_ai_fallback_notification
+                    send_ai_fallback_notification(
+                        engine="engagement_engine (Exam Poll & Quizzer)",
+                        primary_error=gemini_last_err or "Gemini models exhausted",
+                        fallback_model=m_name,
+                        context_topic=f"Exam poll for {exam_name}"
+                    )
+                except Exception as alert_err:
+                    print(f"⚠️ [Alert Failed]: {alert_err}")
                 return result_json
+        except Exception as tier_err:
+            print(f"⚠️ AI tier {m_name} failed: {tier_err}. Trying next tier...")
+            continue
         except Exception as tier_err:
             print(f"⚠️ AI tier {m_name} failed: {tier_err}. Trying next tier...")
             continue

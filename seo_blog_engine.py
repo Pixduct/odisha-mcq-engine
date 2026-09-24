@@ -137,6 +137,7 @@ def save_json_file(file_path: str, data: Any):
 
 def call_ai_api(messages: list, temperature: float = 0.3) -> Tuple[str, str, bool]:
     # TIER 1 (PRIMARY): Google AI Studio Gemini API
+    gemini_last_err = ""
     if GEMINI_API_KEY:
         gemini_prompt = "\n\n".join([f"Role: {m.get('role')}\n{m.get('content')}" for m in messages])
         for g_model in ["gemini-3.5-flash", "gemini-3.5-flash-lite", "gemini-3.6-flash"]:
@@ -160,7 +161,11 @@ def call_ai_api(messages: list, temperature: float = 0.3) -> Tuple[str, str, boo
                         if content and content.strip():
                             logger.info(f"✅ [Google Gemini - {g_model}] Blog content generated successfully as Primary.")
                             return content, f"Google Gemini ({g_model}) [Primary]", False
+                else:
+                    gemini_last_err = f"{g_model}: HTTP {g_res.status_code} - {g_res.text[:100]}"
+                    logger.warning(f"⚠️ [Google Gemini - {g_model}] HTTP {g_res.status_code}. Falling over...")
             except Exception as g_err:
+                gemini_last_err = f"{g_model}: {g_err}"
                 logger.warning(f"⚠️ [Google Gemini - {g_model}] failed: {g_err}. Falling over...")
 
     api_key = DEEPSEEK_API_KEY
@@ -195,7 +200,16 @@ def call_ai_api(messages: list, temperature: float = 0.3) -> Tuple[str, str, boo
                 content = resp_json["choices"][0]["message"]["content"]
                 if "</think>" in content:
                     content = content.split("</think>")[-1].strip()
-                return content, model_name, False
+                try:
+                    from shared.telegram import send_ai_fallback_notification
+                    send_ai_fallback_notification(
+                        engine="seo_blog_engine (Strategy & Guidance Blog)",
+                        primary_error=gemini_last_err or "Gemini models exhausted",
+                        fallback_model=model_name
+                    )
+                except Exception as alert_err:
+                    logger.warning(f"⚠️ [Alert Failed]: {alert_err}")
+                return content, model_name, True
         except Exception as ex:
             logger.warning(f"⚠️ AI model {model_name} attempt failed: {ex}")
             continue

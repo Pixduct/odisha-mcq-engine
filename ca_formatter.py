@@ -799,6 +799,7 @@ Output JSON Schema:
         # =========================================================================
         # TIER 1 (PRIMARY): Google AI Studio Gemini API (Free Tier Smart Engine)
         # =========================================================================
+        gemini_last_err = ""
         if GEMINI_API_KEY:
             gemini_models = ["gemini-3.5-flash", "gemini-3.5-flash-lite", "gemini-3.6-flash"]
             gemini_prompt = f"{system_prompt.strip()}\n\n{user_prompt_content}"
@@ -831,10 +832,13 @@ Output JSON Schema:
                                     print(f"✅ [Google AI Studio - {g_model}] Responded and verified valid slides JSON.")
                                     break
                                 else:
+                                    gemini_last_err = f"{g_model}: Output JSON parse error"
                                     print(f"⚠️ [Google AI Studio - {g_model}] Output could not be parsed into slides JSON. Retrying/Falling over...")
                     else:
+                        gemini_last_err = f"{g_model}: HTTP {g_res.status_code} - {g_res.text[:100]}"
                         print(f"⚠️ [Google AI Studio - {g_model}] HTTP {g_res.status_code}: {g_res.text[:120]}. Failing over...")
                 except Exception as g_err:
+                    gemini_last_err = f"{g_model}: {g_err}"
                     print(f"⚠️ [Google AI Studio - {g_model}] Error: {g_err}. Failing over...")
 
         # =========================================================================
@@ -909,6 +913,15 @@ Output JSON Schema:
                                     _ca_ai_used_fallback = True
                                     ai_success = True
                                     print(f"✅ [{tier_name}] Responded and verified valid slides JSON on attempt {attempt}.")
+                                    try:
+                                        from shared.telegram import send_ai_fallback_notification
+                                        send_ai_fallback_notification(
+                                            engine="ca_formatter (Current Affairs Visual Slides)",
+                                            primary_error=gemini_last_err or "Gemini tiers exhausted",
+                                            fallback_model=f"{tier_name} ({model_name})"
+                                        )
+                                    except Exception as alert_e:
+                                        print(f"⚠️ [Alert Failed]: {alert_e}")
                                     break
                                 else:
                                     print(f"⚠️ [{tier_name}] Responded on attempt {attempt}, but output could not be parsed into slides JSON. Retrying/Falling over...")

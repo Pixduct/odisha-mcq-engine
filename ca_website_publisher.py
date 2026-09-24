@@ -287,6 +287,7 @@ def call_ai_synthesizer(news_item: Dict[str, Any]) -> Optional[Dict[str, Any]]:
         ai_success = False
 
         # TIER 1 (PRIMARY): Google AI Studio Gemini API (Smart Free Tier)
+        gemini_last_err = ""
         if gemini_key:
             gemini_prompt = f"{system_prompt.strip()}\n\n{user_prompt.strip()}"
             for g_model in ["gemini-3.5-flash", "gemini-3.5-flash-lite", "gemini-3.6-flash"]:
@@ -300,7 +301,7 @@ def call_ai_synthesizer(news_item: Dict[str, Any]) -> Optional[Dict[str, Any]]:
                             "maxOutputTokens": 3000
                         }
                     }
-                    g_res = requests.post(g_url, headers={"Content-Type": "application/json"}, json=g_payload, timeout=22)
+                    g_res = requests.post(g_url, headers={"Content-Type": "application/json"}, json=g_payload, timeout=25)
                     if g_res.ok:
                         g_json = g_res.json()
                         candidates = g_json.get("candidates", [])
@@ -312,8 +313,10 @@ def call_ai_synthesizer(news_item: Dict[str, Any]) -> Optional[Dict[str, Any]]:
                                 print(f"[CAWebsitePublisher] ✅ [Google Gemini - {g_model}] Responded successfully.")
                                 break
                     else:
+                        gemini_last_err = f"{g_model}: HTTP {g_res.status_code} - {g_res.text[:100]}"
                         print(f"[CAWebsitePublisher] ⚠️ [Google Gemini - {g_model}] HTTP {g_res.status_code}. Failing over...")
                 except Exception as g_err:
+                    gemini_last_err = f"{g_model}: {g_err}"
                     print(f"[CAWebsitePublisher] ⚠️ [Google Gemini - {g_model}] Error: {g_err}. Failing over...")
 
         # TIER 2+ (FALLBACK): High-Throughput NVIDIA NIM Models
@@ -337,6 +340,16 @@ def call_ai_synthesizer(news_item: Dict[str, Any]) -> Optional[Dict[str, Any]]:
                                 content = raw_c
                                 ai_success = True
                                 print(f"[CAWebsitePublisher] ✅ [{tier_name}] Responded successfully on attempt {attempt}.")
+                                try:
+                                    from shared.telegram import send_ai_fallback_notification
+                                    send_ai_fallback_notification(
+                                        engine="ca_website_publisher (Website Article Generator)",
+                                        primary_error=gemini_last_err or "Gemini models exhausted",
+                                        fallback_model=f"{tier_name} ({model_name})",
+                                        context_topic=raw_title
+                                    )
+                                except Exception as alert_err:
+                                    print(f"⚠️ [Alert Failed]: {alert_err}")
                                 break
                         else:
                             print(f"[CAWebsitePublisher] ⚠️ [{tier_name}] HTTP {res.status_code} on attempt {attempt}")

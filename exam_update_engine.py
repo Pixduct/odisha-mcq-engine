@@ -394,6 +394,7 @@ def call_deepseek_api(messages: list) -> tuple:
     }
 
     # TIER 1 (PRIMARY): Google AI Studio Gemini API
+    gemini_last_err = ""
     if GEMINI_API_KEY:
         gemini_prompt = "\n\n".join([f"Role: {m.get('role')}\n{m.get('content')}" for m in messages])
         for g_model in ["gemini-3.5-flash", "gemini-3.5-flash-lite", "gemini-3.6-flash"]:
@@ -407,7 +408,7 @@ def call_deepseek_api(messages: list) -> tuple:
                         "maxOutputTokens": 3000
                     }
                 }
-                g_res = requests.post(g_url, headers={"Content-Type": "application/json"}, json=g_payload, timeout=22)
+                g_res = requests.post(g_url, headers={"Content-Type": "application/json"}, json=g_payload, timeout=25)
                 if g_res.ok:
                     data = g_res.json()
                     candidates = data.get("candidates", [])
@@ -416,7 +417,11 @@ def call_deepseek_api(messages: list) -> tuple:
                         if raw_c and raw_c.strip():
                             logger.info(f"✅ [Google Gemini - {g_model}] AI responded successfully as Primary.")
                             return raw_c, f"Google Gemini ({g_model}) [Primary]", False
+                else:
+                    gemini_last_err = f"{g_model}: HTTP {g_res.status_code} - {g_res.text[:100]}"
+                    logger.warning(f"⚠️ [Google Gemini - {g_model}] HTTP {g_res.status_code}. Falling over...")
             except Exception as g_err:
+                gemini_last_err = f"{g_model}: {g_err}"
                 logger.warning(f"⚠️ [Google Gemini - {g_model}] failed: {g_err}. Falling over...")
 
     for tier_idx, tier in enumerate(ai_tiers):
@@ -436,7 +441,16 @@ def call_deepseek_api(messages: list) -> tuple:
                     raw_c = res.json().get('choices', [{}])[0].get('message', {}).get('content', '')
                     if raw_c and raw_c.strip():
                         logger.info(f"✅ [{tier_name}] AI responded successfully (attempt {attempt}).")
-                        return raw_c, model_name, (tier_idx > 0)
+                        try:
+                            from shared.telegram import send_ai_fallback_notification
+                            send_ai_fallback_notification(
+                                engine="exam_update_engine (Exam Dates & Recruitment Updates)",
+                                primary_error=gemini_last_err or "Gemini models exhausted",
+                                fallback_model=f"{tier_name} ({model_name})"
+                            )
+                        except Exception as alert_err:
+                            logger.warning(f"⚠️ [Alert Failed]: {alert_err}")
+                        return raw_c, model_name, True
                 else:
                     logger.warning(f"⚠️ [{tier_name}] HTTP {res.status_code} on attempt {attempt}")
             except Exception as tier_err:

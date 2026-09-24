@@ -493,6 +493,7 @@ Return ONLY valid JSON matching this schema:
 
     try:
         # TIER 1 (PRIMARY): Google AI Studio Gemini API
+        gemini_last_err = ""
         if GEMINI_API_KEY:
             gemini_prompt = f"{system_prompt.strip()}\n\nOfficial Link Provided: {link_url}\n\nNotice Text:\n{raw_notice_text[:4000]}\n\nCRITICAL: Output ONLY valid pure JSON starting with '{{' and ending with '}}'."
             for g_model in ["gemini-3.5-flash", "gemini-3.5-flash-lite", "gemini-3.6-flash"]:
@@ -524,7 +525,11 @@ Return ONLY valid JSON matching this schema:
                                     _breaking_ai_fallback = False
                                     print(f"✅ [BreakingEngine] Google Gemini ({g_model}) parsed notice successfully.")
                                     return parsed_data
+                    else:
+                        gemini_last_err = f"{g_model}: HTTP {g_res.status_code} - {g_res.text[:100]}"
+                        print(f"⚠️ [BreakingEngine] Google Gemini ({g_model}) HTTP {g_res.status_code}. Falling over...")
                 except Exception as g_err:
+                    gemini_last_err = f"{g_model}: {g_err}"
                     print(f"⚠️ [BreakingEngine] Google Gemini ({g_model}) failed: {g_err}. Falling over...")
 
         # TIER 2+ (FALLBACK): NVIDIA NIM Models
@@ -560,6 +565,16 @@ Return ONLY valid JSON matching this schema:
                     parsed_data["category_code"] = 20
                 if link_url and not parsed_data.get("official_link"):
                     parsed_data["official_link"] = link_url
+                try:
+                    from shared.telegram import send_ai_fallback_notification
+                    send_ai_fallback_notification(
+                        engine="breaking_engine (Exam Notice Alerts)",
+                        primary_error=gemini_last_err or "Gemini models exhausted",
+                        fallback_model=_breaking_ai_model,
+                        context_topic=f"Notice: {raw_notice_text[:100]}"
+                    )
+                except Exception as alert_err:
+                    print(f"⚠️ [Alert Failed]: {alert_err}")
                 return parsed_data
     except Exception as e:
         print(f"⚠️ AI Notice Parsing notice: {e}. Running fallback rule classifier.")

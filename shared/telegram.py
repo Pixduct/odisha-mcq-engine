@@ -1,7 +1,12 @@
 import os
+import sys
 import json
 import time
 import requests
+from datetime import datetime
+
+if hasattr(sys.stdout, 'reconfigure'):
+    sys.stdout.reconfigure(encoding='utf-8')
 
 TELEGRAM_BOT_TOKEN = os.getenv("TELEGRAM_BOT_TOKEN", "")
 TELEGRAM_CHAT_ID = os.getenv("TELEGRAM_CHAT_ID", "")
@@ -360,6 +365,52 @@ def send_telegram_admin_status(bot_token: str, admin_chat_id: str, message_text:
             return False
     except Exception as e:
         print(f"[Telegram Admin Status Report Exception]: {e}")
+        return False
+
+def send_ai_fallback_notification(engine: str, primary_error: str, fallback_model: str, context_topic: str = "") -> bool:
+    """
+    Alerts the administrator immediately via Telegram Admin Chat whenever Primary AI (Google Gemini)
+    fails, times out, or hits quota limits, and an automation engages a secondary fallback AI model.
+    """
+    bot_token = os.getenv("TELEGRAM_BOT_TOKEN") or TELEGRAM_BOT_TOKEN
+    admin_chat_id = os.getenv("TELEGRAM_ADMIN_CHAT_ID") or TELEGRAM_ADMIN_CHAT_ID
+    if not bot_token or not admin_chat_id:
+        print(f"⚠️ [AI Fallback Alert] TELEGRAM_BOT_TOKEN or TELEGRAM_ADMIN_CHAT_ID missing. Cannot dispatch alert.")
+        return False
+
+    now_str = datetime.now().strftime("%d-%b-%Y %H:%M:%S")
+    context_line = f"\n📌 <b>Task Context:</b> {context_topic[:150]}" if context_topic else ""
+    error_snippet = primary_error.strip()[:300] if primary_error else "All Gemini models (3.5-flash, 3.5-flash-lite, 3.6-flash) exhausted or returned error"
+
+    alert_msg = (
+        f"🚨 <b>AI FAILOVER ALERT — Fallback Model Engaged</b>\n\n"
+        f"⚙️ <b>Engine:</b> <code>{engine}</code>\n"
+        f"🕒 <b>Timestamp:</b> {now_str}\n"
+        f"❌ <b>Primary AI (Gemini) Error:</b>\n"
+        f"<code>{error_snippet}</code>\n\n"
+        f"🔄 <b>Engaged Fallback AI:</b>\n"
+        f"<code>{fallback_model}</code>"
+        f"{context_line}\n\n"
+        f"<i>💡 Notice: Fallback AI was utilized to preserve pipeline continuity. Check Google AI Studio quota / rate limits.</i>"
+    )
+
+    url = f"https://api.telegram.org/bot{bot_token}/sendMessage"
+    payload = {
+        "chat_id": admin_chat_id,
+        "text": alert_msg,
+        "parse_mode": "HTML",
+        "disable_web_page_preview": True
+    }
+    try:
+        res = requests.post(url, data=payload, timeout=15)
+        if res.ok:
+            print(f"🔔 [AI Fallback Alert] Admin Telegram alert dispatched for engine: {engine}")
+            return True
+        else:
+            print(f"⚠️ [AI Fallback Alert Error]: {res.text}")
+            return False
+    except Exception as e:
+        print(f"⚠️ [AI Fallback Alert Exception]: {e}")
         return False
 
 def send_admin_alert(engine: str, status: str, details: dict):

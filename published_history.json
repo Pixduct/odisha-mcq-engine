@@ -302,5 +302,21 @@
     "correct_option_index": 2,
     "explanation": "To calculate the final price, first increase the price by 15% (Rs. 100 * 1.15 = Rs. 115), then decrease it by 5% (Rs. 115 * 0.95 = Rs. 109).",
     "hook": "Price increase followed by a discount - How will you calculate the final price?"
+  },
+  {
+    "date": "2026-09-24",
+    "exam": "Railway RRB NTPC",
+    "content_stage": "EXAM_SPECIFIC",
+    "topic": "indian_history_freedom_movement",
+    "question": "Which of the following movements was launched immediately following the failure of the Cripps Mission in 1942?",
+    "options": [
+      "Non-Cooperation Movement",
+      "Civil Disobedience Movement",
+      "Quit India Movement",
+      "Swadeshi Movement"
+    ],
+    "correct_option_index": 2,
+    "explanation": "The failure of the Cripps Mission led Mahatma Gandhi to launch the Quit India Movement in August 1942. Trap options are earlier movements.",
+    "hook": "Test your grasp on Indian National Movement chronology!"
   }
 ]

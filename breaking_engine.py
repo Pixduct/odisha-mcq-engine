@@ -27,6 +27,12 @@ SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
 TEMPLATE_PATH = os.path.join(SCRIPT_DIR, "templates", "template_alert.html")
 OUTPUT_IMAGE_PATH = os.path.join(SCRIPT_DIR, "breaking_alert.png")
 
+GEMINI_API_KEY = (
+    os.getenv("GEMINI_API_KEY") or
+    os.getenv("VITE_GEMINI_API_KEY") or
+    ""
+).strip('"')
+
 DEEPSEEK_API_KEY = (
     os.getenv("DEEPSEEK_API_KEY") or
     os.getenv("NVIDIA_NIM_API_KEY") or
@@ -486,12 +492,48 @@ Return ONLY valid JSON matching this schema:
     _breaking_ai_fallback = False
 
     try:
+        # TIER 1 (PRIMARY): Google AI Studio Gemini API
+        if GEMINI_API_KEY:
+            gemini_prompt = f"{system_prompt.strip()}\n\nOfficial Link Provided: {link_url}\n\nNotice Text:\n{raw_notice_text[:4000]}\n\nCRITICAL: Output ONLY valid pure JSON starting with '{{' and ending with '}}'."
+            for g_model in ["gemini-3.5-flash", "gemini-3.6-flash"]:
+                try:
+                    g_url = f"https://generativelanguage.googleapis.com/v1beta/models/{g_model}:generateContent?key={GEMINI_API_KEY}"
+                    g_payload = {
+                        "contents": [{"parts": [{"text": gemini_prompt}]}],
+                        "generationConfig": {
+                            "response_mime_type": "application/json",
+                            "temperature": 0.1,
+                            "maxOutputTokens": 1500
+                        }
+                    }
+                    g_res = requests.post(g_url, headers={"Content-Type": "application/json"}, json=g_payload, timeout=20)
+                    if g_res.ok:
+                        g_json = g_res.json()
+                        candidates = g_json.get("candidates", [])
+                        if candidates:
+                            raw_t = candidates[0].get("content", {}).get("parts", [{}])[0].get("text", "")
+                            if raw_t and raw_t.strip():
+                                parsed_data = json.loads(raw_t.strip())
+                                if isinstance(parsed_data, dict):
+                                    cat_code = parsed_data.get("category_code", 20)
+                                    if not isinstance(cat_code, int) or cat_code not in EXAM_CATEGORIES_CONFIG:
+                                        parsed_data["category_code"] = 20
+                                    if link_url and not parsed_data.get("official_link"):
+                                        parsed_data["official_link"] = link_url
+                                    _breaking_ai_model = f"Google Gemini ({g_model}) [Primary]"
+                                    _breaking_ai_fallback = False
+                                    print(f"✅ [BreakingEngine] Google Gemini ({g_model}) parsed notice successfully.")
+                                    return parsed_data
+                except Exception as g_err:
+                    print(f"⚠️ [BreakingEngine] Google Gemini ({g_model}) failed: {g_err}. Falling over...")
+
+        # TIER 2+ (FALLBACK): NVIDIA NIM Models
         try:
             res = requests.post(endpoint_url, headers=headers, json=payload, timeout=20)
             if not res.ok:
                 raise RuntimeError(f"HTTP {res.status_code}")
         except Exception:
-            _breaking_ai_model = "z-ai/glm-5.3"
+            _breaking_ai_model = "z-ai/glm-5.3 (Fallback)"
             _breaking_ai_fallback = True
             fallback_key = (
                 os.getenv("NVIDIA_NEMOTRON_KEY") or

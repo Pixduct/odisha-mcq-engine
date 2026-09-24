@@ -40,6 +40,12 @@ except ImportError:
     except ImportError:
         DDGS = None
 
+GEMINI_API_KEY = (
+    os.getenv("GEMINI_API_KEY") or
+    os.getenv("VITE_GEMINI_API_KEY") or
+    ""
+).strip('"')
+
 DEEPSEEK_API_KEY = (
     os.getenv("DEEPSEEK_API_KEY") or
     os.getenv("NVIDIA_NEMOTRON_KEY") or
@@ -130,9 +136,36 @@ def save_json_file(file_path: str, data: Any):
         logger.error(f"❌ Error saving JSON to {file_path}: {e}")
 
 def call_ai_api(messages: list, temperature: float = 0.3) -> Tuple[str, str, bool]:
+    # TIER 1 (PRIMARY): Google AI Studio Gemini API
+    if GEMINI_API_KEY:
+        gemini_prompt = "\n\n".join([f"Role: {m.get('role')}\n{m.get('content')}" for m in messages])
+        for g_model in ["gemini-3.5-flash", "gemini-3.6-flash"]:
+            try:
+                g_url = f"https://generativelanguage.googleapis.com/v1beta/models/{g_model}:generateContent?key={GEMINI_API_KEY}"
+                g_payload = {
+                    "contents": [{"parts": [{"text": gemini_prompt}]}],
+                    "generationConfig": {
+                        "temperature": temperature,
+                        "maxOutputTokens": 4096
+                    }
+                }
+                g_res = requests.post(g_url, headers={"Content-Type": "application/json"}, json=g_payload, timeout=30)
+                if g_res.ok:
+                    data = g_res.json()
+                    candidates = data.get("candidates", [])
+                    if candidates:
+                        content = candidates[0].get("content", {}).get("parts", [{}])[0].get("text", "")
+                        if "</think>" in content:
+                            content = content.split("</think>")[-1].strip()
+                        if content and content.strip():
+                            logger.info(f"✅ [Google Gemini - {g_model}] Blog content generated successfully as Primary.")
+                            return content, f"Google Gemini ({g_model}) [Primary]", False
+            except Exception as g_err:
+                logger.warning(f"⚠️ [Google Gemini - {g_model}] failed: {g_err}. Falling over...")
+
     api_key = DEEPSEEK_API_KEY
     if not api_key:
-        raise ValueError("No AI API key found.")
+        raise ValueError("Neither GEMINI_API_KEY nor DEEPSEEK_API_KEY found.")
 
     headers = {
         "Authorization": f"Bearer {api_key}",

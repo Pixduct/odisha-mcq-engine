@@ -34,6 +34,7 @@ jobs:
 
       - name: Run Current Affairs Website Publisher
         env:
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
           DEEPSEEK_API_KEY: ${{ secrets.DEEPSEEK_API_KEY || secrets.NVIDIA_NIM_API_KEY || secrets.OPENAI_API_KEY }}
           NVIDIA_NIM_API_KEY: ${{ secrets.NVIDIA_NIM_API_KEY || secrets.DEEPSEEK_API_KEY }}
           NVIDIA_GPT_OSS_KEY: ${{ secrets.NVIDIA_GPT_OSS_KEY }}

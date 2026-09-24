@@ -145,6 +145,12 @@ def filter_and_curate_news(news_items: List[Dict[str, Any]], max_items: int = 8)
     return curated[:max_items]
 
 def call_ai_synthesizer(news_item: Dict[str, Any]) -> Optional[Dict[str, Any]]:
+    gemini_key = (
+        os.getenv("GEMINI_API_KEY") or
+        os.getenv("VITE_GEMINI_API_KEY") or
+        ""
+    ).strip('"')
+
     api_key = (
         os.getenv("DEEPSEEK_API_KEY") or
         os.getenv("NVIDIA_NIM_API_KEY") or
@@ -159,11 +165,11 @@ def call_ai_synthesizer(news_item: Dict[str, Any]) -> Optional[Dict[str, Any]]:
     yesterday_iso   = (datetime.now() - timedelta(days=1)).strftime("%Y-%m-%d")
     today_label     = datetime.now().strftime("%A, %d %B %Y")
 
-    if not api_key:
-        print("[CAWebsitePublisher] ❌ DEEPSEEK_API_KEY not set — AI cannot run.")
+    if not gemini_key and not api_key:
+        print("[CAWebsitePublisher] ❌ Neither GEMINI_API_KEY nor DEEPSEEK_API_KEY is set — AI cannot run.")
         return None
 
-    print(f"[CAWebsitePublisher] ✅ AI Engine Active | Key: SET | Endpoint: {base_url} | Today: {today_iso}")
+    print(f"[CAWebsitePublisher] ✅ AI Engine Active | Gemini: {'SET' if gemini_key else 'NONE'} | NVIDIA: {'SET' if api_key else 'NONE'} | Today: {today_iso}")
 
     clean_api_key = api_key.replace('"', '').replace("'", "").strip()
 
@@ -280,37 +286,69 @@ def call_ai_synthesizer(news_item: Dict[str, Any]) -> Optional[Dict[str, Any]]:
         content = ""
         ai_success = False
 
-        for tier_idx, tier in enumerate(ai_tiers):
-            tier_name = tier["name"]
-            model_name = tier["model"]
-            key_val = str(tier["key"]).strip('"')
-            call_url = tier["url"]
-            timeout_val = tier["timeout"]
-
-            call_headers = {"Authorization": f"Bearer {key_val}", "Content-Type": "application/json"}
-            call_payload = {**payload, "model": model_name}
-
-            for attempt in range(1, 3):
+        # TIER 1 (PRIMARY): Google AI Studio Gemini API (Smart Free Tier)
+        if gemini_key:
+            gemini_prompt = f"{system_prompt.strip()}\n\n{user_prompt.strip()}"
+            for g_model in ["gemini-3.5-flash", "gemini-3.6-flash"]:
                 try:
-                    res = requests.post(call_url, headers=call_headers, json=call_payload, timeout=timeout_val)
-                    if res.ok:
-                        raw_c = res.json().get('choices', [{}])[0].get('message', {}).get('content', '')
-                        if raw_c and raw_c.strip():
-                            content = raw_c
-                            ai_success = True
-                            print(f"[CAWebsitePublisher] ✅ [{tier_name}] Responded successfully on attempt {attempt}.")
-                            break
+                    g_url = f"https://generativelanguage.googleapis.com/v1beta/models/{g_model}:generateContent?key={gemini_key}"
+                    g_payload = {
+                        "contents": [{"parts": [{"text": gemini_prompt}]}],
+                        "generationConfig": {
+                            "response_mime_type": "application/json",
+                            "temperature": 0.2,
+                            "maxOutputTokens": 3000
+                        }
+                    }
+                    g_res = requests.post(g_url, headers={"Content-Type": "application/json"}, json=g_payload, timeout=22)
+                    if g_res.ok:
+                        g_json = g_res.json()
+                        candidates = g_json.get("candidates", [])
+                        if candidates:
+                            raw_t = candidates[0].get("content", {}).get("parts", [{}])[0].get("text", "")
+                            if raw_t and raw_t.strip():
+                                content = raw_t
+                                ai_success = True
+                                print(f"[CAWebsitePublisher] ✅ [Google Gemini - {g_model}] Responded successfully.")
+                                break
                     else:
-                        print(f"[CAWebsitePublisher] ⚠️ [{tier_name}] HTTP {res.status_code} on attempt {attempt}")
-                except Exception as tier_err:
-                    print(f"[CAWebsitePublisher] ⚠️ [{tier_name}] Attempt {attempt} failed ({tier_err}). Retrying/Failing over...")
-                time.sleep(1.5)
+                        print(f"[CAWebsitePublisher] ⚠️ [Google Gemini - {g_model}] HTTP {g_res.status_code}. Failing over...")
+                except Exception as g_err:
+                    print(f"[CAWebsitePublisher] ⚠️ [Google Gemini - {g_model}] Error: {g_err}. Failing over...")
 
-            if ai_success:
-                break
+        # TIER 2+ (FALLBACK): High-Throughput NVIDIA NIM Models
+        if not ai_success and clean_api_key:
+            for tier_idx, tier in enumerate(ai_tiers):
+                tier_name = tier["name"]
+                model_name = tier["model"]
+                key_val = str(tier["key"]).strip('"')
+                call_url = tier["url"]
+                timeout_val = tier["timeout"]
+
+                call_headers = {"Authorization": f"Bearer {key_val}", "Content-Type": "application/json"}
+                call_payload = {**payload, "model": model_name}
+
+                for attempt in range(1, 3):
+                    try:
+                        res = requests.post(call_url, headers=call_headers, json=call_payload, timeout=timeout_val)
+                        if res.ok:
+                            raw_c = res.json().get('choices', [{}])[0].get('message', {}).get('content', '')
+                            if raw_c and raw_c.strip():
+                                content = raw_c
+                                ai_success = True
+                                print(f"[CAWebsitePublisher] ✅ [{tier_name}] Responded successfully on attempt {attempt}.")
+                                break
+                        else:
+                            print(f"[CAWebsitePublisher] ⚠️ [{tier_name}] HTTP {res.status_code} on attempt {attempt}")
+                    except Exception as tier_err:
+                        print(f"[CAWebsitePublisher] ⚠️ [{tier_name}] Attempt {attempt} failed ({tier_err}). Retrying/Failing over...")
+                    time.sleep(1.5)
+
+                if ai_success:
+                    break
 
         if not ai_success or not content:
-            raise RuntimeError("All 4 AI Fallback Tiers exhausted in ca_website_publisher.")
+            raise RuntimeError("All AI Primary (Gemini) & Fallback (NVIDIA NIM) Tiers exhausted in ca_website_publisher.")
 
         parsed = parse_ai_json_response(content)
         if isinstance(parsed, dict) and parsed.get("title"):

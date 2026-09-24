@@ -37,6 +37,12 @@ REGISTRY_PATH = os.path.join(PROJECT_ROOT, "config", "exam_registry.json")
 SETTINGS_PATH = os.path.join(PROJECT_ROOT, "config", "settings.json")
 SEEN_NOTICES_FILE = os.path.join(PROJECT_ROOT, "seen_notices.json")
 
+GEMINI_API_KEY = (
+    os.getenv("GEMINI_API_KEY") or
+    os.getenv("VITE_GEMINI_API_KEY") or
+    ""
+).strip('"')
+
 DEEPSEEK_API_KEY = (
     os.getenv("DEEPSEEK_API_KEY") or
     os.getenv("NVIDIA_NIM_API_KEY") or
@@ -386,6 +392,32 @@ def call_deepseek_api(messages: list) -> tuple:
         "temperature": 0.2,
         "response_format": {"type": "json_object"}
     }
+
+    # TIER 1 (PRIMARY): Google AI Studio Gemini API
+    if GEMINI_API_KEY:
+        gemini_prompt = "\n\n".join([f"Role: {m.get('role')}\n{m.get('content')}" for m in messages])
+        for g_model in ["gemini-3.5-flash", "gemini-3.6-flash"]:
+            try:
+                g_url = f"https://generativelanguage.googleapis.com/v1beta/models/{g_model}:generateContent?key={GEMINI_API_KEY}"
+                g_payload = {
+                    "contents": [{"parts": [{"text": gemini_prompt}]}],
+                    "generationConfig": {
+                        "response_mime_type": "application/json",
+                        "temperature": 0.2,
+                        "maxOutputTokens": 3000
+                    }
+                }
+                g_res = requests.post(g_url, headers={"Content-Type": "application/json"}, json=g_payload, timeout=22)
+                if g_res.ok:
+                    data = g_res.json()
+                    candidates = data.get("candidates", [])
+                    if candidates:
+                        raw_c = candidates[0].get("content", {}).get("parts", [{}])[0].get("text", "")
+                        if raw_c and raw_c.strip():
+                            logger.info(f"✅ [Google Gemini - {g_model}] AI responded successfully as Primary.")
+                            return raw_c, f"Google Gemini ({g_model}) [Primary]", False
+            except Exception as g_err:
+                logger.warning(f"⚠️ [Google Gemini - {g_model}] failed: {g_err}. Falling over...")
 
     for tier_idx, tier in enumerate(ai_tiers):
         tier_name = tier["name"]

@@ -31,6 +31,12 @@ TELEGRAM_BOT_TOKEN = os.getenv("TELEGRAM_BOT_TOKEN", "")
 TELEGRAM_CHAT_ID = os.getenv("TELEGRAM_CHAT_ID", "")
 TELEGRAM_ADMIN_CHAT_ID = os.getenv("TELEGRAM_ADMIN_CHAT_ID", "")
 
+GEMINI_API_KEY = (
+    os.getenv("GEMINI_API_KEY") or
+    os.getenv("VITE_GEMINI_API_KEY") or
+    ""
+).strip('"')
+
 DEEPSEEK_API_KEY = (
     os.getenv("DEEPSEEK_API_KEY") or
     os.getenv("NVIDIA_NIM_API_KEY") or
@@ -392,6 +398,40 @@ Return ONLY valid JSON matching this schema:
     }
 
     print("[VERBOSE LOG] Invoking AI for 3-Stage Content Selection...")
+
+    # TIER 1 (PRIMARY): Google AI Studio Gemini API
+    if GEMINI_API_KEY:
+        gemini_prompt = f"{system_prompt}\n\nCandidate Input:\n{json.dumps(user_payload, ensure_ascii=False)}\n\nCRITICAL: Output ONLY valid pure JSON starting with '{{' and ending with '}}'."
+        for g_model in ["gemini-3.5-flash", "gemini-3.6-flash"]:
+            try:
+                g_url = f"https://generativelanguage.googleapis.com/v1beta/models/{g_model}:generateContent?key={GEMINI_API_KEY}"
+                g_payload = {
+                    "contents": [{"parts": [{"text": gemini_prompt}]}],
+                    "generationConfig": {
+                        "response_mime_type": "application/json",
+                        "temperature": 0.7,
+                        "maxOutputTokens": 2048
+                    }
+                }
+                g_res = requests.post(g_url, headers={"Content-Type": "application/json"}, json=g_payload, timeout=20)
+                if g_res.ok:
+                    data = g_res.json()
+                    candidates = data.get("candidates", [])
+                    if candidates:
+                        content = candidates[0].get("content", {}).get("parts", [{}])[0].get("text", "")
+                        if "</think>" in content:
+                            content = content.split("</think>")[-1].strip()
+                        if "```json" in content:
+                            content = content.split("```json")[1].split("```")[0].strip()
+                        elif "```" in content:
+                            content = content.split("```")[1].split("```")[0].strip()
+                        result_json = json.loads(content)
+                        result_json["_ai_model"] = f"Google Gemini ({g_model}) [Primary]"
+                        result_json["_ai_fallback"] = False
+                        print(f"✅ [EngagementEngine] Google Gemini ({g_model}) generated poll successfully.")
+                        return result_json
+            except Exception as g_err:
+                print(f"⚠️ [EngagementEngine] Google Gemini ({g_model}) failed: {g_err}. Falling over...")
 
     ai_tiers = [
         ("nvidia/nemotron-3-super-120b-a12b", "https://integrate.api.nvidia.com/v1/chat/completions", DEEPSEEK_API_KEY, 45),

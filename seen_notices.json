@@ -496,5 +496,36 @@
     "title": "OPERATION & MAINTENANCE",
     "status": "REJECTED_BY_AI",
     "processed_at": "2026-09-25T12:02:03.200784"
+  },
+  "5b49f84209d2826902466e1ea64951748c3548b06af9fa2ddad992b7d1968ca4": {
+    "portal": "OSSSC",
+    "title": "Notification No. IIE-68/2026-2863/OSSSC dated - 25.09.2026 -----Publication of Provisional Screening List (additional) for Document Verification for the Posts of RI, ICDS Supervisor, ARI, Amin & SFS under CRE-2023 (IV).",
+    "article_id": "b99b6aba-a0e0-4cf0-bf08-b4317468defe",
+    "status": "PUBLISHED",
+    "processed_at": "2026-09-25T17:36:41.964868"
+  },
+  "12ba2809df7b60a8140068447287cbe46d3d8a1b75a2e106bf5eb2c96f317775": {
+    "portal": "OSSC",
+    "title": "Odisha Staff Selection Commission|OSSC",
+    "status": "FAILED_INTEGRITY_REJECTED_INSUFFICIENT_YIELD_SCORE (0/100 < 80 -> DROPPED: Lacks active recruitment cycle year)",
+    "processed_at": "2026-09-25T17:41:30.823169"
+  },
+  "0d76fdf04cb4281c172d23319d6788fc73c4d5c631f6d2352b1deaaaf3335688": {
+    "portal": "OPSC",
+    "title": "OPSC Manuals",
+    "status": "REJECTED_BY_AI",
+    "processed_at": "2026-09-25T17:42:55.427584"
+  },
+  "2f0be8e8e10b003ea978b09cfc3c3ba2523916016d6c3c7a4a5c1f3a3fce7c2f": {
+    "portal": "SSB Odisha",
+    "title": "Correction in Particulars of the Online Application Form for Recruitment to the Posts of Librarian (Advertisement No. 02/2026 dated 16.04.2026) New",
+    "status": "FAILED_INTEGRITY_REJECTED_EXPIRED_ACTION_DATE_IN_AI_OUTPUT",
+    "processed_at": "2026-09-25T17:44:56.111904"
+  },
+  "71c8ed379fb41d84b24b0381f8760e86ff0e9dbb64b9666d7ae36b716711215d": {
+    "portal": "Odisha High Court",
+    "title": "Apppointment Letters to the 12 (Twelve) newly selected Translators of the Court",
+    "status": "REJECTED_BY_AI",
+    "processed_at": "2026-09-25T17:47:12.191298"
   }
 }

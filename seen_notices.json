@@ -454,5 +454,47 @@
     "title": "Final Answer Key Link",
     "link": "javascript:__doPostBack('ctl00$generic_masterpage1$ctl16','')",
     "first_seen": "2026-08-17T13:57:56.391058"
+  },
+  "aa7157629a76f2ed1471fc00805987ae8b69eb7945a9afb8e6020a8d3d62cb41": {
+    "portal": "OPSC",
+    "title": "Organization",
+    "status": "REJECTED_BY_AI",
+    "processed_at": "2026-09-25T11:49:23.549222"
+  },
+  "acf88258884dcc291a9900f4aeb155be0f23558e0b5601bcd62dce594bb1dda6": {
+    "portal": "SSB Odisha",
+    "title": "Link for Correction in Particulars of the Online Application Form for Recruitment to the Posts of Librarian (Advertisement No. 02/2026 dated 16.04.2026) New",
+    "status": "FAILED_INTEGRITY_REJECTED_EXPIRED_ACTION_DATE_IN_AI_OUTPUT",
+    "processed_at": "2026-09-25T11:51:29.701998"
+  },
+  "483eac6c02ebf34b6de2a86458a1d9aea5f66d53b2ca5cb24a0d98396d4fd858": {
+    "portal": "Odisha High Court",
+    "title": "Select list of candidates to be appointed as Counsellors in 22 different Family Courts of the State",
+    "status": "FAILED_INTEGRITY_REJECTED_LACKING_OFFICIAL_EXAM_KEYWORDS",
+    "processed_at": "2026-09-25T11:53:07.296550"
+  },
+  "fe7fb340afd7a9a7c777c97403d4cc2a5f56bf97d2cd23ac3de853b1403909c0": {
+    "portal": "IBPS",
+    "title": "ibps",
+    "status": "REJECTED_BY_AI",
+    "processed_at": "2026-09-25T11:58:13.285802"
+  },
+  "faa31a4d0633f60de821ecc9fcfbd29e40cfd0f6990e57fec42355a3550509a5": {
+    "portal": "SBI",
+    "title": "English (1 MB)",
+    "status": "REJECTED_BY_AI",
+    "processed_at": "2026-09-25T11:59:24.027954"
+  },
+  "15d61802bf0d5a09249c915fe82f632b88a29e8aef21542a371014f86965acab": {
+    "portal": "RBI",
+    "title": "Benefits of Working with the RBI",
+    "status": "REJECTED_BY_AI",
+    "processed_at": "2026-09-25T12:00:50.753477"
+  },
+  "0d4e2e62718745e11c76e7549aa43de2e83d880fa34ab39f51906d3afac3d0d5": {
+    "portal": "OPTCL",
+    "title": "OPERATION & MAINTENANCE",
+    "status": "REJECTED_BY_AI",
+    "processed_at": "2026-09-25T12:02:03.200784"
   }
 }

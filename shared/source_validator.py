@@ -31,6 +31,11 @@ class SourceValidator:
 
     def is_official_domain(self, url: str) -> bool:
         domain = urlparse(url).netloc.lower()
+        if not domain and "://" not in url:
+            domain = url.split("/")[0].lower()
+        # Direct check for official sovereign and statutory TLD suffixes in India
+        if domain.endswith(".gov.in") or domain.endswith(".nic.in") or domain.endswith(".res.in"):
+            return True
         return any(off in domain for off in self.sources.get("official_domains", []))
 
     def is_trusted_educational_domain(self, url: str) -> bool:

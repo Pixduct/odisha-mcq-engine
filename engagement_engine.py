@@ -400,43 +400,70 @@ Return ONLY valid JSON matching this schema:
     print("[VERBOSE LOG] Invoking AI for 3-Stage Content Selection...")
 
     # TIER 1 (PRIMARY): Google AI Studio Gemini API
+    # Gemini is always prioritized with retry-with-backoff on 429/503 before any fallback.
     gemini_last_err = ""
+    GEMINI_MODELS = ["gemini-3.5-flash", "gemini-3.5-flash-lite", "gemini-3.6-flash", "gemini-3.7-flash", "gemini-3.8-flash", "gemini-3.1-flash-lite"]
     if GEMINI_API_KEY:
         gemini_prompt = f"{system_prompt}\n\nCandidate Input:\n{json.dumps(user_payload, ensure_ascii=False)}\n\nCRITICAL: Output ONLY valid pure JSON starting with '{{' and ending with '}}'."
-        for g_model in ["gemini-3.5-flash", "gemini-3.5-flash-lite", "gemini-3.6-flash"]:
-            try:
-                g_url = f"https://generativelanguage.googleapis.com/v1beta/models/{g_model}:generateContent?key={GEMINI_API_KEY}"
-                g_payload = {
-                    "contents": [{"parts": [{"text": gemini_prompt}]}],
-                    "generationConfig": {
-                        "response_mime_type": "application/json",
-                        "temperature": 0.7,
-                        "maxOutputTokens": 2048
+        for g_model in GEMINI_MODELS:
+            max_model_attempts = 2
+            for attempt in range(1, max_model_attempts + 1):
+                try:
+                    print(f"🚀 [EngagementEngine] Calling Gemini ({g_model}) attempt {attempt}...")
+                    g_url = f"https://generativelanguage.googleapis.com/v1beta/models/{g_model}:generateContent?key={GEMINI_API_KEY}"
+                    g_payload = {
+                        "contents": [{"parts": [{"text": gemini_prompt}]}],
+                        "generationConfig": {
+                            "response_mime_type": "application/json",
+                            "temperature": 0.7,
+                            "maxOutputTokens": 2048
+                        }
                     }
-                }
-                g_res = requests.post(g_url, headers={"Content-Type": "application/json"}, json=g_payload, timeout=25)
-                if g_res.ok:
-                    data = g_res.json()
-                    candidates = data.get("candidates", [])
-                    if candidates:
-                        content = candidates[0].get("content", {}).get("parts", [{}])[0].get("text", "")
-                        if "</think>" in content:
-                            content = content.split("</think>")[-1].strip()
-                        if "```json" in content:
-                            content = content.split("```json")[1].split("```")[0].strip()
-                        elif "```" in content:
-                            content = content.split("```")[1].split("```")[0].strip()
-                        result_json = json.loads(content)
-                        result_json["_ai_model"] = f"Google Gemini ({g_model}) [Primary]"
-                        result_json["_ai_fallback"] = False
-                        print(f"✅ [EngagementEngine] Google Gemini ({g_model}) generated poll successfully.")
-                        return result_json
-                else:
-                    gemini_last_err = f"{g_model}: HTTP {g_res.status_code} - {g_res.text[:100]}"
-                    print(f"⚠️ [EngagementEngine] Google Gemini ({g_model}) HTTP {g_res.status_code}. Falling over...")
-            except Exception as g_err:
-                gemini_last_err = f"{g_model}: {g_err}"
-                print(f"⚠️ [EngagementEngine] Google Gemini ({g_model}) failed: {g_err}. Falling over...")
+                    g_res = requests.post(g_url, headers={"Content-Type": "application/json"}, json=g_payload, timeout=35)
+                    if g_res.ok:
+                        data = g_res.json()
+                        candidates = data.get("candidates", [])
+                        if candidates:
+                            content = candidates[0].get("content", {}).get("parts", [{}])[0].get("text", "")
+                            if "</think>" in content:
+                                content = content.split("</think>")[-1].strip()
+                            if "```json" in content:
+                                content = content.split("```json")[1].split("```")[0].strip()
+                            elif "```" in content:
+                                content = content.split("```")[1].split("```")[0].strip()
+                            result_json = json.loads(content)
+                            result_json["_ai_model"] = f"Google Gemini ({g_model}) [Primary]"
+                            result_json["_ai_fallback"] = False
+                            print(f"✅ [EngagementEngine] Google Gemini ({g_model}) generated poll successfully.")
+                            return result_json
+                    elif g_res.status_code == 429:
+                        gemini_last_err = f"{g_model}: HTTP 429 quota"
+                        if attempt < max_model_attempts:
+                            import time as _t
+                            print(f"⏳ [EngagementEngine] Gemini ({g_model}) HTTP 429 — waiting 65s for quota reset...")
+                            _t.sleep(65)
+                            continue
+                        else:
+                            print(f"⚠️ [EngagementEngine] Gemini ({g_model}) quota exhausted after retry. Trying next model...")
+                    elif g_res.status_code == 503:
+                        gemini_last_err = f"{g_model}: HTTP 503 high demand"
+                        if attempt < max_model_attempts:
+                            import time as _t
+                            print(f"⏳ [EngagementEngine] Gemini ({g_model}) HTTP 503 — waiting 30s then retrying...")
+                            _t.sleep(30)
+                            continue
+                        else:
+                            print(f"⚠️ [EngagementEngine] Gemini ({g_model}) still busy after retry. Trying next model...")
+                    else:
+                        gemini_last_err = f"{g_model}: HTTP {g_res.status_code} - {g_res.text[:100]}"
+                        print(f"⚠️ [EngagementEngine] Gemini ({g_model}) HTTP {g_res.status_code}. Trying next model...")
+                    break
+                except Exception as g_err:
+                    gemini_last_err = f"{g_model}: {g_err}"
+                    print(f"⚠️ [EngagementEngine] Gemini ({g_model}) failed: {g_err}. Trying next model...")
+                    break
+
+        print(f"⚠️ [EngagementEngine] All Gemini models exhausted. Transitioning to NVIDIA NIM as last resort...")
 
     ai_tiers = [
         ("nvidia/nemotron-3-super-120b-a12b", "https://integrate.api.nvidia.com/v1/chat/completions", DEEPSEEK_API_KEY, 45),

@@ -137,36 +137,63 @@ def save_json_file(file_path: str, data: Any):
 
 def call_ai_api(messages: list, temperature: float = 0.3) -> Tuple[str, str, bool]:
     # TIER 1 (PRIMARY): Google AI Studio Gemini API
+    # Gemini is always prioritized with retry-with-backoff on 429/503 before any fallback.
     gemini_last_err = ""
+    GEMINI_MODELS = ["gemini-3.5-flash", "gemini-3.5-flash-lite", "gemini-3.6-flash", "gemini-3.7-flash", "gemini-3.8-flash", "gemini-3.1-flash-lite"]
     if GEMINI_API_KEY:
         gemini_prompt = "\n\n".join([f"Role: {m.get('role')}\n{m.get('content')}" for m in messages])
-        for g_model in ["gemini-3.5-flash", "gemini-3.5-flash-lite", "gemini-3.6-flash"]:
-            try:
-                g_url = f"https://generativelanguage.googleapis.com/v1beta/models/{g_model}:generateContent?key={GEMINI_API_KEY}"
-                g_payload = {
-                    "contents": [{"parts": [{"text": gemini_prompt}]}],
-                    "generationConfig": {
-                        "temperature": temperature,
-                        "maxOutputTokens": 4096
+        for g_model in GEMINI_MODELS:
+            max_model_attempts = 2
+            for attempt in range(1, max_model_attempts + 1):
+                try:
+                    logger.info(f"🚀 [SEOBlogEngine] Calling Gemini ({g_model}) attempt {attempt}...")
+                    g_url = f"https://generativelanguage.googleapis.com/v1beta/models/{g_model}:generateContent?key={GEMINI_API_KEY}"
+                    g_payload = {
+                        "contents": [{"parts": [{"text": gemini_prompt}]}],
+                        "generationConfig": {
+                            "temperature": temperature,
+                            "maxOutputTokens": 4096
+                        }
                     }
-                }
-                g_res = requests.post(g_url, headers={"Content-Type": "application/json"}, json=g_payload, timeout=30)
-                if g_res.ok:
-                    data = g_res.json()
-                    candidates = data.get("candidates", [])
-                    if candidates:
-                        content = candidates[0].get("content", {}).get("parts", [{}])[0].get("text", "")
-                        if "</think>" in content:
-                            content = content.split("</think>")[-1].strip()
-                        if content and content.strip():
-                            logger.info(f"✅ [Google Gemini - {g_model}] Blog content generated successfully as Primary.")
-                            return content, f"Google Gemini ({g_model}) [Primary]", False
-                else:
-                    gemini_last_err = f"{g_model}: HTTP {g_res.status_code} - {g_res.text[:100]}"
-                    logger.warning(f"⚠️ [Google Gemini - {g_model}] HTTP {g_res.status_code}. Falling over...")
-            except Exception as g_err:
-                gemini_last_err = f"{g_model}: {g_err}"
-                logger.warning(f"⚠️ [Google Gemini - {g_model}] failed: {g_err}. Falling over...")
+                    g_res = requests.post(g_url, headers={"Content-Type": "application/json"}, json=g_payload, timeout=40)
+                    if g_res.ok:
+                        data = g_res.json()
+                        candidates = data.get("candidates", [])
+                        if candidates:
+                            content = candidates[0].get("content", {}).get("parts", [{}])[0].get("text", "")
+                            if "</think>" in content:
+                                content = content.split("</think>")[-1].strip()
+                            if content and content.strip():
+                                logger.info(f"✅ [Google Gemini - {g_model}] Blog content generated successfully as Primary.")
+                                return content, f"Google Gemini ({g_model}) [Primary]", False
+                    elif g_res.status_code == 429:
+                        gemini_last_err = f"{g_model}: HTTP 429 quota"
+                        if attempt < max_model_attempts:
+                            import time as _t
+                            logger.info(f"⏳ [Google Gemini - {g_model}] HTTP 429 quota — waiting 65s for quota reset...")
+                            _t.sleep(65)
+                            continue
+                        else:
+                            logger.warning(f"⚠️ [Google Gemini - {g_model}] Quota exhausted after retry. Trying next model...")
+                    elif g_res.status_code == 503:
+                        gemini_last_err = f"{g_model}: HTTP 503 high demand"
+                        if attempt < max_model_attempts:
+                            import time as _t
+                            logger.info(f"⏳ [Google Gemini - {g_model}] HTTP 503 high demand — waiting 30s then retrying...")
+                            _t.sleep(30)
+                            continue
+                        else:
+                            logger.warning(f"⚠️ [Google Gemini - {g_model}] Still busy after retry. Trying next model...")
+                    else:
+                        gemini_last_err = f"{g_model}: HTTP {g_res.status_code} - {g_res.text[:100]}"
+                        logger.warning(f"⚠️ [Google Gemini - {g_model}] HTTP {g_res.status_code}. Trying next model...")
+                    break
+                except Exception as g_err:
+                    gemini_last_err = f"{g_model}: {g_err}"
+                    logger.warning(f"⚠️ [Google Gemini - {g_model}] failed: {g_err}. Trying next model...")
+                    break
+
+        logger.warning(f"⚠️ [SEOBlogEngine] All Gemini models exhausted. Transitioning to NVIDIA NIM as last resort...")
 
     api_key = DEEPSEEK_API_KEY
     if not api_key:

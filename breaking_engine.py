@@ -362,30 +362,139 @@ def truncate_word_safe(text: str, max_len: int = 80) -> str:
     return truncated.rstrip(",.- ") + "..."
 
 def extract_board_info(text_clean: str, portal_hint: str = "") -> tuple:
-    """Returns (short_tag, full_name, default_domain)"""
+    """Returns (short_tag, full_name, default_domain) for all Odisha & Central boards."""
     text_lower = (clean_utf8_text(text_clean) + " " + portal_hint).lower()
-    if "opsc" in text_lower:
+    
+    # 1. Odisha State Authorities
+    if "opsc" in text_lower or "odisha public service" in text_lower:
         return ("OPSC", "Odisha Public Service Commission", "opsc.gov.in")
-    elif "ossc" in text_lower:
+    elif "ossc" in text_lower or "odisha staff selection commission" in text_lower:
         return ("OSSC", "Odisha Staff Selection Commission", "ossc.gov.in")
-    elif "osssc" in text_lower:
+    elif "osssc" in text_lower or "sub-ordinate staff selection" in text_lower or "subordinate staff" in text_lower:
         return ("OSSSC", "Odisha Subordinate Staff Selection Commission", "osssc.gov.in")
+    elif "ssb odisha" in text_lower or "ssbodisha" in text_lower or "state selection board" in text_lower:
+        return ("SSB ODISHA", "State Selection Board, Odisha", "ssbodisha.ac.in")
     elif "bse odisha" in text_lower or "bseodisha" in text_lower or "osstet" in text_lower or "otet" in text_lower:
         return ("BSE ODISHA", "Board of Secondary Education, Odisha", "bseodisha.ac.in")
-    elif "odisha police" in text_lower or "police" in text_lower:
+    elif "dse odisha" in text_lower or "dseodisha" in text_lower or "directorate of secondary education" in text_lower or "tgt" in text_lower and "odisha" in text_lower:
+        return ("DSE ODISHA", "Directorate of Secondary Education, Odisha", "dseodisha.gov.in")
+    elif "odisha police" in text_lower or "police si" in text_lower or "police constable" in text_lower or "sepoy" in text_lower:
         return ("ODISHA POLICE", "Odisha Police State Selection Board", "odishapolice.gov.in")
-    elif "upsc" in text_lower:
-        return ("UPSC", "Union Public Service Commission", "upsc.gov.in")
-    elif "ssc" in text_lower:
+    elif "oavs" in text_lower or "adarsha vidyalaya" in text_lower:
+        return ("OAVS", "Odisha Adarsha Vidyalaya Sangathan", "oav.edu.in")
+    elif "high court" in text_lower or "orissa high court" in text_lower:
+        return ("ODISHA HIGH COURT", "High Court of Orissa", "orissahighcourt.nic.in")
+    elif "district court" in text_lower or "ecourts" in text_lower:
+        return ("DISTRICT COURTS", "District Courts of Odisha", "districts.ecourts.gov.in/odisha")
+    elif "optcl" in text_lower:
+        return ("OPTCL", "Odisha Power Transmission Corporation Limited", "optcl.co.in")
+    elif "omc" in text_lower or "odisha mining" in text_lower:
+        return ("OMC", "Odisha Mining Corporation", "omcltd.in")
+    elif "opgc" in text_lower or "power generation" in text_lower:
+        return ("OPGC", "Odisha Power Generation Corporation", "opgc.co.in")
+    elif "ohpc" in text_lower or "hydro power" in text_lower:
+        return ("OHPC", "Odisha Hydro Power Corporation", "ohpcltd.com")
+    elif "gridco" in text_lower:
+        return ("GRIDCO", "Grid Corporation of Odisha", "gridco.co.in")
+    elif "scert" in text_lower:
+        return ("SCERT ODISHA", "State Council of Educational Research & Training, Odisha", "scertodisha.nic.in")
+    elif "prisons" in text_lower or "jail warder" in text_lower:
+        return ("ODISHA PRISONS", "Directorate of Prisons and Correctional Services, Odisha", "prisons.odisha.gov.in")
+    elif "odisha fire" in text_lower or "fire service" in text_lower or "odishafire" in text_lower:
+        return ("ODISHA FIRE SERVICE", "Odisha Fire & Emergency Services", "odishafire.gov.in")
+    elif "ofdc" in text_lower or "forest development" in text_lower:
+        return ("OFDC", "Odisha Forest Development Corporation", "odishafdc.com")
+    elif "oscb" in text_lower or "cooperative bank" in text_lower or "rcsodisha" in text_lower:
+        return ("OSCB", "Odisha State Cooperative Bank", "rcsodisha.nic.in")
+    elif "dtet" in text_lower or "technical education" in text_lower and "odisha" in text_lower:
+        return ("DTET ODISHA", "Directorate of Technical Education & Training, Odisha", "dtetodisha.gov.in")
+    elif "oscsc" in text_lower or "civil supplies" in text_lower:
+        return ("OSCSC", "Odisha State Civil Supplies Corporation", "oscsc.in")
+    elif "chse" in text_lower:
+        return ("CHSE ODISHA", "Council of Higher Secondary Education, Odisha", "chseodisha.nic.in")
+
+    # 2. Central Government Recruitment Authorities
+    elif re.search(r'\bssc\b', text_lower) or "staff selection commission" in text_lower:
         return ("SSC", "Staff Selection Commission", "ssc.gov.in")
-    elif "rrb" in text_lower or "railway" in text_lower:
-        return ("RRB", "Railway Recruitment Board", "rrbbbs.gov.in")
-    elif "ibps" in text_lower:
+    elif re.search(r'\brrb\b', text_lower) or re.search(r'\brrc\b', text_lower) or "railway" in text_lower:
+        return ("RRB", "Railway Recruitment Board", "rrbapply.gov.in")
+    elif re.search(r'\bupsc\b', text_lower) or "union public service" in text_lower:
+        return ("UPSC", "Union Public Service Commission", "upsc.gov.in")
+    elif re.search(r'\bibps\b', text_lower) or "banking personnel" in text_lower:
         return ("IBPS", "Institute of Banking Personnel Selection", "ibps.in")
-    elif "nta" in text_lower:
-        return ("NTA", "National Testing Agency", "nta.ac.in")
-    elif "sbi" in text_lower:
+    elif re.search(r'\bsbi\b', text_lower) or "state bank of india" in text_lower:
         return ("SBI", "State Bank of India Recruitment", "sbi.co.in")
+    elif re.search(r'\brbi\b', text_lower) or "reserve bank" in text_lower:
+        return ("RBI", "Reserve Bank of India", "rbi.org.in")
+    elif re.search(r'\bnta\b', text_lower) or "national testing agency" in text_lower:
+        return ("NTA", "National Testing Agency", "nta.ac.in")
+    elif "india post" in text_lower or re.search(r'\bgds\b', text_lower) or "dak sevak" in text_lower or "indiapost" in text_lower:
+        return ("INDIA POST", "Department of Posts, India", "indiapostgdsonline.gov.in")
+    elif "intelligence bureau" in text_lower or " ib acio" in text_lower or "mha ib" in text_lower:
+        return ("INTELLIGENCE BUREAU", "Intelligence Bureau, Ministry of Home Affairs", "mha.gov.in")
+    elif re.search(r'\bctet\b', text_lower) or "central teacher eligibility" in text_lower:
+        return ("CTET", "Central Teacher Eligibility Test (CBSE)", "ctet.nic.in")
+    elif re.search(r'\bkvs\b', text_lower) or "kendriya vidyalaya" in text_lower:
+        return ("KVS", "Kendriya Vidyalaya Sangathan", "kvsangathan.nic.in")
+    elif re.search(r'\bnvs\b', text_lower) or "navodaya vidyalaya" in text_lower:
+        return ("NVS", "Navodaya Vidyalaya Samiti", "navodaya.gov.in")
+    elif re.search(r'\bemrs\b', text_lower) or "eklavya model" in text_lower:
+        return ("EMRS", "National Education Society for Tribal Students", "emrs.tribal.gov.in")
+
+    # Science, Space & Defence
+    elif re.search(r'\biprc\b', text_lower) or "propulsion complex" in text_lower:
+        return ("ISRO IPRC", "ISRO Propulsion Complex (IPRC)", "isro.gov.in")
+    elif re.search(r'\blpsc\b', text_lower):
+        return ("ISRO LPSC", "Liquid Propulsion Systems Centre (LPSC)", "lpsc.gov.in")
+    elif re.search(r'\bvssc\b', text_lower):
+        return ("ISRO VSSC", "Vikram Sarabhai Space Centre (VSSC)", "vssc.gov.in")
+    elif re.search(r'\bursc\b', text_lower):
+        return ("ISRO URSC", "U R Rao Satellite Centre (URSC)", "ursc.gov.in")
+    elif re.search(r'\bisro\b', text_lower) or "indian space research" in text_lower:
+        return ("ISRO", "Indian Space Research Organisation", "isro.gov.in")
+    elif re.search(r'\bdrdo\b', text_lower) or "ceptam" in text_lower:
+        return ("DRDO", "Defence Research and Development Organisation", "drdo.gov.in")
+    elif re.search(r'\bbarc\b', text_lower) or "bhabha atomic" in text_lower:
+        return ("BARC", "Bhabha Atomic Research Centre", "barc.gov.in")
+    elif "capf" in text_lower or re.search(r'\bcrpf\b', text_lower) or re.search(r'\bbsf\b', text_lower) or re.search(r'\bcisf\b', text_lower) or re.search(r'\bitbp\b', text_lower) or "ssbrectt" in text_lower or "assam rifles" in text_lower:
+        return ("CAPF", "Central Armed Police Forces (MHA)", "mha.gov.in")
+    elif "coast guard" in text_lower or "indian coast guard" in text_lower or re.search(r'\bicg\b', text_lower):
+        return ("INDIAN COAST GUARD", "Indian Coast Guard (Ministry of Defence)", "joinindiancoastguard.cdac.in")
+    elif "indian army" in text_lower or "joinindianarmy" in text_lower or "army agniveer" in text_lower:
+        return ("INDIAN ARMY", "Indian Army Recruitment", "joinindianarmy.nic.in")
+    elif "indian navy" in text_lower or "joinindiannavy" in text_lower or "navy agniveer" in text_lower:
+        return ("INDIAN NAVY", "Indian Navy Recruitment", "joinindiannavy.gov.in")
+    elif "air force" in text_lower or "agnipathvayu" in text_lower or "afcat" in text_lower or re.search(r'\biaf\b', text_lower):
+        return ("INDIAN AIR FORCE", "Indian Air Force (IAF)", "agnipathvayu.cdac.in")
+
+    # Financial, Insurance & PSUs
+    elif "nabard" in text_lower:
+        return ("NABARD", "National Bank for Agriculture and Rural Development", "nabard.org")
+    elif re.search(r'\bsebi\b', text_lower):
+        return ("SEBI", "Securities and Exchange Board of India", "sebi.gov.in")
+    elif re.search(r'\bsidbi\b', text_lower):
+        return ("SIDBI", "Small Industries Development Bank of India", "sidbi.in")
+    elif re.search(r'\bfci\b', text_lower) or "food corporation" in text_lower:
+        return ("FCI", "Food Corporation of India", "fci.gov.in")
+    elif re.search(r'\blic\b', text_lower) or "life insurance" in text_lower or "licindia" in text_lower:
+        return ("LIC", "Life Insurance Corporation of India", "licindia.in")
+    elif re.search(r'\bniacl\b', text_lower) or "new india assurance" in text_lower:
+        return ("NIACL", "New India Assurance Company Limited", "newindia.co.in")
+    elif "epfo" in text_lower or "provident fund" in text_lower:
+        return ("EPFO", "Employees' Provident Fund Organisation", "epfindia.gov.in")
+    elif "esic" in text_lower or "employees' state insurance" in text_lower:
+        return ("ESIC", "Employees' State Insurance Corporation", "esic.gov.in")
+    elif "aai" in text_lower or "airports authority" in text_lower:
+        return ("AAI", "Airports Authority of India", "aai.aero")
+    elif "asrb" in text_lower or "icar" in text_lower:
+        return ("ASRB", "Agricultural Scientists Recruitment Board", "asrb.org.in")
+    elif "aiims" in text_lower or "norcet" in text_lower:
+        return ("AIIMS", "All India Institute of Medical Sciences", "aiimsexams.ac.in")
+    elif "nielit" in text_lower or "national institute of electronics" in text_lower:
+        return ("NIELIT", "National Institute of Electronics & Information Technology", "nielit.gov.in")
+    elif "csir" in text_lower:
+        return ("CSIR", "Council of Scientific & Industrial Research", "csir.res.in")
+
     return ("RECRUITMENT BOARD", "Official Recruitment Authority", "gov.in")
 
 def highlight_keypoint_label(text: str) -> str:
@@ -493,44 +602,74 @@ Return ONLY valid JSON matching this schema:
 
     try:
         # TIER 1 (PRIMARY): Google AI Studio Gemini API
+        # Always tried first. Retries on 429 (quota) and 503 (high demand) before falling over.
         gemini_last_err = ""
+        GEMINI_MODELS = ["gemini-3.5-flash", "gemini-3.5-flash-lite", "gemini-3.6-flash", "gemini-3.7-flash", "gemini-3.8-flash", "gemini-3.1-flash-lite"]
         if GEMINI_API_KEY:
             gemini_prompt = f"{system_prompt.strip()}\n\nOfficial Link Provided: {link_url}\n\nNotice Text:\n{raw_notice_text[:4000]}\n\nCRITICAL: Output ONLY valid pure JSON starting with '{{' and ending with '}}'."
-            for g_model in ["gemini-3.5-flash", "gemini-3.5-flash-lite", "gemini-3.6-flash"]:
-                try:
-                    g_url = f"https://generativelanguage.googleapis.com/v1beta/models/{g_model}:generateContent?key={GEMINI_API_KEY}"
-                    g_payload = {
-                        "contents": [{"parts": [{"text": gemini_prompt}]}],
-                        "generationConfig": {
-                            "response_mime_type": "application/json",
-                            "temperature": 0.1,
-                            "maxOutputTokens": 1500
-                        }
-                    }
-                    g_res = requests.post(g_url, headers={"Content-Type": "application/json"}, json=g_payload, timeout=35)
-                    if g_res.ok:
-                        g_json = g_res.json()
-                        candidates = g_json.get("candidates", [])
-                        if candidates:
-                            raw_t = candidates[0].get("content", {}).get("parts", [{}])[0].get("text", "")
-                            if raw_t and raw_t.strip():
-                                parsed_data = json.loads(raw_t.strip())
-                                if isinstance(parsed_data, dict):
-                                    cat_code = parsed_data.get("category_code", 20)
-                                    if not isinstance(cat_code, int) or cat_code not in EXAM_CATEGORIES_CONFIG:
-                                        parsed_data["category_code"] = 20
-                                    if link_url and not parsed_data.get("official_link"):
-                                        parsed_data["official_link"] = link_url
-                                    _breaking_ai_model = f"Google Gemini ({g_model}) [Primary]"
-                                    _breaking_ai_fallback = False
-                                    print(f"✅ [BreakingEngine] Google Gemini ({g_model}) parsed notice successfully.")
-                                    return parsed_data
-                    else:
-                        gemini_last_err = f"{g_model}: HTTP {g_res.status_code} - {g_res.text[:100]}"
-                        print(f"⚠️ [BreakingEngine] Google Gemini ({g_model}) HTTP {g_res.status_code}. Falling over...")
-                except Exception as g_err:
-                    gemini_last_err = f"{g_model}: {g_err}"
-                    print(f"⚠️ [BreakingEngine] Google Gemini ({g_model}) failed: {g_err}. Falling over...")
+            for g_model in GEMINI_MODELS:
+                if not gemini_last_err.startswith("__success"):
+                    max_model_attempts = 2
+                    for attempt in range(1, max_model_attempts + 1):
+                        try:
+                            print(f"🚀 [BreakingEngine] Calling Gemini ({g_model}) attempt {attempt}...")
+                            g_url = f"https://generativelanguage.googleapis.com/v1beta/models/{g_model}:generateContent?key={GEMINI_API_KEY}"
+                            g_payload = {
+                                "contents": [{"parts": [{"text": gemini_prompt}]}],
+                                "generationConfig": {
+                                    "response_mime_type": "application/json",
+                                    "temperature": 0.1,
+                                    "maxOutputTokens": 1500
+                                }
+                            }
+                            g_res = requests.post(g_url, headers={"Content-Type": "application/json"}, json=g_payload, timeout=40)
+                            if g_res.ok:
+                                g_json = g_res.json()
+                                candidates = g_json.get("candidates", [])
+                                if candidates:
+                                    raw_t = candidates[0].get("content", {}).get("parts", [{}])[0].get("text", "")
+                                    if raw_t and raw_t.strip():
+                                        parsed_data = json.loads(raw_t.strip())
+                                        if isinstance(parsed_data, dict):
+                                            cat_code = parsed_data.get("category_code", 20)
+                                            if not isinstance(cat_code, int) or cat_code not in EXAM_CATEGORIES_CONFIG:
+                                                parsed_data["category_code"] = 20
+                                            if link_url and not parsed_data.get("official_link"):
+                                                parsed_data["official_link"] = link_url
+                                            _breaking_ai_model = f"Google Gemini ({g_model}) [Primary]"
+                                            _breaking_ai_fallback = False
+                                            print(f"✅ [BreakingEngine] Gemini ({g_model}) parsed notice successfully.")
+                                            return parsed_data
+                            elif g_res.status_code == 429:
+                                gemini_last_err = f"{g_model}: HTTP 429 quota"
+                                if attempt < max_model_attempts:
+                                    import time as _t
+                                    print(f"⏳ [BreakingEngine] Gemini ({g_model}) HTTP 429 — waiting 65s for quota reset...")
+                                    _t.sleep(65)
+                                    continue
+                                else:
+                                    print(f"⚠️ [BreakingEngine] Gemini ({g_model}) quota exhausted after retry. Trying next model...")
+                            elif g_res.status_code == 503:
+                                gemini_last_err = f"{g_model}: HTTP 503 high demand"
+                                if attempt < max_model_attempts:
+                                    import time as _t
+                                    print(f"⏳ [BreakingEngine] Gemini ({g_model}) HTTP 503 — waiting 30s then retrying...")
+                                    _t.sleep(30)
+                                    continue
+                                else:
+                                    print(f"⚠️ [BreakingEngine] Gemini ({g_model}) still busy after retry. Trying next model...")
+                            else:
+                                gemini_last_err = f"{g_model}: HTTP {g_res.status_code} - {g_res.text[:100]}"
+                                print(f"⚠️ [BreakingEngine] Gemini ({g_model}) HTTP {g_res.status_code}. Trying next model...")
+                            break
+                        except Exception as g_err:
+                            gemini_last_err = f"{g_model}: {g_err}"
+                            print(f"⚠️ [BreakingEngine] Gemini ({g_model}) failed: {g_err}. Trying next model...")
+                            break
+
+        if gemini_last_err and not gemini_last_err.startswith("__success"):
+            print(f"⚠️ [BreakingEngine] All Gemini models exhausted. Transitioning to NVIDIA NIM as last resort...")
+
 
         # TIER 2+ (FALLBACK): NVIDIA NIM Models
         try:
@@ -586,45 +725,57 @@ def fallback_parse_notice(text: str, link_url: str = "") -> dict:
     text_lower = text_clean.lower()
     short_board, full_board, default_domain = extract_board_info(text_clean)
 
-    # Keyword rule-based classification into 20 categories
+    # Keyword rule-based classification into 20 categories (ordered by specificity)
     cat_code = 20 # Default: Important Notice / Official Update
-    if any(k in text_lower for k in ["admit card", "hall ticket", "e-admit", "download admit"]):
-        cat_code = 6 # Admit Card Released
-    elif any(k in text_lower for k in ["exam cancelled", "cancelled", "postponed", "deferred"]):
+
+    # Priority 1: High-urgency cancellations, changes & special windows
+    if any(k in text_lower for k in ["exam cancelled", "cancelled", "postponed", "deferred"]):
         cat_code = 9 # Exam Cancelled / Postponed
-    elif any(k in text_lower for k in ["rescheduled", "revised schedule", "date changed", "exam date revised"]):
+    elif any(k in text_lower for k in ["rescheduled", "revised schedule", "date changed", "exam date revised", "revised exam date"]):
         cat_code = 8 # Exam Date Rescheduled
-    elif any(k in text_lower for k in ["exam date", "schedule of examination", "programme of examination", "tentative exam date"]):
-        cat_code = 7 # Exam Date Announced
-    elif any(k in text_lower for k in ["final select", "final merit", "final recommendation", "select list"]):
-        cat_code = 19 # Final Selection List
-    elif any(k in text_lower for k in ["cut off", "cutoff", "merit list", "shortlisted candidates"]):
-        cat_code = 15 # Cut-off / Merit List
-    elif any(k in text_lower for k in ["scorecard", "marks secured", "score card"]):
-        cat_code = 16 # Scorecard Released
-    elif any(k in text_lower for k in ["result", "results", "cbt result", "written result"]):
-        cat_code = 14 # Result Released
+    elif any(k in text_lower for k in ["objection", "key challenge", "inviting objections", "challenge of answer key"]):
+        cat_code = 13 # Objection Window
+    elif any(k in text_lower for k in ["correction window", "edit application", "application correction", "correction in particulars", "edit particulars"]):
+        cat_code = 5 # Correction Window
+    elif any(k in text_lower for k in ["last date extended", "extension of last date", "date extension", "extended up to", "extended to"]):
+        cat_code = 4 # Last Date Extended
+
+    # Priority 2: Key release & download milestones
     elif any(k in text_lower for k in ["final answer key", "revised answer key"]):
         cat_code = 12 # Answer Key Revised
     elif any(k in text_lower for k in ["answer key", "provisional answer key", "model answer"]):
         cat_code = 11 # Answer Key Released
-    elif any(k in text_lower for k in ["objection", "key challenge", "inviting objections"]):
-        cat_code = 13 # Objection Window
-    elif any(k in text_lower for k in ["document verification", "cv schedule", "counselling", "certificate verification"]):
-        cat_code = 17 # Document Verification
-    elif any(k in text_lower for k in ["interview date", "viva voce", "skill test", "physical test", "pet/pst"]):
-        cat_code = 18 # Interview / Skill Test
-    elif any(k in text_lower for k in ["city intimation", "centre intimation", "exam city"]):
+    elif any(k in text_lower for k in ["city intimation", "centre intimation", "exam city", "examination city", "city allotment", "city slip", "intimation slip"]):
         cat_code = 10 # Exam City Intimation
-    elif any(k in text_lower for k in ["last date extended", "extension of last date", "date extension"]):
-        cat_code = 4 # Last Date Extended
-    elif any(k in text_lower for k in ["last date", "closing date", "deadline"]):
+    elif any(k in text_lower for k in ["admit card", "hall ticket", "e-admit", "download admit", "call letter"]):
+        cat_code = 6 # Admit Card Released
+    elif any(k in text_lower for k in ["document verification", "cv schedule", "counselling", "certificate verification", "dv schedule"]):
+        cat_code = 17 # Document Verification
+    elif any(k in text_lower for k in ["interview date", "viva voce", "skill test", "physical test", "pet/pst", "typing test"]):
+        cat_code = 18 # Interview / Skill Test
+    elif any(k in text_lower for k in ["final select", "final merit", "final recommendation", "select list", "final selection list"]):
+        cat_code = 19 # Final Selection List
+
+    # Priority 3: Exam outcome & marks declaration
+    elif any(k in text_lower for k in ["declaration of result", "result declared", "cbt result", "written result", "results of", "publication of written test result", "result released"]) or ("result" in text_lower and not any(k in text_lower for k in ["cut off", "cutoff"])):
+        cat_code = 14 # Result Released
+    elif any(k in text_lower for k in ["cut off", "cutoff", "merit list", "shortlisted candidates"]):
+        cat_code = 15 # Cut-off / Merit List
+    elif any(k in text_lower for k in ["scorecard", "marks secured", "score card"]):
+        cat_code = 16 # Scorecard Released
+
+    # Priority 4: Dates, Corrigendum & Application cycle
+    elif any(k in text_lower for k in ["corrigendum", "addendum", "modification in", "amendment", "candidature notice"]):
+        cat_code = 20 # Important Official Notice
+    elif any(k in text_lower for k in ["programme of examination", "schedule of examination", "programme of exam", "schedule of exam", "exam date", "tentative exam date", "examination date"]):
+        cat_code = 7 # Exam Date Announced
+    elif any(k in text_lower for k in ["last date is tomorrow", "closing date is tomorrow", "reminder: last date", "closing soon"]) or (any(k in text_lower for k in ["last date", "closing date", "deadline"]) and not any(k in text_lower for k in ["advertisement", "advt", "detailed notification", "applications are invited"])):
         cat_code = 3 # Application Last Date
-    elif any(k in text_lower for k in ["correction window", "edit application", "application correction"]):
-        cat_code = 5 # Correction Window
-    elif any(k in text_lower for k in ["apply online", "application start", "inviting applications", "registration start"]):
+    elif any(k in text_lower for k in ["advertisement no", "advt. no", "advt no", "detailed advertisement", "notification no", "recruitment to the post", "detailed notification", "recruitment examination"]):
+        cat_code = 1 # Official Notification Released
+    elif any(k in text_lower for k in ["apply online from today", "application form link is now active", "registration start", "application start", "application window:"]):
         cat_code = 2 # Application Form Start
-    elif any(k in text_lower for k in ["advertisement", "notification no", "recruitment to the post", "detailed notification"]):
+    elif any(k in text_lower for k in ["advertisement", "advt", "applications are invited", "apply online", "recruitment"]):
         cat_code = 1 # Official Notification Released
 
     # Build clean headline
@@ -665,7 +816,14 @@ def render_breaking_alert_png(alert_data: dict) -> str:
         cat_code = alert_data.get("category_code", 20)
         theme = EXAM_CATEGORIES_CONFIG.get(cat_code, EXAM_CATEGORIES_CONFIG[20])
 
-        board_short = alert_data.get("exam_board_short") or "EXAM BOARD"
+        raw_board = alert_data.get("exam_board_short") or alert_data.get("exam_board_full") or "EXAM BOARD"
+        try:
+            from exam_card_renderer import extract_short_board_name
+            board_short = extract_short_board_name(raw_board)
+        except Exception:
+            board_short = str(raw_board).strip()
+            if len(board_short) > 22:
+                board_short = board_short[:20] + "…"
         board_full = alert_data.get("exam_board_full") or "Official Recruitment Authority"
         headline = alert_data.get("headline") or "Official Exam Notification Released"
         date_str = datetime.now().strftime("%d %B %Y")
@@ -678,9 +836,34 @@ def render_breaking_alert_png(alert_data: dict) -> str:
 
         bullet_html_list = []
         for b in bullets:
-            formatted_bullet = highlight_keypoint_label(clean_utf8_text(b))
-            if formatted_bullet:
-                bullet_html_list.append(f"<li>{formatted_bullet}</li>")
+            cleaned_b = clean_utf8_text(b).strip()
+            if not cleaned_b:
+                continue
+            lbl = ""
+            body = cleaned_b
+            if "<b>" in cleaned_b and "</b>" in cleaned_b:
+                m = re.match(r'<b>([^<:]+):?</b>\s*(.*)', cleaned_b)
+                if m:
+                    lbl = m.group(1).strip()
+                    body = m.group(2).strip()
+            elif ":" in cleaned_b:
+                parts = cleaned_b.split(":", 1)
+                lbl = parts[0].strip()
+                body = parts[1].strip()
+
+            if lbl:
+                bullet_html_list.append(
+                    f'<div class="bullet-card"><div class="bullet-card-content">'
+                    f'<span class="bullet-badge">{lbl}</span>'
+                    f'<span class="bullet-body">{body}</span>'
+                    f'</div></div>'
+                )
+            else:
+                bullet_html_list.append(
+                    f'<div class="bullet-card"><div class="bullet-card-content">'
+                    f'<span class="bullet-body">{body}</span>'
+                    f'</div></div>'
+                )
 
         news_bullets_html = "\n        ".join(bullet_html_list[:4])
 

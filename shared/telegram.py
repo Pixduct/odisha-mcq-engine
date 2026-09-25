@@ -57,6 +57,21 @@ def clean_html_caption(caption: str, max_len: int = 1020) -> str:
 
     return truncated
 
+def is_valid_metric(val: str) -> bool:
+    """Checks whether a vacancy or date metric contains actual data, not boilerplate placeholders."""
+    if not val:
+        return False
+    clean = str(val).strip().lower()
+    bad_phrases = [
+        "refer to", "refer", "check official", "n/a", "none", "notification pdf",
+        "official notice", "official notification", "as per", "to be announced",
+        "tba", "not specified", "see notice", "see pdf", "pdf"
+    ]
+    if any(b in clean for b in bad_phrases):
+        return False
+    return len(clean) > 0
+
+
 def resolve_clean_article_url(details: dict) -> str:
     """
     Guarantees a 100% valid, clickable website URL for published articles,
@@ -136,9 +151,9 @@ def broadcast_public_telegram_post(engine: str, details: dict) -> bool:
                 f"🏛️ <b>Recruitment Board:</b> {org}"
             ]
 
-            if vacancies and "check official" not in str(vacancies).lower() and vacancies != "N/A" and "refer to" not in str(vacancies).lower():
+            if is_valid_metric(vacancies):
                 lines.append(f"👥 <b>Vacancies:</b> {vacancies}")
-            if dates and "check official" not in str(dates).lower() and dates != "N/A":
+            if is_valid_metric(dates):
                 lines.append(f"📅 <b>Important Schedule:</b> {dates}")
 
             if bullets:
@@ -156,7 +171,22 @@ def broadcast_public_telegram_post(engine: str, details: dict) -> bool:
             org = details.get("organization") or details.get("exam_board") or "Official Recruitment Authority"
             exam = details.get("exam") or details.get("target_exam") or org
             headline = details.get("headline", title)
-            category_badge = details.get("category_badge", "OFFICIAL EXAM NOTIFICATION")
+            
+            category_badge = details.get("category_badge")
+            if not category_badge:
+                try:
+                    from exam_card_renderer import detect_exam_scenario
+                    det = detect_exam_scenario(headline or title)
+                    category_badge = det.get("badge_text", "📢 OFFICIAL NOTIFICATION RELEASED")
+                except Exception:
+                    category_badge = "📢 OFFICIAL NOTIFICATION RELEASED"
+
+            clean_badge = category_badge.strip()
+            if not clean_badge.startswith("🚨"):
+                header_line = f"🚨 <b>{clean_badge}</b>\n"
+            else:
+                header_line = f"<b>{clean_badge}</b>\n"
+
             official_link = details.get("official_link") or details.get("link") or details.get("official_source") or "https://ossc.gov.in"
             vacancies = str(details.get("vacancies", "")).strip()
             eligibility = str(details.get("eligibility", "")).strip()
@@ -167,14 +197,14 @@ def broadcast_public_telegram_post(engine: str, details: dict) -> bool:
             art_url = resolve_clean_article_url(details)
 
             lines = [
-                f"🚨 <b>{category_badge}</b>\n",
+                header_line,
                 f"📌 <b>{headline}</b>\n",
                 f"🏛️ <b>Recruitment Authority:</b> {org}"
             ]
 
-            if vacancies and vacancies.lower() not in ["n/a", "none", "", "check official", "refer to notice"]:
+            if is_valid_metric(vacancies):
                 lines.append(f"👥 <b>Total Vacancies:</b> {vacancies}")
-            if eligibility and eligibility.lower() not in ["n/a", "none", "", "check official"]:
+            if is_valid_metric(eligibility):
                 lines.append(f"🎓 <b>Eligibility:</b> {eligibility}")
 
             # Specific, crystal-clear timeline events
@@ -185,7 +215,7 @@ def broadcast_public_telegram_post(engine: str, details: dict) -> bool:
                         lines.append(f"• <b>{ev['label']}:</b> {ev['date']}")
                     elif isinstance(ev, str) and ev.strip():
                         lines.append(f"• {ev.strip()}")
-            elif dates and dates.lower() not in ["n/a", "none", "", "check official"]:
+            elif is_valid_metric(dates):
                 lines.append("\n🗓️ <b>CRITICAL DATES & TIMELINE:</b>")
                 if "start:" in dates.lower() and "last date:" in dates.lower():
                     parts = [p.strip() for p in re.split(r'[\|,]', dates) if p.strip()]
@@ -193,8 +223,11 @@ def broadcast_public_telegram_post(engine: str, details: dict) -> bool:
                         lines.append(f"• <b>{p}</b>")
                 else:
                     lines.append(f"• <b>Important Schedule:</b> {dates}")
-                if exam_schedule and exam_schedule.lower() not in ["n/a", "none", "", "check official"]:
+                if is_valid_metric(exam_schedule):
                     lines.append(f"• <b>Exam Date / Schedule:</b> {exam_schedule}")
+            elif is_valid_metric(exam_schedule):
+                lines.append("\n🗓️ <b>CRITICAL DATES & TIMELINE:</b>")
+                lines.append(f"• <b>Exam Date / Schedule:</b> {exam_schedule}")
 
             if bullets:
                 lines.append("\n⚡ <b>KEY EXAM DETAILS & ACTION PLAN:</b>")
@@ -465,15 +498,30 @@ def send_admin_alert(engine: str, status: str, details: dict):
                         )
                     elif engine in ["EXAM_UPDATE", "BREAKING_ALERT"]:
                         timeline_events_wa = details.get("timeline_events", [])
+                        category_badge_wa = details.get("category_badge")
+                        if not category_badge_wa:
+                            try:
+                                from exam_card_renderer import detect_exam_scenario
+                                _, det = detect_exam_scenario(title_clean, org_clean)
+                                category_badge_wa = det.get("badge_text", "📢 OFFICIAL NOTIFICATION RELEASED")
+                            except Exception:
+                                category_badge_wa = "📢 OFFICIAL NOTIFICATION RELEASED"
+
+                        clean_badge_wa = category_badge_wa.strip()
+                        if not clean_badge_wa.startswith("🚨"):
+                            wa_header = f"🚨 *{clean_badge_wa}*"
+                        else:
+                            wa_header = f"*{clean_badge_wa}*"
+
                         wa_lines = [
-                            f"🚨 *OFFICIAL EXAM NOTIFICATION*",
+                            wa_header,
                             f"",
                             f"📌 *{title_clean}*",
                             f"🏛️ *Authority:* {org_clean}"
                         ]
-                        if vacancies_wa and vacancies_wa.lower() not in ["n/a", "none", "", "check official"]:
+                        if is_valid_metric(vacancies_wa):
                             wa_lines.append(f"👥 *Total Vacancies:* {vacancies_wa}")
-                        if eligibility_wa and eligibility_wa.lower() not in ["n/a", "none", "", "check official"]:
+                        if is_valid_metric(eligibility_wa):
                             wa_lines.append(f"🎓 *Eligibility:* {eligibility_wa}")
 
                         if timeline_events_wa and isinstance(timeline_events_wa, list) and len(timeline_events_wa) > 0:
@@ -483,7 +531,7 @@ def send_admin_alert(engine: str, status: str, details: dict):
                                     wa_lines.append(f"• *{ev['label']}:* {ev['date']}")
                                 elif isinstance(ev, str) and ev.strip():
                                     wa_lines.append(f"• {ev.strip()}")
-                        elif dates_wa and dates_wa.lower() not in ["n/a", "none", "", "check official"]:
+                        elif is_valid_metric(dates_wa):
                             wa_lines.append(f"\n🗓️ *CRITICAL DATES & TIMELINE:*")
                             if "start:" in dates_wa.lower() and "last date:" in dates_wa.lower():
                                 parts = [p.strip() for p in re.split(r'[\|,]', dates_wa) if p.strip()]
@@ -491,8 +539,11 @@ def send_admin_alert(engine: str, status: str, details: dict):
                                     wa_lines.append(f"• *{p}*")
                             else:
                                 wa_lines.append(f"• *Important Schedule:* {dates_wa}")
-                            if exam_schedule_wa and exam_schedule_wa.lower() not in ["n/a", "none", "", "check official"]:
+                            if is_valid_metric(exam_schedule_wa):
                                 wa_lines.append(f"• *Exam Schedule:* {exam_schedule_wa}")
+                        elif is_valid_metric(exam_schedule_wa):
+                            wa_lines.append(f"\n🗓️ *CRITICAL DATES & TIMELINE:*")
+                            wa_lines.append(f"• *Exam Schedule:* {exam_schedule_wa}")
 
                         if bullets_wa:
                             wa_lines.append(f"\n⚡ *KEY EXAM DETAILS & ACTION PLAN:*")

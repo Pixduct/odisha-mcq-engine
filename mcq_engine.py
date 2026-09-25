@@ -60,17 +60,40 @@ def send_telegram_quiz_poll(bot_token, chat_id, question, options, correct_optio
         url = f"https://api.telegram.org/bot{bot_token}/sendPoll"
         print(f"[VERBOSE LOG] Sending Native Telegram Quiz Poll to Public Channel ({chat_id})...")
         
+        # Clean and clamp options (Telegram requires 2-10 options, each 1-100 characters)
+        clean_options = []
+        for opt in options:
+            opt_str = str(opt).strip()
+            if not opt_str:
+                continue
+            if len(opt_str) > 100:
+                print(f"⚠️ Truncating Option exceeding 100 chars ({len(opt_str)} chars): {opt_str[:40]}...")
+                opt_str = opt_str[:97].rstrip() + "..."
+            clean_options.append(opt_str)
+
+        if len(clean_options) < 2:
+            print(f"❌ Telegram sendPoll Error: Less than 2 valid options provided ({len(clean_options)}).")
+            return False
+
+        if correct_option_id < 0 or correct_option_id >= len(clean_options):
+            correct_option_id = 0
+
         raw_payload = {
             "chat_id": chat_id,
             "question": question[:300],
-            "options": json.dumps(options),
+            "options": json.dumps(clean_options),
             "is_anonymous": True,
             "type": "quiz",
             "correct_option_id": correct_option_id
         }
         if explanation:
-            raw_payload["explanation"] = explanation[:200]
-            raw_payload["explanation_parse_mode"] = "HTML"
+            # Telegram explanation limit: max 200 chars, max 2 line breaks
+            clean_expl = re.sub(r'<[^>]+>', '', explanation).strip()
+            clean_expl = re.sub(r'[\r\n\t]+', ' ', clean_expl).strip()
+            if len(clean_expl) > 160:
+                clean_expl = clean_expl[:157].rstrip() + "..."
+            formatted_expl = f"{clean_expl}\n🌐 odishaexamprep.in"
+            raw_payload["explanation"] = formatted_expl[:200]
 
         res = requests.post(url, data=raw_payload, timeout=20)
         if res.ok:
@@ -194,6 +217,58 @@ def fetch_pending_questions(limit=1):
     print(f"✅ Found {len(pending_items)} pending questions for this run (Limit: {limit}). Status col: {status_col_idx}")
     return sheet, pending_items, status_col_idx
 
+def normalize_and_heal_mcq(row):
+    """
+    Cleans and repairs question data:
+    1. Detects truncated question stems where Option A contains the remainder of the sentence.
+    2. Strips extra whitespace.
+    3. Normalizes correct_option index.
+    4. Enforces Telegram & Display length boundaries.
+    """
+    healed = dict(row)
+    target_exam = str(healed.get("Target_Exam", "")).strip()
+    question_text = str(healed.get("Question_Text", "")).strip()
+    
+    opt_a = str(healed.get("Option_A", "")).strip()
+    opt_b = str(healed.get("Option_B", "")).strip()
+    opt_c = str(healed.get("Option_C", "")).strip()
+    opt_d = str(healed.get("Option_D", "")).strip()
+    
+    correct_raw = str(healed.get("Correct_Option", "A")).strip().upper()
+    mapping = {"A": 0, "B": 1, "C": 2, "D": 3, "1": 0, "2": 1, "3": 2, "4": 3}
+    correct_idx = mapping.get(correct_raw, 0)
+    
+    stem_indicators = [
+        "is defined as", "is known as", "refers to", "characterized by", "means that",
+        "which of the following", "ending with the", "beginning with", "period of"
+    ]
+    should_merge = False
+    if opt_a:
+        is_short_stem = len(question_text.split()) <= 6 or len(question_text) < 35
+        ends_with_colon = opt_a.endswith(":")
+        ends_with_open = question_text.lower().rstrip().endswith((",", "in", "the", "for", "with", "during", "at", "by", "of", "to"))
+        contains_stem_phrase = any(phrase in opt_a.lower() for phrase in stem_indicators)
+        
+        if (is_short_stem or ends_with_open) and (ends_with_colon or contains_stem_phrase):
+            should_merge = True
+
+    if should_merge:
+        print(f"🔧 [Auto-Healing] Detected question stem split in Row. Merging Option A into Question stem...")
+        merged_question = f"{question_text} {opt_a}".strip()
+        healed["Question_Text"] = merged_question
+        healed["Option_A"] = opt_b
+        healed["Option_B"] = opt_c
+        healed["Option_C"] = opt_d
+        healed["Option_D"] = ""  # Shifted left
+        
+        # Adjust correct option ID if options shifted
+        if correct_idx > 0:
+            correct_idx -= 1
+            inv_map = {0: "A", 1: "B", 2: "C", 3: "D"}
+            healed["Correct_Option"] = inv_map.get(correct_idx, "A")
+    
+    return healed
+
 def generate_mcq_image(data):
     try:
         print("[VERBOSE LOG] Generating 1080x1080 MCQ HTML template...")
@@ -258,22 +333,28 @@ def main():
         yt_success_count = 0
         summary_details = []
 
-        for row_index, row in pending_items:
+        for row_index, raw_row in pending_items:
             current_num = processed_count + 1
             print(f"\n--------------------------------------------------")
             print(f"📝 Processing Question [{current_num}/{total_batch}] at Row {row_index}...")
             print(f"--------------------------------------------------")
+
+            # Auto-heal and normalize data before rendering or dispatching
+            row = normalize_and_heal_mcq(raw_row)
 
             generate_mcq_image(row)
 
             target_exam = str(row.get("Target_Exam", "")).strip()
             question_text = str(row.get("Question_Text", "")).strip()
             
-            # Formatting question text
+            # Formatting question text with length clamp
             if total_batch > 1:
                 full_question = f"[{current_num}/{total_batch}] [{target_exam}] {question_text}" if target_exam else f"[{current_num}/{total_batch}] {question_text}"
             else:
                 full_question = f"[{target_exam}] {question_text}" if target_exam else question_text
+
+            if len(full_question) > 300:
+                full_question = full_question[:297].rstrip() + "..."
 
             options = [
                 str(row.get("Option_A", "")).strip(),
@@ -287,26 +368,39 @@ def main():
             mapping = {"A": 0, "B": 1, "C": 2, "D": 3, "1": 0, "2": 1, "3": 2, "4": 3}
             correct_option_id = mapping.get(correct_raw, 0)
             explanation = str(row.get("Explanation", "")).strip()
-            
-            # High-converting CTA inside poll explanation bubble
-            site_cta = (
-                "🎯 Daily MCQ Practice (Morning • Afternoon • Evening Live Sets 🚀)\n"
-                "🌐 Practice 500+ Full Mock Tests & PDFs:\n"
-                "👉 https://www.odishaexamprep.in/\n\n"
-                "📺 Join YouTube Channel for Video Classes:\n"
-                "👉 https://www.youtube.com/@OdishaExamPrep365"
-            )
-            poll_explanation = f"{explanation}\n\n{site_cta}" if explanation else site_cta
 
-            # Step 1: Dispatch Native Quiz Poll ONLY to Public Channel
+            # Step 1: Dispatch Native Quiz Poll to Public Channel
             tg_success = send_telegram_quiz_poll(
                 TELEGRAM_BOT_TOKEN,
                 TELEGRAM_CHAT_ID,
                 full_question,
                 options,
                 correct_option_id,
-                explanation=poll_explanation
+                explanation=explanation
             )
+
+            # Step 1B: Visual Card Fallback if native poll failed
+            if not tg_success:
+                print("⚠️ Native Telegram Quiz Poll failed. Initiating Visual Card Fallback to channel...")
+                opt_lines = "\n".join([f"<b>{chr(65+i)})</b> {opt}" for i, opt in enumerate(options)])
+                fallback_caption = (
+                    f"🎯 <b>Daily Practice Question</b>\n"
+                    f"🏆 <b>Exam:</b> {target_exam or 'Odisha Govt Exams'}\n\n"
+                    f"❓ <b>Question:</b>\n{question_text}\n\n"
+                    f"{opt_lines}\n\n"
+                    f"💡 <i>Comment your answer below! Practice full mock tests & download PDF notes:</i>\n"
+                    f"👉 <b>https://www.odishaexamprep.in/</b>"
+                )
+                fallback_res = send_telegram_notification(
+                    TELEGRAM_BOT_TOKEN,
+                    TELEGRAM_CHAT_ID,
+                    fallback_caption[:1024],
+                    image_path=OUTPUT_IMAGE_FILE if os.path.exists(OUTPUT_IMAGE_FILE) else None
+                )
+                if fallback_res:
+                    print("✅ Visual Card Fallback successfully posted to Telegram Channel!")
+                    tg_success = True
+
             if tg_success:
                 tg_success_count += 1
 
@@ -319,23 +413,33 @@ def main():
                 print(f"⚠️ YouTube Community posting error (non-fatal): {yt_err}")
                 yt_success = False
 
-            # Step 3: Update Google Sheet Status with retry protection
-            def _update_sheet_row():
-                sheet.update_cell(row_index, status_col_idx, 'Published')
+            # Step 3: Update Google Sheet Status ONLY IF PUBLISHED
+            if tg_success or yt_success:
+                def _update_sheet_row():
+                    sheet.update_cell(row_index, status_col_idx, 'Published')
 
-            try:
-                retry_google_api(_update_sheet_row, max_retries=4, initial_delay=2, action_name=f"Update Row {row_index} Status")
-                print(f"✅ Google Sheet row {row_index} status updated to 'Published' (Col {status_col_idx})")
-            except Exception as cell_err:
-                print(f"⚠️ Warning: Could not update status in Google Sheet for row {row_index}: {cell_err}")
+                try:
+                    retry_google_api(_update_sheet_row, max_retries=4, initial_delay=2, action_name=f"Update Row {row_index} Status")
+                    print(f"✅ Google Sheet row {row_index} status updated to 'Published' (Col {status_col_idx})")
+                except Exception as cell_err:
+                    print(f"⚠️ Warning: Could not update status in Google Sheet for row {row_index}: {cell_err}")
+            else:
+                print(f"❌ Row {row_index} was NOT published to Telegram or YouTube. Preserving status as 'Failed - Retry'.")
+                def _mark_sheet_failed():
+                    sheet.update_cell(row_index, status_col_idx, 'Failed - Retry')
+                try:
+                    retry_google_api(_mark_sheet_failed, max_retries=3, initial_delay=2, action_name=f"Mark Row {row_index} Failed")
+                except Exception:
+                    pass
 
             processed_count += 1
 
-            summary_details.append(f"• <b>Row {row_index} [{target_exam}]:</b> {question_text[:45]}...")
+            status_icon = "✅" if tg_success else "❌"
+            summary_details.append(f"• <b>Row {row_index} [{target_exam}]:</b> {status_icon} {question_text[:45]}...")
             time.sleep(2)
 
         # Step 4: Dispatch Daily 5-MCQ Quiz Set Completion Banner with 7-Day Rotational Student Image (student 1.png - student 7.png)
-        if processed_count > 1:
+        if processed_count > 1 and tg_success_count > 0:
             # 7-Day Rotational Student Image Index (1 to 7)
             # Monday=1, Tuesday=2, Wednesday=3, Thursday=4, Friday=5, Saturday=6, Sunday=7
             day_index = (datetime.now().weekday() % 7) + 1
@@ -365,18 +469,20 @@ def main():
 
         # Step 5: Dispatch Summary Execution Report to Admin Chat ONLY
         last_item = pending_items[-1][1]
-        generate_mcq_image(last_item)
+        last_item_healed = normalize_and_heal_mcq(last_item)
+        generate_mcq_image(last_item_healed)
 
-        tg_status_str = f"Published to Channel ✅ ({tg_success_count}/{processed_count} Quiz Polls)" if tg_success_count > 0 else "Failed ❌"
+        tg_status_str = f"Published to Channel ✅ ({tg_success_count}/{processed_count} Dispatches)" if tg_success_count > 0 else "Failed ❌"
         yt_status_str = f"Published to YouTube Community ✅ ({yt_success_count}/{processed_count} Posts)" if yt_success_count > 0 else "Skipped / Pending Setup ⚠️"
+        sheet_status_str = "Status updated to 'Published' ✅" if (tg_success_count > 0 or yt_success_count > 0) else "Status retained as 'Failed - Retry' ⚠️"
 
         admin_summary_msg = (
             f"🎯 <b>Daily MCQ Engine Execution Report</b>\n\n"
             f"📊 <b>MCQs Processed Today:</b> {processed_count} Questions\n\n"
             f"📢 <b>Telegram Channel:</b> {tg_status_str}\n"
             f"🔴 <b>YouTube Community:</b> {yt_status_str}\n"
-            f"📊 <b>Google Sheets:</b> Status updated to 'Published' ✅\n\n"
-            f"<b>Published Questions:</b>\n" + "\n".join(summary_details) + "\n\n"
+            f"📊 <b>Google Sheets:</b> {sheet_status_str}\n\n"
+            f"<b>Questions Log:</b>\n" + "\n".join(summary_details) + "\n\n"
             f"🌐 <b>Website CTA:</b> Active"
         )
 
@@ -387,7 +493,10 @@ def main():
             image_path=OUTPUT_IMAGE_FILE
         )
 
-        print(f"\n🎉 Daily MCQ Engine completed! Published {processed_count} MCQs successfully.")
+        print(f"\n🎉 Daily MCQ Engine completed! (Telegram: {tg_success_count}/{processed_count}, YouTube: {yt_success_count}/{processed_count})")
+        if processed_count > 0 and tg_success_count == 0 and yt_success_count == 0:
+            print("❌ Failure: All dispatches failed for this run.")
+            sys.exit(1)
 
     except SystemExit as se:
         sys.exit(se.code)

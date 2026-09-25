@@ -125,6 +125,45 @@ class SupabaseBlogClient:
             print(f"[SupabaseClient] ❌ HTTP error updating blog: {e}")
         return None
 
+    def prepend_to_news_ticker(self, headline: str) -> bool:
+        """
+        Automatically prepends newly published exam notification headline to the live website news ticker.
+        """
+        endpoint = f"{self.url.rstrip('/')}/rest/v1/exams?name=eq.SYSTEM_SETTINGS_NEWS_TICKER&select=*"
+        try:
+            res = requests.get(endpoint, headers=self.headers, timeout=15)
+            existing_row = res.json()[0] if res.ok and res.json() else None
+            updates = []
+            if existing_row:
+                try:
+                    desc_data = json.loads(existing_row.get("description", "{}"))
+                    updates = desc_data.get("updates", [])
+                except Exception:
+                    pass
+            clean_head = headline.strip()
+            # Deduplicate case-insensitively
+            updates = [u for u in updates if u.strip().lower() != clean_head.lower()]
+            updates.insert(0, clean_head)
+            updates = updates[:15]  # Keep freshest 15 announcements
+            
+            payload = {
+                "name": "SYSTEM_SETTINGS_NEWS_TICKER",
+                "description": json.dumps({"updates": updates}, ensure_ascii=False),
+                "icon": "📢",
+                "category": "system"
+            }
+            if existing_row and existing_row.get("id"):
+                patch_url = f"{self.url.rstrip('/')}/rest/v1/exams?id=eq.{existing_row['id']}"
+                p_res = requests.patch(patch_url, headers=self.headers, json=payload, timeout=15)
+                return p_res.ok
+            else:
+                post_url = f"{self.url.rstrip('/')}/rest/v1/exams"
+                p_res = requests.post(post_url, headers=self.headers, json=payload, timeout=15)
+                return p_res.ok
+        except Exception as e:
+            print(f"[SupabaseClient] ⚠️ Error updating news ticker: {e}")
+            return False
+
     def fetch_all_blogs(self) -> List[Dict[str, Any]]:
         endpoint = f"{self.url.rstrip('/')}/rest/v1/exams?category=eq.blog&select=*"
         try:

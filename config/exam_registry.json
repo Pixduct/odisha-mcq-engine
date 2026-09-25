@@ -326,5 +326,109 @@
     "enabled": true,
     "priority": 8,
     "notes": "All India Institute of Medical Sciences (NORCET Nursing Officer, Group B & C Non-Faculty)"
+  },
+  {
+    "organization": "DSE Odisha",
+    "government_level": "ODISHA",
+    "official_domains": ["dseodisha.gov.in"],
+    "enabled": true,
+    "priority": 9,
+    "notes": "Directorate of Secondary Education Odisha (Initial Appointee Teachers TGT Arts, PCM, CBZ, Hindi, Sanskrit, PET)"
+  },
+  {
+    "organization": "District Courts Odisha",
+    "government_level": "ODISHA",
+    "official_domains": ["districts.ecourts.gov.in", "ecourts.gov.in"],
+    "enabled": true,
+    "priority": 8,
+    "notes": "District Courts of Odisha (Junior Clerk, Copyist, Stenographer Grade III, Typist, Salaried Amin)"
+  },
+  {
+    "organization": "India Post",
+    "government_level": "CENTRAL",
+    "official_domains": ["indiapostgdsonline.gov.in", "indiapost.gov.in"],
+    "enabled": true,
+    "priority": 9,
+    "notes": "Department of Posts India (Gramin Dak Sevak GDS, Postman, Mail Guard, Multi Tasking Staff MTS)"
+  },
+  {
+    "organization": "Intelligence Bureau",
+    "government_level": "CENTRAL",
+    "official_domains": ["mha.gov.in", "ncs.gov.in"],
+    "enabled": true,
+    "priority": 9,
+    "notes": "Ministry of Home Affairs Intelligence Bureau (ACIO Grade II/Exe, Security Assistant SA/Exe, MTS)"
+  },
+  {
+    "organization": "CTET",
+    "government_level": "CENTRAL",
+    "official_domains": ["ctet.nic.in", "cbse.nic.in"],
+    "enabled": true,
+    "priority": 9,
+    "notes": "Central Teacher Eligibility Test CBSE (Paper 1 & Paper 2 Primary & Upper Primary)"
+  },
+  {
+    "organization": "KVS",
+    "government_level": "CENTRAL",
+    "official_domains": ["kvsangathan.nic.in"],
+    "enabled": true,
+    "priority": 9,
+    "notes": "Kendriya Vidyalaya Sangathan (PRT, TGT, PGT, Non-Teaching, Librarian, Finance Officer)"
+  },
+  {
+    "organization": "NVS",
+    "government_level": "CENTRAL",
+    "official_domains": ["navodaya.gov.in"],
+    "enabled": true,
+    "priority": 9,
+    "notes": "Navodaya Vidyalaya Samiti (TGT, PGT, JSA, Mess Helper, Electrician cum Plumber)"
+  },
+  {
+    "organization": "EMRS",
+    "government_level": "CENTRAL",
+    "official_domains": ["emrs.tribal.gov.in", "nests.gov.in"],
+    "enabled": true,
+    "priority": 8,
+    "notes": "National Education Society for Tribal Students (EMRS TGT, PGT, Hostel Warden, JSA, Lab Attendant)"
+  },
+  {
+    "organization": "Indian Army",
+    "government_level": "CENTRAL",
+    "official_domains": ["joinindianarmy.nic.in"],
+    "enabled": true,
+    "priority": 9,
+    "notes": "Indian Army Recruitment (Agniveer GD, Technical, Clerk, Tradesman, TGC, TES, SSC Tech)"
+  },
+  {
+    "organization": "Indian Navy",
+    "government_level": "CENTRAL",
+    "official_domains": ["joinindiannavy.gov.in"],
+    "enabled": true,
+    "priority": 9,
+    "notes": "Indian Navy Recruitment (Agniveer SSR, MR, Tradesman Mate, Chargeman, Executive/Technical Officers)"
+  },
+  {
+    "organization": "Indian Air Force",
+    "government_level": "CENTRAL",
+    "official_domains": ["agnipathvayu.cdac.in", "careerindianairforce.cdac.in"],
+    "enabled": true,
+    "priority": 9,
+    "notes": "Indian Air Force (Agniveervayu Intake, AFCAT Flying/Ground Duty Officers, Group Y Non-Combatant)"
+  },
+  {
+    "organization": "NIELIT",
+    "government_level": "CENTRAL",
+    "official_domains": ["nielit.gov.in"],
+    "enabled": true,
+    "priority": 8,
+    "notes": "National Institute of Electronics and Information Technology (Scientist B, Scientific Assistant A/B)"
+  },
+  {
+    "organization": "CSIR",
+    "government_level": "CENTRAL",
+    "official_domains": ["csir.res.in"],
+    "enabled": true,
+    "priority": 8,
+    "notes": "Council of Scientific & Industrial Research (CASE Section Officer SO, Assistant Section Officer ASO, JRF NET)"
   }
 ]

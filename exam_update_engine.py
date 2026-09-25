@@ -65,46 +65,61 @@ HEADERS = {
 DIRECT_PORTAL_MAP = {
     # Odisha State Master Portals
     "OSSC": "https://www.ossc.gov.in/Public/Pages/What_is_new.aspx",
-    "OSSSC": "https://www.osssc.gov.in/Public/Notifications.aspx",
+    "OSSSC": "https://www.osssc.gov.in/Public/OSSSC/Default.aspx",
     "OPSC": "https://www.opsc.gov.in/Public/Pages/Notices.aspx",
     "Odisha Police": "https://odishapolice.gov.in/",
     "SSB Odisha": "https://ssbodisha.ac.in/",
     "BSE Odisha": "http://bseodisha.ac.in/latest-updates.html",
     "OAVS": "https://oav.edu.in/",
+    "DSE Odisha": "https://dseodisha.gov.in/",
     "Odisha High Court": "https://www.orissahighcourt.nic.in/recruitment-corner/",
+    "District Courts Odisha": "https://districts.ecourts.gov.in/odisha",
     "OPTCL": "https://optcl.co.in/CurrentOpening.aspx",
-    "OMC": "https://omcltd.in/Recruitment",
+    "OMC": "https://omcltd.in/",
     "OPGC": "https://opgc.co.in/careers",
-    "OHPC": "https://ohpcltd.com/recruitment",
+    "OHPC": "https://www.ohpcltd.com/",
     "GRIDCO": "https://gridco.co.in/careers",
     "SCERT Odisha": "https://scertodisha.nic.in/",
     "Odisha Prisons": "https://prisons.odisha.gov.in/",
-    "Odisha Fire Service": "https://odishafireservices.gov.in/",
-    "OFDC": "https://odishafdc.com/recruitment",
-    "OSCB": "https://oscb.coop/careers",
+    "Odisha Fire Service": "https://odishafire.gov.in/",
+    "OFDC": "https://odishafdc.com/",
+    "OSCB": "https://rcsodisha.nic.in/",
     
     # Central Government Master Portals
     "SSC": "https://ssc.gov.in/",
-    "RRB": "https://rrbbbs.gov.in/",
+    "RRB": "https://rrbapply.gov.in/",
     "UPSC": "https://upsc.gov.in/whats-new",
     "IBPS": "https://www.ibps.in/",
     "SBI": "https://sbi.co.in/web/careers/current-openings",
     "RBI": "https://opportunities.rbi.org.in/scripts/vacancies.aspx",
-    "NTA": "https://nta.ac.in/Notice",
+    "NTA": "https://nta.ac.in/",
+    "India Post": "https://indiapostgdsonline.gov.in/",
+    "Intelligence Bureau": "https://www.mha.gov.in/en/notifications/vacancies",
+    "CTET": "https://ctet.nic.in/",
+    "KVS": "https://kvsangathan.nic.in/",
+    "NVS": "https://navodaya.gov.in/",
+    "EMRS": "https://emrs.tribal.gov.in/",
     "NABARD": "https://www.nabard.org/careers-notices1.aspx",
-    "SEBI": "https://www.sebi.gov.in/sebiweb/other/career.jsp",
+    "SEBI": "https://www.sebi.gov.in/department/human-resources-department-37/career.html",
     "SIDBI": "https://www.sidbi.in/en/careers",
     "FCI": "https://fci.gov.in/current-vacancies",
     "LIC": "https://licindia.in/careers",
-    "DRDO": "https://www.drdo.gov.in/careers",
+    "NIACL": "https://www.newindia.co.in/",
+    "DRDO": "https://rac.gov.in/",
     "ISRO": "https://www.isro.gov.in/Careers.html",
     "BARC": "https://www.barc.gov.in/careers",
     "CAPF": "https://mha.gov.in/en/notifications/vacancies",
     "Indian Coast Guard": "https://joinindiancoastguard.cdac.in/",
-    "EPFO": "https://www.epfindia.gov.in/site_en/Recruitments.php",
+    "Indian Army": "https://joinindianarmy.nic.in/",
+    "Indian Navy": "https://www.joinindiannavy.gov.in/",
+    "Indian Air Force": "https://agnipathvayu.cdac.in/",
+    "EPFO": "https://www.epfindia.gov.in/",
     "ESIC": "https://www.esic.gov.in/recruitments",
     "AAI": "https://www.aai.aero/en/careers/recruitment",
-    "AIIMS": "https://www.aiimsexams.ac.in/"
+    "ASRB": "http://www.asrb.org.in/",
+    "AIIMS": "https://www.aiimsexams.ac.in/",
+    "NIELIT": "https://www.nielit.gov.in/",
+    "CSIR": "https://www.csir.res.in/"
 }
 
 # ==============================================================================
@@ -118,7 +133,7 @@ EXAM_UPDATE_HARD_REJECT_PATTERNS = [
     # 3. Tenders, procurement, auction, stationery
     r'\b(?:e-tender|tender|quotation|procurement|stationery|auction|vehicle\s+auction|rfp|bid|corrigendum\s+to\s+tender)\b',
     # 4. Departmental staff, promotion, internal transfer, seniority
-    r'\b(?:transfer\s+and\s+posting|promotion\s+list|staff\s+seniority|confidential\s+report|leave\s+order|acp/macp|pension\s+list|departmental\s+inquiry|internal\s+circular)\b',
+    r'\b(?:transfer\s+and\s+posting|promotion\s+list|departmental\s+promotion|\bdpc\b|promotion\s+of\b|staff\s+seniority|confidential\s+report|leave\s+order|acp/macp|pension\s+list|departmental\s+inquiry|internal\s+circular)\b',
     # 5. Routine school boards
     r'\b(?:class\s+ix|class\s+9|class\s+8|annual\s+class\s+ix|madhyama\s+examination|high\s+school\s+certificate)\b',
     # 6. Rejection / disqualified lists
@@ -128,7 +143,8 @@ EXAM_UPDATE_HARD_REJECT_PATTERNS = [
 def is_notice_date_expired(title: str, snippet: str) -> bool:
     """
     Detects if the notice mentions an action date or deadline that has ALREADY EXPIRED.
-    Example: 'up to 13 August 2026' when today is 21 August 2026.
+    Handles intermediate filler text (e.g. 'last date to apply was 12.08.2026', 'closing date for submission: 15-09-2026').
+    Handles date ranges whose closing date has passed (e.g. '01.09.2026 to 07.09.2026').
     Returns True if the notice is definitely expired and should be dropped.
     """
     text = f"{title} {snippet}".lower()
@@ -136,31 +152,76 @@ def is_notice_date_expired(title: str, snippet: str) -> bool:
     if any(k in text for k in ["result", "answer key", "merit list", "cut-off", "cutoff", "scorecard", "admit card"]):
         return False
         
-    deadline_patterns = [
-        r'(?:up to|till|last date|extended to|extended up to|closing date)\s*(?:was|is|on|up to)?\s*(\d{1,2})[\.\/\-\s]+([a-z]+|\d{1,2})[\.\/\-\s]+(\d{4})',
-        r'(\d{1,2})[\.\/\-\s]+([a-z]+|\d{1,2})[\.\/\-\s]+(\d{4})\s+(?:up to|till|as last date|was the last date)'
-    ]
-    
     month_names = {
         'jan': 1, 'january': 1, 'feb': 2, 'february': 2, 'mar': 3, 'march': 3,
-        'apr': 4, 'april': 4, 'may': 5, 'jun': 6, 'june': 6, 'jul': 7, 'july': 7,
+        'apr': 4, 'april': 4, 'may': 5, 'june': 6, 'jun': 6, 'july': 7, 'jul': 7,
         'aug': 8, 'august': 8, 'sep': 9, 'september': 9, 'oct': 10, 'october': 10,
         'nov': 11, 'november': 11, 'dec': 12, 'december': 12
     }
     
-    for pat in deadline_patterns:
-        match = re.search(pat, text, re.IGNORECASE)
-        if match:
-            day_str, month_str, year_str = match.groups()
-            try:
-                month_num = int(month_names.get(month_str.lower(), month_str))
-                dt = datetime(int(year_str), month_num, int(day_str))
-                now = datetime.now()
-                # If deadline was more than 2 days ago, it is EXPIRED
+    now = datetime.now()
+
+    # Pattern 1: Day-Month-Year with optional filler text
+    p1 = r'(?:up to|till|last date|extended to|extended up to|closing date|deadline)\b(?:[^0-9\n\r.,]{0,60}?)\b(\d{1,2})(?:st|nd|rd|th)?[\.\/\-\s]+([a-z]+|\d{1,2})[\.\/\-\s]+(\d{4})'
+    for match in re.finditer(p1, text, re.IGNORECASE):
+        day_str, month_str, year_str = match.groups()
+        try:
+            m = int(month_names.get(month_str.lower(), month_str))
+            dt = datetime(int(year_str), m, int(day_str))
+            if (now - dt).total_seconds() > 2 * 86400:
+                return True
+        except Exception:
+            pass
+
+    # Pattern 2: Month-Day-Year pattern (e.g. 'last date to submit application: August 12, 2026')
+    p2 = r'(?:up to|till|last date|extended to|extended up to|closing date|deadline)\b(?:[^0-9\n\r.,]{0,60}?)\b([a-z]{3,9})\s+(\d{1,2})(?:st|nd|rd|th)?(?:,)?\s+(\d{4})'
+    for match in re.finditer(p2, text, re.IGNORECASE):
+        month_str, day_str, year_str = match.groups()
+        try:
+            m = month_names.get(month_str.lower())
+            if m:
+                dt = datetime(int(year_str), m, int(day_str))
                 if (now - dt).total_seconds() > 2 * 86400:
+                    return True
+        except Exception:
+            pass
+
+    # Pattern 3: Trailing date pattern (e.g. '12.08.2026 was the last date')
+    p3 = r'(\d{1,2})(?:st|nd|rd|th)?[\.\/\-\s]+([a-z]+|\d{1,2})[\.\/\-\s]+(\d{4})\b(?:[^0-9\n\r.,]{0,60}?)\b(?:up to|till|as last date|was the last date|closed|closing date|deadline)\b'
+    for match in re.finditer(p3, text, re.IGNORECASE):
+        day_str, month_str, year_str = match.groups()
+        try:
+            m = int(month_names.get(month_str.lower(), month_str))
+            dt = datetime(int(year_str), m, int(day_str))
+            if (now - dt).total_seconds() > 2 * 86400:
+                return True
+        except Exception:
+            pass
+
+    # Pattern 4: Range closing dates (e.g. '01.09.2026 to 07.09.2026')
+    p4 = r'(?:to|–|-|through|until)\s*(\d{1,2})(?:st|nd|rd|th)?[\.\/\-\s]+([a-z]+|\d{1,2})[\.\/\-\s]+(\d{4})'
+    for match in re.finditer(p4, text, re.IGNORECASE):
+        day_str, month_str, year_str = match.groups()
+        try:
+            m = int(month_names.get(month_str.lower(), month_str))
+            dt = datetime(int(year_str), m, int(day_str))
+            if (now - dt).total_seconds() > 2 * 86400:
+                return True
+        except Exception:
+            pass
+
+    # Special Gate: Short-lived action windows (Correction window, objection window, edit window)
+    if any(k in text for k in ["correction window", "objection window", "edit window", "candidature edit", "application correction"]):
+        all_dates = re.findall(r'(\d{1,2})(?:st|nd|rd|th)?[\.\/\-\s]+([a-z]+|\d{1,2})[\.\/\-\s]+(\d{4})', text)
+        for day_str, month_str, year_str in all_dates:
+            try:
+                m = int(month_names.get(month_str.lower(), month_str))
+                dt = datetime(int(year_str), m, int(day_str))
+                if (now - dt).total_seconds() > 8 * 86400:
                     return True
             except Exception:
                 pass
+
     return False
 
 class ExamFactualIntegrityValidator:
@@ -216,10 +277,11 @@ class ExamFactualIntegrityValidator:
 
         authorities = [
             "opsc", "ossc", "osssc", "ssc", "rrb", "upsc", "ibps", "sbi", "rbi", "nta",
-            "ssb odisha", "bse odisha", "high court", "oavs", "optcl", "omc", "opgc",
+            "ssb odisha", "bse odisha", "high court", "oavs", "dse odisha", "district court", "optcl", "omc", "opgc",
             "ohpc", "gridco", "scert", "prisons", "fire service", "ofdc", "oscb",
+            "india post", "intelligence bureau", "ctet", "kvs", "nvs", "emrs", "army", "navy", "air force",
             "nabard", "sebi", "sidbi", "fci", "lic", "niacl", "drdo", "isro", "barc",
-            "capf", "crpf", "bsf", "cisf", "itbp", "coast guard", "epfo", "esic", "aai", "asrb", "aiims"
+            "capf", "crpf", "bsf", "cisf", "itbp", "coast guard", "epfo", "esic", "aai", "asrb", "aiims", "nielit", "csir"
         ]
         if any(auth in combined for auth in authorities) or is_direct:
             score += 15
@@ -247,13 +309,20 @@ class ExamFactualIntegrityValidator:
         if has_historical_year and not has_current_cycle:
             return False, "REJECTED_ARCHIVED_RECRUITMENT_CYCLE", article_data
             
-        # Check 2: Expired Deadline in AI-Generated Dates
+        # Check 2: Expired Deadline in AI-Generated Dates & Timeline
         dates_field = str(article_data.get("dates", ""))
         exam_schedule_field = str(article_data.get("exam_schedule", ""))
-        ai_combined_text = f"{article_data.get('title', '')} {dates_field} {exam_schedule_field}"
+        timeline_texts = " ".join([f"{ev.get('label', '')} {ev.get('date', '')}" for ev in article_data.get("timeline_events", []) if isinstance(ev, dict)])
+        ai_combined_text = f"{article_data.get('title', '')} {dates_field} {exam_schedule_field} {timeline_texts}"
         
         if is_notice_date_expired(article_data.get("title", ""), ai_combined_text):
             return False, "REJECTED_EXPIRED_ACTION_DATE_IN_AI_OUTPUT", article_data
+
+        # Check for invalid indefinite 'onwards' on short-lived windows
+        title_lower = article_data.get("title", "").lower()
+        if any(w in title_lower for w in ["correction window", "objection window", "edit window"]):
+            if "onwards" in dates_field.lower() or "continue" in dates_field.lower():
+                return False, "REJECTED_INVALID_ONWARDS_FOR_TEMPORARY_WINDOW", article_data
             
         # Check 3: Essential Exam Indicator Gate
         exam_keywords = [
@@ -274,6 +343,12 @@ class ExamFactualIntegrityValidator:
             if not any(num in raw_numbers for num in vac_numbers):
                 logger.warning(f"⚠️ AI vacancy number {vacancies_str} not in raw text. Sanitizing to official notice.")
                 article_data["vacancies"] = "Refer to Official Notification PDF"
+
+        # Auto-enrich vacancies from raw text if AI defaulted to placeholder
+        if any(k in vacancies_str.lower() for k in ["refer", "n/a", "check", "official", ""]):
+            raw_vac_match = re.search(r'\b(\d{1,5})\s+(?:posts?|vacancies|positions)\b', raw_combined, re.IGNORECASE)
+            if raw_vac_match:
+                article_data["vacancies"] = f"{raw_vac_match.group(1)} Posts"
                 
         # Check 5: Anti-Speculation Word Filter
         speculation_triggers = [
@@ -394,35 +469,62 @@ def call_deepseek_api(messages: list) -> tuple:
     }
 
     # TIER 1 (PRIMARY): Google AI Studio Gemini API
+    # Gemini is always prioritized with retry-with-backoff on 429/503 before any fallback.
     gemini_last_err = ""
+    GEMINI_MODELS = ["gemini-3.5-flash", "gemini-3.5-flash-lite", "gemini-3.6-flash", "gemini-3.7-flash", "gemini-3.8-flash", "gemini-3.1-flash-lite"]
     if GEMINI_API_KEY:
         gemini_prompt = "\n\n".join([f"Role: {m.get('role')}\n{m.get('content')}" for m in messages])
-        for g_model in ["gemini-3.5-flash", "gemini-3.5-flash-lite", "gemini-3.6-flash"]:
-            try:
-                g_url = f"https://generativelanguage.googleapis.com/v1beta/models/{g_model}:generateContent?key={GEMINI_API_KEY}"
-                g_payload = {
-                    "contents": [{"parts": [{"text": gemini_prompt}]}],
-                    "generationConfig": {
-                        "response_mime_type": "application/json",
-                        "temperature": 0.2,
-                        "maxOutputTokens": 3000
+        for g_model in GEMINI_MODELS:
+            max_model_attempts = 2
+            for attempt in range(1, max_model_attempts + 1):
+                try:
+                    logger.info(f"🚀 [ExamUpdateEngine] Calling Gemini ({g_model}) attempt {attempt}...")
+                    g_url = f"https://generativelanguage.googleapis.com/v1beta/models/{g_model}:generateContent?key={GEMINI_API_KEY}"
+                    g_payload = {
+                        "contents": [{"parts": [{"text": gemini_prompt}]}],
+                        "generationConfig": {
+                            "response_mime_type": "application/json",
+                            "temperature": 0.2,
+                            "maxOutputTokens": 3000
+                        }
                     }
-                }
-                g_res = requests.post(g_url, headers={"Content-Type": "application/json"}, json=g_payload, timeout=25)
-                if g_res.ok:
-                    data = g_res.json()
-                    candidates = data.get("candidates", [])
-                    if candidates:
-                        raw_c = candidates[0].get("content", {}).get("parts", [{}])[0].get("text", "")
-                        if raw_c and raw_c.strip():
-                            logger.info(f"✅ [Google Gemini - {g_model}] AI responded successfully as Primary.")
-                            return raw_c, f"Google Gemini ({g_model}) [Primary]", False
-                else:
-                    gemini_last_err = f"{g_model}: HTTP {g_res.status_code} - {g_res.text[:100]}"
-                    logger.warning(f"⚠️ [Google Gemini - {g_model}] HTTP {g_res.status_code}. Falling over...")
-            except Exception as g_err:
-                gemini_last_err = f"{g_model}: {g_err}"
-                logger.warning(f"⚠️ [Google Gemini - {g_model}] failed: {g_err}. Falling over...")
+                    g_res = requests.post(g_url, headers={"Content-Type": "application/json"}, json=g_payload, timeout=35)
+                    if g_res.ok:
+                        data = g_res.json()
+                        candidates = data.get("candidates", [])
+                        if candidates:
+                            raw_c = candidates[0].get("content", {}).get("parts", [{}])[0].get("text", "")
+                            if raw_c and raw_c.strip():
+                                logger.info(f"✅ [Google Gemini - {g_model}] AI responded successfully as Primary.")
+                                return raw_c, f"Google Gemini ({g_model}) [Primary]", False
+                    elif g_res.status_code == 429:
+                        gemini_last_err = f"{g_model}: HTTP 429 quota"
+                        if attempt < max_model_attempts:
+                            import time as _t
+                            logger.info(f"⏳ [Google Gemini - {g_model}] HTTP 429 quota — waiting 65s for quota reset...")
+                            _t.sleep(65)
+                            continue
+                        else:
+                            logger.warning(f"⚠️ [Google Gemini - {g_model}] Quota exhausted after retry. Trying next model...")
+                    elif g_res.status_code == 503:
+                        gemini_last_err = f"{g_model}: HTTP 503 high demand"
+                        if attempt < max_model_attempts:
+                            import time as _t
+                            logger.info(f"⏳ [Google Gemini - {g_model}] HTTP 503 high demand — waiting 30s then retrying...")
+                            _t.sleep(30)
+                            continue
+                        else:
+                            logger.warning(f"⚠️ [Google Gemini - {g_model}] Still busy after retry. Trying next model...")
+                    else:
+                        gemini_last_err = f"{g_model}: HTTP {g_res.status_code} - {g_res.text[:100]}"
+                        logger.warning(f"⚠️ [Google Gemini - {g_model}] HTTP {g_res.status_code}. Trying next model...")
+                    break
+                except Exception as g_err:
+                    gemini_last_err = f"{g_model}: {g_err}"
+                    logger.warning(f"⚠️ [Google Gemini - {g_model}] failed: {g_err}. Trying next model...")
+                    break
+
+        logger.warning(f"⚠️ [ExamUpdateEngine] All Gemini models exhausted. Transitioning to NVIDIA NIM as last resort...")
 
     for tier_idx, tier in enumerate(ai_tiers):
         tier_name = tier["name"]
@@ -904,6 +1006,16 @@ def main():
             article_data["bullets"] = article_data.get("bullets", [])
             article_data["official_link"] = top_candidate.get("url") or article_data.get("official_source")
 
+            # Determine unified 20-category taxonomy
+            try:
+                from exam_card_renderer import detect_exam_scenario
+                cat_info = detect_exam_scenario(article_data.get("title", ""), org_name)
+                article_data["category_code"] = cat_info.get("category_code", 20)
+                article_data["category_badge"] = cat_info.get("badge_text", "📢 OFFICIAL NOTIFICATION RELEASED")
+                article_data["category_name"] = cat_info.get("name", "Official Exam Notification")
+            except Exception as cat_err:
+                logger.warning(f"⚠️ Category detection note: {cat_err}")
+
             # Insert or update Supabase
             cannibal = DuplicateDetector.check_cannibalization_against_blogs(article_data["title"], existing_blogs)
             if cannibal["action"] == "UPDATE_EXISTING":
@@ -920,6 +1032,14 @@ def main():
             article_url = f"https://www.odishaexamprep.in/blog/{article_id}"
             article_data["article_url"] = article_url
             article_data["article_id"] = article_id
+
+            # Automatically push headline to website live news ticker
+            try:
+                ticker_ok = supabase_client.prepend_to_news_ticker(article_data["title"])
+                if ticker_ok:
+                    logger.info("📢 Prepended headline to website live announcement ticker.")
+            except Exception as t_err:
+                logger.warning(f"⚠️ News ticker auto-sync note: {t_err}")
 
             # Render authoritative 1080x1080 visual card for multi-platform social broadcast
             try:

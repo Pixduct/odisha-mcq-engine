@@ -798,48 +798,88 @@ Output JSON Schema:
 
         # =========================================================================
         # TIER 1 (PRIMARY): Google AI Studio Gemini API (Free Tier Smart Engine)
+        # Gemini is always tried FIRST with full retry-with-backoff before any fallback.
+        # - HTTP 429 (quota): wait 65s and retry — free-tier minute quota resets in ~60s.
+        # - HTTP 503 (demand): wait 30s and retry — high demand is transient.
+        # Only after exhausting ALL Gemini models + retries does the engine fall to NIM.
         # =========================================================================
         gemini_last_err = ""
+        GEMINI_MODELS = [
+            "gemini-3.5-flash",
+            "gemini-3.5-flash-lite",
+            "gemini-3.6-flash",
+            "gemini-3.7-flash",
+            "gemini-3.8-flash",
+            "gemini-3.1-flash-lite",
+        ]
         if GEMINI_API_KEY:
-            gemini_models = ["gemini-3.5-flash", "gemini-3.5-flash-lite", "gemini-3.6-flash"]
             gemini_prompt = f"{system_prompt.strip()}\n\n{user_prompt_content}"
 
-            for g_model in gemini_models:
-                try:
-                    print(f"🚀 [Primary AI] Calling Google AI Studio Gemini ({g_model})...")
-                    g_url = f"https://generativelanguage.googleapis.com/v1beta/models/{g_model}:generateContent?key={GEMINI_API_KEY}"
-                    g_payload = {
-                        "contents": [{"parts": [{"text": gemini_prompt}]}],
-                        "generationConfig": {
-                            "response_mime_type": "application/json",
-                            "temperature": 0.1,
-                            "maxOutputTokens": 6000
+            for g_model in GEMINI_MODELS:
+                if ai_success:
+                    break
+                max_model_attempts = 2  # One normal + one retry on 429/503
+                for attempt in range(1, max_model_attempts + 1):
+                    try:
+                        print(f"🚀 [Primary AI] Calling Google AI Studio Gemini ({g_model}) attempt {attempt}...")
+                        g_url = f"https://generativelanguage.googleapis.com/v1beta/models/{g_model}:generateContent?key={GEMINI_API_KEY}"
+                        g_payload = {
+                            "contents": [{"parts": [{"text": gemini_prompt}]}],
+                            "generationConfig": {
+                                "response_mime_type": "application/json",
+                                "temperature": 0.1,
+                                "maxOutputTokens": 6000
+                            }
                         }
-                    }
-                    g_res = requests.post(g_url, headers={"Content-Type": "application/json"}, json=g_payload, timeout=40)
-                    if g_res.ok:
-                        g_json = g_res.json()
-                        candidates = g_json.get("candidates", [])
-                        if candidates:
-                            raw_text = candidates[0].get("content", {}).get("parts", [{}])[0].get("text", "")
-                            if raw_text and raw_text.strip():
-                                parsed_candidate = parse_ai_json_response(raw_text)
-                                if parsed_candidate and isinstance(parsed_candidate, dict) and "top_slides" in parsed_candidate:
-                                    ca_data = parsed_candidate
-                                    _ca_ai_model_used = f"Google Gemini ({g_model}) [Primary]"
-                                    _ca_ai_used_fallback = False
-                                    ai_success = True
-                                    print(f"✅ [Google AI Studio - {g_model}] Responded and verified valid slides JSON.")
-                                    break
-                                else:
-                                    gemini_last_err = f"{g_model}: Output JSON parse error"
-                                    print(f"⚠️ [Google AI Studio - {g_model}] Output could not be parsed into slides JSON. Retrying/Falling over...")
-                    else:
-                        gemini_last_err = f"{g_model}: HTTP {g_res.status_code} - {g_res.text[:100]}"
-                        print(f"⚠️ [Google AI Studio - {g_model}] HTTP {g_res.status_code}: {g_res.text[:120]}. Failing over...")
-                except Exception as g_err:
-                    gemini_last_err = f"{g_model}: {g_err}"
-                    print(f"⚠️ [Google AI Studio - {g_model}] Error: {g_err}. Failing over...")
+                        g_res = requests.post(g_url, headers={"Content-Type": "application/json"}, json=g_payload, timeout=45)
+                        if g_res.ok:
+                            g_json = g_res.json()
+                            candidates = g_json.get("candidates", [])
+                            if candidates:
+                                raw_text = candidates[0].get("content", {}).get("parts", [{}])[0].get("text", "")
+                                if raw_text and raw_text.strip():
+                                    parsed_candidate = parse_ai_json_response(raw_text)
+                                    if parsed_candidate and isinstance(parsed_candidate, dict) and "top_slides" in parsed_candidate:
+                                        ca_data = parsed_candidate
+                                        _ca_ai_model_used = f"Google Gemini ({g_model}) [Primary]"
+                                        _ca_ai_used_fallback = False
+                                        ai_success = True
+                                        print(f"✅ [Google AI Studio - {g_model}] Valid slides JSON received.")
+                                        break
+                                    else:
+                                        gemini_last_err = f"{g_model}: Output JSON parse error"
+                                        print(f"⚠️ [Google AI Studio - {g_model}] Output could not be parsed into slides JSON.")
+                        elif g_res.status_code == 429:
+                            gemini_last_err = f"{g_model}: HTTP 429 quota"
+                            if attempt < max_model_attempts:
+                                print(f"⏳ [Google AI Studio - {g_model}] HTTP 429 quota — waiting 65s for quota reset then retrying...")
+                                time.sleep(65)
+                                continue
+                            else:
+                                print(f"⚠️ [Google AI Studio - {g_model}] HTTP 429 quota exhausted after retry. Trying next Gemini model...")
+                        elif g_res.status_code == 503:
+                            gemini_last_err = f"{g_model}: HTTP 503 high demand"
+                            if attempt < max_model_attempts:
+                                print(f"⏳ [Google AI Studio - {g_model}] HTTP 503 high demand — waiting 30s then retrying...")
+                                time.sleep(30)
+                                continue
+                            else:
+                                print(f"⚠️ [Google AI Studio - {g_model}] HTTP 503 still busy after retry. Trying next Gemini model...")
+                        else:
+                            gemini_last_err = f"{g_model}: HTTP {g_res.status_code} - {g_res.text[:100]}"
+                            print(f"⚠️ [Google AI Studio - {g_model}] HTTP {g_res.status_code}: {g_res.text[:120]}. Trying next model...")
+                        break  # Non-retriable error or success — move to next model
+                    except Exception as g_err:
+                        gemini_last_err = f"{g_model}: {g_err}"
+                        print(f"⚠️ [Google AI Studio - {g_model}] Error: {g_err}. Trying next model...")
+                        break
+
+            if ai_success:
+                print(f"✅ [Gemini Primary] Successfully generated content. NVIDIA NIM fallback NOT needed.")
+            else:
+                print(f"⚠️ [Gemini Primary] All {len(GEMINI_MODELS)} Gemini models exhausted. Last error: {gemini_last_err}")
+                print(f"🔄 [AI Failover] Transitioning to NVIDIA NIM as last resort...")
+
 
         # =========================================================================
         # TIER 2+ (FALLBACK): High-Throughput NVIDIA NIM Models & DeepSeek

@@ -799,8 +799,8 @@ def fallback_parse_notice(text: str, link_url: str = "") -> dict:
         "exam_board_full": full_board,
         "exam_name": headline,
         "headline": truncate_word_safe(headline, 75),
-        "vacancies": "Refer to Official Notice",
-        "dates": "Check Official Portal",
+        "vacancies": "",
+        "dates": "",
         "official_link": link_url or f"https://{default_domain}",
         "bullets": bullets
     }
@@ -913,18 +913,29 @@ def build_standalone_caption(alert_data: dict) -> str:
     bullets = alert_data.get("bullets", [])
     official_link = alert_data.get("official_link", "https://ossc.gov.in")
 
+    try:
+        from shared.telegram import is_valid_metric
+    except ImportError:
+        def is_valid_metric(val):
+            return bool(val and str(val).strip().lower() not in ["n/a", "none", "", "refer to notice"])
+
+    if board_short and board_short.lower() not in board_full.lower():
+        board_display = f"{board_full} ({board_short})"
+    else:
+        board_display = board_full
+
     caption_lines = [
         f"🚨 <b>{badge_text}</b>\n",
         f"📌 <b>{headline}</b>\n",
-        f"🏛️ <b>Recruitment Authority:</b> {board_full} ({board_short})"
+        f"🏛️ <b>Recruitment Authority:</b> {board_display}"
     ]
 
     vacancies = alert_data.get("vacancies", "")
     dates = alert_data.get("dates", "")
 
-    if vacancies and "refer to" not in str(vacancies).lower() and vacancies != "N/A":
+    if is_valid_metric(vacancies):
         caption_lines.append(f"👥 <b>Vacancies:</b> {vacancies}")
-    if dates and "check official" not in str(dates).lower() and dates != "N/A":
+    if is_valid_metric(dates):
         caption_lines.append(f"📅 <b>Important Schedule:</b> {dates}")
 
     if bullets:

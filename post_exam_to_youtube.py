@@ -18,18 +18,48 @@ def format_exam_notification_youtube_caption(article_data: dict) -> str:
     """
     title = article_data.get("title", "Official Exam Notification")
     org = article_data.get("organization") or article_data.get("target_exam") or "Odisha Recruitment Board"
-    official_link = article_data.get("official_notification_link") or article_data.get("source_url") or "https://www.ossc.gov.in"
+    official_link = article_data.get("official_link") or article_data.get("official_notification_link") or article_data.get("source_url") or "https://www.ossc.gov.in"
     article_url = article_data.get("article_url") or "https://www.odishaexamprep.in"
-    
-    bullets = article_data.get("key_highlights") or article_data.get("highlights") or []
+    bullets = article_data.get("bullets") or article_data.get("key_highlights") or article_data.get("highlights") or []
+
+    # Category badge resolution
+    category_badge = article_data.get("category_badge")
+    if not category_badge:
+        try:
+            from exam_card_renderer import detect_exam_scenario
+            cat_info = detect_exam_scenario(title, org)
+            category_badge = cat_info.get("badge_text", "📢 OFFICIAL EXAM NOTIFICATION")
+        except Exception:
+            category_badge = "📢 OFFICIAL EXAM NOTIFICATION"
+
+    clean_badge = category_badge.replace("🚨", "").strip()
+    header_line = f"🚨 {clean_badge}!"
+
+    try:
+        from shared.telegram import is_valid_metric
+    except ImportError:
+        def is_valid_metric(val):
+            return bool(val and str(val).strip().lower() not in ["n/a", "none", "", "refer to notice"])
+
+    vacancies = str(article_data.get("vacancies", "")).strip()
+    dates = str(article_data.get("dates", "")).strip()
+    exam_schedule = str(article_data.get("exam_schedule", "")).strip()
 
     lines = [
-        "🚨 OFFICIAL EXAM NOTIFICATION RELEASED!",
+        header_line,
         "",
         f"📌 {title}",
-        f"🏢 Recruitment Board: {org}",
-        ""
+        f"🏢 Recruitment Authority: {org}"
     ]
+
+    if is_valid_metric(vacancies):
+        lines.append(f"👥 Total Vacancies: {vacancies}")
+    if is_valid_metric(dates):
+        lines.append(f"📅 Critical Dates: {dates}")
+    elif is_valid_metric(exam_schedule):
+        lines.append(f"⏳ Exam Schedule: {exam_schedule}")
+
+    lines.append("")
 
     if bullets:
         lines.append("⚡ Key Highlights & Important Dates:")

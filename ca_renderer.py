@@ -291,6 +291,10 @@ HTML_TEMPLATE_BASE = """<!DOCTYPE html>
       display: inline-flex;
       align-items: center;
       justify-content: center;
+      max-width: 550px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
     }}
     .date-text {{
       font-size: 20px;

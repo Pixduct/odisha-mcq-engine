@@ -318,5 +318,21 @@
     "correct_option_index": 2,
     "explanation": "The failure of the Cripps Mission led Mahatma Gandhi to launch the Quit India Movement in August 1942. Trap options are earlier movements.",
     "hook": "Test your grasp on Indian National Movement chronology!"
+  },
+  {
+    "date": "2026-09-25",
+    "exam": "OSSSC RI / AMIN",
+    "content_stage": "EXAM_SPECIFIC",
+    "topic": "odisha_administrative_divisions",
+    "question": "Which of the following districts does NOT fall under the Northern Revenue Division of Odisha?",
+    "options": [
+      "Sambalpur",
+      "Sundargarh",
+      "Mayurbhanj",
+      "Kalahandi"
+    ],
+    "correct_option_index": 3,
+    "explanation": "Kalahandi is under the Southern Revenue Division. Sambalpur, Sundargarh, and Mayurbhanj are part of the Northern Division.",
+    "hook": "Test your Odisha Admin GK! 🏛️"
   }
 ]

@@ -31,7 +31,8 @@ def send_whatsapp_message(text: str, chat_id: str = None) -> bool:
         try:
             res = requests.post(url, json=payload, timeout=20)
             if res.ok:
-                print(f"✅ [WhatsApp] Message posted successfully to {target_chat} (attempt {attempt})")
+                chat_type = "Channel (@newsletter)" if target_chat.endswith("@newsletter") else ("Group (@g.us)" if target_chat.endswith("@g.us") else "Direct Chat (@c.us)")
+                print(f"✅ [WhatsApp] Message posted successfully to {target_chat} [{chat_type}] (attempt {attempt})")
                 return True
             else:
                 print(f"⚠️ [WhatsApp] API HTTP {res.status_code}: {res.text}. Attempt {attempt}/3")
@@ -44,7 +45,7 @@ def send_whatsapp_message(text: str, chat_id: str = None) -> bool:
 
 def send_whatsapp_image(image_path: str, caption: str = "", chat_id: str = None) -> bool:
     """
-    Uploads and sends an image with caption to a WhatsApp Channel (@newsletter).
+    Uploads and sends an image with caption to a WhatsApp Channel (@newsletter) or Group (@g.us).
     """
     target_chat = chat_id or WHATSAPP_CHANNEL_ID
     if not target_chat or not GREEN_API_TOKEN_INSTANCE:
@@ -72,7 +73,8 @@ def send_whatsapp_image(image_path: str, caption: str = "", chat_id: str = None)
                 }
                 res = requests.post(url, data=data, files=files, timeout=30)
                 if res.ok:
-                    print(f"✅ [WhatsApp] Image '{file_name}' posted successfully to {target_chat}")
+                    chat_type = "Channel (@newsletter)" if target_chat.endswith("@newsletter") else ("Group (@g.us)" if target_chat.endswith("@g.us") else "Direct Chat (@c.us)")
+                    print(f"✅ [WhatsApp] Image '{file_name}' posted successfully to {target_chat} [{chat_type}]")
                     return True
                 else:
                     print(f"⚠️ [WhatsApp] File upload API HTTP {res.status_code}: {res.text}. Attempt {attempt}/3")

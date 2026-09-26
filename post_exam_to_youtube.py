@@ -113,10 +113,19 @@ def post_exam_update_to_youtube(article_data: dict, image_path: Optional[str] = 
     """
     Publishes an official exam update announcement to YouTube Community.
     """
+    if not image_path:
+        image_path = article_data.get("slide_image_path") or article_data.get("cover_image") or article_data.get("image_path")
+    if isinstance(image_path, list) and image_path:
+        image_path = image_path[0]
+
     caption = format_exam_notification_youtube_caption(article_data)
     print("\n--------------------------------------------------")
     print("[VERBOSE LOG] Publishing Official Exam Notification to YouTube Community...")
     print(f"📌 Exam Title: {article_data.get('title')}")
+    if image_path and os.path.exists(str(image_path)):
+        print(f"🖼️ Attached Visual Card: {image_path}")
+    else:
+        print("ℹ️ No visual card provided — will post text announcement.")
     print("--------------------------------------------------")
 
     env_state = os.getenv("YOUTUBE_STORAGE_STATE") or os.getenv("YT_STATE_BASE64")

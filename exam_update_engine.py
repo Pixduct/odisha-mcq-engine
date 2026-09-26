@@ -1052,10 +1052,11 @@ def main():
             except Exception as render_ex:
                 logger.warning(f"⚠️ Visual card render note ({render_ex}). Continuing...")
 
-            # Publish to YouTube Community
+            # Publish to YouTube Community with generated visual card
             try:
                 from post_exam_to_youtube import post_exam_update_to_youtube
-                yt_success = post_exam_update_to_youtube(article_data)
+                slide_card_target = article_data.get("slide_image_path") or article_data.get("cover_image") or (card_img if 'card_img' in locals() else None)
+                yt_success = post_exam_update_to_youtube(article_data, image_path=slide_card_target)
                 article_data["youtube_status"] = "Published to YouTube Community ✅" if yt_success else "Skipped / Pending Setup ⚠️"
             except Exception as yt_err:
                 logger.warning(f"⚠️ YouTube Community posting note: {yt_err}")

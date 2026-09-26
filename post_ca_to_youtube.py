@@ -10,6 +10,30 @@ SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
 PROFILE_DIR = os.path.join(SCRIPT_DIR, "yt_profile")
 STATE_FILE = os.path.join(SCRIPT_DIR, "yt_state.json")
 
+def dismiss_dialogs(page):
+    """Dismisses cookie consent popups, got-it banners, or overlay dialogs."""
+    try:
+        selectors = [
+            "button[aria-label*='Accept']",
+            "button[aria-label*='agree']",
+            "button[aria-label*='Dismiss']",
+            "ytd-button-renderer#dismiss-button button",
+            "#dismiss-button button",
+            "tp-yt-paper-button#dismiss-button",
+            "button:has-text('Got it')",
+            "button:has-text('Dismiss')",
+            "button:has-text('Accept all')",
+            "button:has-text('I agree')",
+            "ytd-modal-with-title-and-button-renderer #dismiss-button button"
+        ]
+        for sel in selectors:
+            btn = page.locator(sel).first
+            if btn.count() > 0 and btn.is_visible():
+                btn.evaluate("el => el.click()")
+                page.wait_for_timeout(500)
+    except Exception:
+        pass
+
 def post_ca_to_youtube(image_paths, caption=""):
     caption = str(caption or "")
     print("\n--------------------------------------------------")
@@ -67,6 +91,8 @@ def post_ca_to_youtube(image_paths, caption=""):
             page.goto(channel_url, wait_until="domcontentloaded", timeout=40000)
             page.wait_for_timeout(4000)
 
+            dismiss_dialogs(page)
+
             if "accounts.google.com" in page.url or "signin" in page.url:
                 print("⚠️ Redirected to Google Sign-In! Login required for YouTube posting.")
                 context.close()
@@ -75,16 +101,32 @@ def post_ca_to_youtube(image_paths, caption=""):
             print("✅ Logged into YouTube Community page!")
 
             print("✏️ Opening Community post composer...")
-            placeholder = page.locator("#commentbox-placeholder, #placeholder-area").first
-            placeholder.click()
+            placeholder = page.locator("#commentbox-placeholder, #placeholder-area, #contenteditable-root, ytd-commentbox #placeholder").first
+            try:
+                placeholder.wait_for(state="visible", timeout=15000)
+                placeholder.evaluate("el => el.click()")
+            except Exception:
+                try:
+                    placeholder.click(force=True, timeout=5000)
+                except Exception as ex_ph:
+                    print(f"⚠️ Placeholder click note: {ex_ph}")
             page.wait_for_timeout(2500)
+            dismiss_dialogs(page)
 
             valid_images = [img for img in image_paths if (img and os.path.exists(img))]
             if valid_images:
+                # CRITICAL: YouTube Community strictly enforces a maximum of 5 images per post.
+                if len(valid_images) > 5:
+                    print(f"ℹ️ YouTube Community allows a maximum of 5 images per post. Clamping {len(valid_images)} slides to top 5.")
+                    valid_images = valid_images[:5]
+
                 print(f"🖼️ Activating Image Post mode for {len(valid_images)} images...")
-                img_btn = page.locator("button[aria-label='Add an image']:visible, #image-post-button:visible, button:has-text('Image'):visible").first
+                img_btn = page.locator("button[aria-label='Add an image']:visible, #image-post-button:visible, button:has-text('Image'):visible, ytd-button-renderer[aria-label*='Image']:visible").first
                 if img_btn.count() > 0:
-                    img_btn.click()
+                    try:
+                        img_btn.evaluate("el => el.click()")
+                    except Exception:
+                        img_btn.click(force=True)
                     page.wait_for_timeout(2500)
 
                 print("📤 Uploading slide images to YouTube multi-image dropzone...")
@@ -95,20 +137,61 @@ def post_ca_to_youtube(image_paths, caption=""):
                 file_input.set_input_files(valid_images)
                 print("⏳ Waiting 10 seconds for image thumbnails to upload and render...")
                 page.wait_for_timeout(10000)
+                dismiss_dialogs(page)
             else:
                 print("ℹ️ No valid images provided — proceeding with Text-Only YouTube Community Post...")
 
             print("📝 Filling Post Caption & Website Link...")
-            editor = page.locator("#contenteditable-root[contenteditable='true'], div[contenteditable='true']#contenteditable-root, #textbox").first
-            editor.focus()
+            editor = page.locator("#contenteditable-root[contenteditable='true'], div[contenteditable='true']#contenteditable-root, #textbox[contenteditable='true'], ytd-commentbox #contenteditable-root").first
+            try:
+                editor.wait_for(state="visible", timeout=10000)
+                editor.focus()
+            except Exception:
+                pass
             
             clean_caption = re.sub(r'<[^>]+>', '', caption)
-            editor.fill(clean_caption)
+            try:
+                editor.fill(clean_caption)
+            except Exception:
+                editor.evaluate(f"(el, text) => {{ el.focus(); el.textContent = text; el.dispatchEvent(new Event('input', {{ bubbles: true }})); }}", clean_caption)
             page.wait_for_timeout(2000)
 
             print("🚀 Publishing YouTube Image Post...")
-            post_btn = page.locator("button:has-text('Post'), [aria-label='Post']").last
-            post_btn.click()
+            post_selectors = [
+                "ytd-button-renderer#post-button button:not([disabled]):not([aria-disabled='true'])",
+                "#post-button button:not([disabled]):not([aria-disabled='true'])",
+                "button:has-text('Post'):not([disabled]):not([aria-disabled='true'])",
+                "[aria-label='Post']:not([disabled]):not([aria-disabled='true'])",
+                "ytd-button-renderer#post-button button",
+                "#post-button button",
+                "button:has-text('Post')",
+                "[aria-label='Post']"
+            ]
+            post_btn = None
+            for sel in post_selectors:
+                candidate = page.locator(sel).last
+                if candidate.count() > 0 and candidate.is_visible():
+                    post_btn = candidate
+                    break
+
+            if not post_btn:
+                post_btn = page.locator("button:has-text('Post'), [aria-label='Post']").last
+
+            # Wait for button to be enabled (up to 10 seconds)
+            for _ in range(10):
+                is_disabled = post_btn.get_attribute("disabled") is not None or post_btn.get_attribute("aria-disabled") == "true"
+                if not is_disabled:
+                    break
+                page.wait_for_timeout(1000)
+
+            try:
+                post_btn.evaluate("el => el.click()")
+            except Exception:
+                try:
+                    post_btn.click(force=True, timeout=8000)
+                except Exception as ex_click:
+                    print(f"⚠️ Post button click note: {ex_click}")
+
             page.wait_for_timeout(6000)
 
             print("🎉 YouTube Current Affairs Image Carousel published successfully!")

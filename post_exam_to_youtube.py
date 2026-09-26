@@ -177,18 +177,30 @@ def post_exam_update_to_youtube(article_data: dict, image_path: Optional[str] = 
                 context.close()
                 return False
 
-            print("✅ Logged into YouTube Community page!")
+            sign_in_btn = page.locator("a[aria-label*='Sign in'], ytd-button-renderer:has-text('Sign in'), a:has-text('Sign in')").first
+            if sign_in_btn.count() > 0 and sign_in_btn.is_visible():
+                print("⚠️ YouTube session is not authenticated (Sign-in button detected). Session cookies have expired. Refresh YT_STATE_BASE64 via extract_yt_cookies.py.")
+                context.close()
+                return False
+
+            avatar = page.locator("button#avatar-btn, #avatar-btn, ytd-topbar-menu-button-renderer").first
+            if avatar.count() > 0 and avatar.is_visible():
+                print("✅ Verified logged in via user avatar!")
+            else:
+                print("ℹ️ Verified session active (no sign-in banner).")
 
             print("✏️ Opening Community post composer...")
             placeholder = page.locator("#commentbox-placeholder, #placeholder-area, #contenteditable-root, ytd-commentbox #placeholder").first
             try:
-                placeholder.wait_for(state="visible", timeout=15000)
+                placeholder.wait_for(state="visible", timeout=10000)
                 placeholder.evaluate("el => el.click()")
             except Exception:
                 try:
-                    placeholder.click(force=True, timeout=5000)
-                except Exception as ex_ph:
-                    print(f"⚠️ Placeholder click note: {ex_ph}")
+                    placeholder.click(force=True, timeout=3000)
+                except Exception:
+                    print("⚠️ Community post creation composer not available on this page (User may not have channel owner permissions or session expired).")
+                    context.close()
+                    return False
             page.wait_for_timeout(2500)
             dismiss_dialogs(page)
 
@@ -203,7 +215,12 @@ def post_exam_update_to_youtube(article_data: dict, image_path: Optional[str] = 
                     page.wait_for_timeout(2500)
 
                 print("📤 Uploading image to YouTube dropzone...")
-                file_input = page.locator("input[type='file']").first
+                file_input = page.locator("ytd-commentbox input[type='file'], #creation-box input[type='file'], input[type='file']:not(.ytSearchboxComponentHiddenFileInput)").first
+                if file_input.count() == 0:
+                    print("⚠️ Image dropzone file input not found in post composer.")
+                    context.close()
+                    return False
+
                 file_input.set_input_files([image_path])
                 print("⏳ Waiting 8 seconds for image thumbnail to render...")
                 page.wait_for_timeout(8000)

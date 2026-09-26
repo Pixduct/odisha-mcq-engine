@@ -80,11 +80,30 @@ def post_to_youtube(data=None):
             context.close()
             return False
 
-        print("✅ Logged into YouTube Community page!")
+        sign_in_btn = page.locator("a[aria-label*='Sign in'], ytd-button-renderer:has-text('Sign in'), a:has-text('Sign in')").first
+        if sign_in_btn.count() > 0 and sign_in_btn.is_visible():
+            print("⚠️ YouTube session is not authenticated (Sign-in button detected). Session cookies have expired. Refresh YT_STATE_BASE64 via extract_yt_cookies.py.")
+            context.close()
+            return False
+
+        avatar = page.locator("button#avatar-btn, #avatar-btn, ytd-topbar-menu-button-renderer").first
+        if avatar.count() > 0 and avatar.is_visible():
+            print("✅ Verified logged in via user avatar!")
+        else:
+            print("ℹ️ Verified session active (no sign-in banner).")
 
         print("✏️ Opening Community post composer...")
-        placeholder = page.locator("#commentbox-placeholder, #placeholder-area").first
-        placeholder.evaluate("el => el.click()")
+        placeholder = page.locator("#commentbox-placeholder, #placeholder-area, #contenteditable-root, ytd-commentbox #placeholder").first
+        try:
+            placeholder.wait_for(state="visible", timeout=10000)
+            placeholder.evaluate("el => el.click()")
+        except Exception:
+            try:
+                placeholder.click(force=True, timeout=3000)
+            except Exception:
+                print("⚠️ Community post creation composer not available on this page (User may not have channel owner permissions or session expired).")
+                context.close()
+                return False
         page.wait_for_timeout(2000)
 
         print("🎯 Activating Quiz mode...")
@@ -219,11 +238,30 @@ def post_to_youtube_poll(data=None):
             context.close()
             return False
 
-        print("✅ Logged into YouTube Community page!")
+        sign_in_btn = page.locator("a[aria-label*='Sign in'], ytd-button-renderer:has-text('Sign in'), a:has-text('Sign in')").first
+        if sign_in_btn.count() > 0 and sign_in_btn.is_visible():
+            print("⚠️ YouTube session is not authenticated (Sign-in button detected). Session cookies have expired. Refresh YT_STATE_BASE64 via extract_yt_cookies.py.")
+            context.close()
+            return False
+
+        avatar = page.locator("button#avatar-btn, #avatar-btn, ytd-topbar-menu-button-renderer").first
+        if avatar.count() > 0 and avatar.is_visible():
+            print("✅ Verified logged in via user avatar!")
+        else:
+            print("ℹ️ Verified session active (no sign-in banner).")
 
         print("✏️ Opening Community post composer...")
-        placeholder = page.locator("#commentbox-placeholder, #placeholder-area").first
-        placeholder.click(force=True)
+        placeholder = page.locator("#commentbox-placeholder, #placeholder-area, #contenteditable-root, ytd-commentbox #placeholder").first
+        try:
+            placeholder.wait_for(state="visible", timeout=10000)
+            placeholder.evaluate("el => el.click()")
+        except Exception:
+            try:
+                placeholder.click(force=True, timeout=3000)
+            except Exception:
+                print("⚠️ Community post creation composer not available on this page (User may not have channel owner permissions or session expired).")
+                context.close()
+                return False
         page.wait_for_timeout(3000)
 
         print("🎯 Activating Text Poll mode (NOT Quiz)...")

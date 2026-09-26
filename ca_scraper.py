@@ -31,20 +31,32 @@ RSS_FEEDS = [
         "stream": "odisha"
     },
     {
-        "name": "Sambad English Odisha",
-        "url": "https://sambadenglish.com/feed/",
+        "name": "Odisha Bytes",
+        "url": "https://odishabytes.com/feed/",
         "priority": "ODISHA",
         "stream": "odisha"
     },
     {
-        "name": "Ommcom News Odisha",
-        "url": "https://ommcomnews.com/feed",
+        "name": "Pragativadi Odisha",
+        "url": "https://pragativadi.com/feed/",
+        "priority": "ODISHA",
+        "stream": "odisha"
+    },
+    {
+        "name": "OrissaPOST Odisha",
+        "url": "https://www.orissapost.com/feed/",
         "priority": "ODISHA",
         "stream": "odisha"
     },
     {
         "name": "Kalinga TV Odisha",
         "url": "https://kalingatv.com/feed/",
+        "priority": "ODISHA",
+        "stream": "odisha"
+    },
+    {
+        "name": "Google News Odisha Governance",
+        "url": "https://news.google.com/rss/search?q=Odisha+(Cabinet+OR+Scheme+OR+Yojana+OR+Government)+when:2d&hl=en-IN&gl=IN&ceid=IN:en",
         "priority": "ODISHA",
         "stream": "odisha"
     },
@@ -57,12 +69,6 @@ RSS_FEEDS = [
         "stream": "national"
     },
     {
-        "name": "AIR News National",
-        "url": "https://www.newsonair.gov.in/rss/national.xml",
-        "priority": "NATIONAL",
-        "stream": "national"
-    },
-    {
         "name": "The Hindu National",
         "url": "https://www.thehindu.com/news/national/feeder/default.rss",
         "priority": "NATIONAL",
@@ -71,6 +77,12 @@ RSS_FEEDS = [
     {
         "name": "Indian Express India",
         "url": "https://indianexpress.com/section/india/feed/",
+        "priority": "NATIONAL",
+        "stream": "national"
+    },
+    {
+        "name": "Google News National Polity",
+        "url": "https://news.google.com/rss/search?q=(Cabinet+OR+Ministry+OR+Parliament+OR+%22Supreme+Court%22+OR+%22High+Court%22)+when:2d&hl=en-IN&gl=IN&ceid=IN:en",
         "priority": "NATIONAL",
         "stream": "national"
     },
@@ -94,6 +106,12 @@ RSS_FEEDS = [
         "priority": "NATIONAL",
         "stream": "economy"
     },
+    {
+        "name": "Google News Economy & RBI",
+        "url": "https://news.google.com/rss/search?q=(RBI+OR+GDP+OR+Inflation+OR+Repo+Rate+OR+%22Finance+Ministry%22)+when:2d&hl=en-IN&gl=IN&ceid=IN:en",
+        "priority": "NATIONAL",
+        "stream": "economy"
+    },
     
     # 4. 🚀 SCIENCE, SPACE, DEFENSE & DEEP TECH STREAMS
     {
@@ -114,6 +132,12 @@ RSS_FEEDS = [
         "priority": "NATIONAL",
         "stream": "science_tech"
     },
+    {
+        "name": "Google News Science & Defense",
+        "url": "https://news.google.com/rss/search?q=(ISRO+OR+DRDO+OR+Missile+OR+Defence+OR+Space+OR+Satellite)+when:2d&hl=en-IN&gl=IN&ceid=IN:en",
+        "priority": "NATIONAL",
+        "stream": "science_tech"
+    },
     
     # 5. 🏆 SPORTS MILESTONES, CHAMPIONSHIPS & AWARDS STREAMS
     {
@@ -128,6 +152,12 @@ RSS_FEEDS = [
         "priority": "NATIONAL",
         "stream": "sports"
     },
+    {
+        "name": "Google News Sports & Awards",
+        "url": "https://news.google.com/rss/search?q=(Championship+OR+%22Gold+Medal%22+OR+%22Asian+Games%22+OR+%22Khel+Ratna%22+OR+Tournament)+when:2d&hl=en-IN&gl=IN&ceid=IN:en",
+        "priority": "NATIONAL",
+        "stream": "sports"
+    },
     
     # 6. 🌿 ENVIRONMENT, ECOLOGY & CLIMATE STREAMS
     {
@@ -137,8 +167,8 @@ RSS_FEEDS = [
         "stream": "environment"
     },
     {
-        "name": "Down To Earth Environment",
-        "url": "https://www.downtoearth.org.in/rss/environment",
+        "name": "Google News Environment & Wildlife",
+        "url": "https://news.google.com/rss/search?q=(%22National+Park%22+OR+%22Tiger+Reserve%22+OR+Pollution+OR+Climate+OR+Ramsar)+when:2d&hl=en-IN&gl=IN&ceid=IN:en",
         "priority": "NATIONAL",
         "stream": "environment"
     },
@@ -151,12 +181,6 @@ RSS_FEEDS = [
         "stream": "world"
     },
     {
-        "name": "AIR News World",
-        "url": "https://www.newsonair.gov.in/rss/international.xml",
-        "priority": "WORLD",
-        "stream": "world"
-    },
-    {
         "name": "BBC World News",
         "url": "http://feeds.bbci.co.uk/news/world/rss.xml",
         "priority": "WORLD",
@@ -165,6 +189,12 @@ RSS_FEEDS = [
     {
         "name": "Al Jazeera World",
         "url": "https://www.aljazeera.com/xml/rss/all.xml",
+        "priority": "WORLD",
+        "stream": "world"
+    },
+    {
+        "name": "Google News World Diplomacy",
+        "url": "https://news.google.com/rss/search?q=(Summit+OR+Treaty+OR+%22United+Nations%22+OR+BRICS+OR+G20+OR+Bilateral)+when:2d&hl=en-IN&gl=IN&ceid=IN:en",
         "priority": "WORLD",
         "stream": "world"
     }
@@ -347,19 +377,28 @@ def scrape_current_affairs():
             seen_set.add(norm_title)
 
             pub_dt = item.get("pub_dt")
-            if pub_dt and pub_dt >= cutoff_dt:
+            if not pub_dt:
+                # RSS feed provided no parseable date; assume fresh live feed entry
+                pub_dt = datetime.now(timezone.utc)
+                item["pub_dt"] = pub_dt
+                if not item.get("pub_date"):
+                    item["pub_date"] = today_str
+
+            if pub_dt >= cutoff_dt:
                 fresh_items.append(item)
             else:
-                # Discard unverified or stale archive articles older than 24 hours
                 stale_items.append(item)
 
         # Only add strictly verified fresh items from this feed (no unverified fallbacks)
         all_raw_items.extend(fresh_items)
 
-    # Organize scraped items into authentic geographic & jurisdictional domains
+    # Organize scraped items into 6 authentic competitive exam syllabus domains
     domain_buckets = {
         "odisha": [],
         "national": [],
+        "economy": [],
+        "science_defense": [],
+        "sports": [],
         "international": []
     }
 
@@ -373,31 +412,44 @@ def scrape_current_affairs():
         s = str(item.get("stream", "")).lower()
         if p == "ODISHA" or s == "odisha":
             domain_buckets["odisha"].append(item)
+        elif s == "economy":
+            domain_buckets["economy"].append(item)
+        elif s == "science_tech":
+            domain_buckets["science_defense"].append(item)
+        elif s == "sports":
+            domain_buckets["sports"].append(item)
         elif p == "WORLD" or s == "world":
             domain_buckets["international"].append(item)
         else:
             domain_buckets["national"].append(item)
 
-    # Multi-Domain Quorum Assembly (Odisha, National, and International)
+    # Multi-Domain Quorum Assembly across all 6 core exam syllabus pillars
     candidate_selection = []
     # 1. Odisha State Affairs (up to 8 fresh items)
     candidate_selection.extend(domain_buckets["odisha"][:8])
-    # 2. National Governance, Schemes & Milestones (up to 16 fresh items)
-    candidate_selection.extend(domain_buckets["national"][:16])
-    # 3. International & Global Events (up to 8 fresh items)
-    candidate_selection.extend(domain_buckets["international"][:8])
+    # 2. National Governance, Constitutional & Polity (up to 8 fresh items)
+    candidate_selection.extend(domain_buckets["national"][:8])
+    # 3. Economy, Banking, RBI & Trade (up to 6 fresh items)
+    candidate_selection.extend(domain_buckets["economy"][:6])
+    # 4. Science, Space & Defense (up to 6 fresh items)
+    candidate_selection.extend(domain_buckets["science_defense"][:6])
+    # 5. Sports Milestones, Medals & Honors (up to 6 fresh items)
+    candidate_selection.extend(domain_buckets["sports"][:6])
+    # 6. International Relations & Global Summits (up to 6 fresh items)
+    candidate_selection.extend(domain_buckets["international"][:6])
 
     fresh_count = sum(1 for i in all_raw_items if i.get("pub_dt") and i["pub_dt"] >= cutoff_dt)
     print(f"\n✅ Total Raw News Items Scraped: {len(all_raw_items)} "
-          f"({fresh_count} fresh within 24h, {skipped_duplicates} duplicates skipped)")
-    print(f"📦 Unified Domain Payload: {len(candidate_selection)} candidate items across 3 core domains "
-          f"(Odisha: {len(domain_buckets['odisha'][:8])}, National: {len(domain_buckets['national'][:16])}, "
-          f"International: {len(domain_buckets['international'][:8])})")
+          f"({fresh_count} fresh within 48h, {skipped_duplicates} duplicates skipped)")
+    print(f"📦 Unified Domain Payload: {len(candidate_selection)} candidate items across 6 core domains "
+          f"(Odisha: {len(domain_buckets['odisha'][:8])}, National: {len(domain_buckets['national'][:8])}, "
+          f"Economy: {len(domain_buckets['economy'][:6])}, Science/Defense: {len(domain_buckets['science_defense'][:6])}, "
+          f"Sports: {len(domain_buckets['sports'][:6])}, International: {len(domain_buckets['international'][:6])})")
 
     formatted_text_lines = []
     for idx, item in enumerate(candidate_selection, start=1):
         pub_label = item.get("pub_date", "UNVERIFIED")
-        domain_label = item.get("priority", "NATIONAL").upper()
+        domain_label = item.get("stream", item.get("priority", "NATIONAL")).upper()
         formatted_text_lines.append(
             f"[{idx}] Domain: {domain_label} | Source: {item['source']} | Published: {pub_label}\n"
             f"Title: {item['title']}\n"

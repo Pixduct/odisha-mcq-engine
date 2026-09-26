@@ -35,7 +35,7 @@ TELEGRAM_CHANNEL_URL = "https://t.me/OdishaExamPrep"
 YOUTUBE_CHANNEL_URL  = "https://www.youtube.com/@OdishaExamPrep365"
 
 # Minimum slides required to publish — below this we skip the run and notify admin
-MIN_SLIDES_TO_POST = 3
+MIN_SLIDES_TO_POST = 2
 
 def clean_html_caption(caption, max_len=1020):
     if not caption:
@@ -399,16 +399,19 @@ def main():
             send_telegram_admin_status(TELEGRAM_BOT_TOKEN, TELEGRAM_ADMIN_CHAT_ID, skip_msg)
             sys.exit(1)
 
-        # Pre-fetch existing published blogs/CA from Supabase DB and local ledgers
+        # Pre-fetch existing published Current Affairs from Supabase DB and local ledgers
         all_seen_titles = set()
         try:
             from shared.supabase_client import SupabaseBlogClient
             db_client = SupabaseBlogClient()
             existing_db_items = db_client.fetch_all_blogs()
             for item in existing_db_items:
-                t = item.get("title", "").strip().lower()
-                if t:
-                    all_seen_titles.add(t)
+                # Scoped to Current Affairs category to prevent false collisions with evergreen static blog titles
+                cat = str(item.get("category", "")).lower()
+                if "current" in cat or "affairs" in cat:
+                    t = item.get("title", "").strip().lower()
+                    if t:
+                        all_seen_titles.add(t)
         except Exception as db_err:
             print(f"⚠️ DB history pre-fetch notice: {db_err}")
 

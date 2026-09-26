@@ -684,22 +684,29 @@ def format_current_affairs(raw_text_payload):
     from datetime import timedelta
     yesterday_date_iso = (datetime.now() - timedelta(days=1)).strftime("%Y-%m-%d")
 
-    system_prompt = f"""You are an Elite Senior Current Affairs Editor for UPSC, OPSC, and Odisha competitive exams. Today's date is: {today_date_str_prompt}.
-CRITICAL INSTRUCTIONS:
-1. Select ONLY genuine, factual, and exam-relevant news from the provided candidates published in the last 24-48 hours.
-2. Filter out all celebrity gossip, local petty crime, political party mudslinging/allegations, routine court litigation arguments, and opinion essays.
-3. Every slide must focus on high-yield topics (Odisha Schemes/Cabinet, National Polity, Economy/RBI, Science/ISRO, Defense, Sports & Awards).
-4. CRITICAL RULE FOR BULLETS: Every bullet MUST start with a 2 to 3 word capitalized keyword label followed immediately by a colon (e.g., 'Silver Medal: ...', 'Landfall Zone: ...', 'Financial Outlay: ...').
-5. Include an 'exam_takeaway' containing 1 concise, high-value static syllabus fact or exam tip for aspirants.
-6. Provide an accurate syllabus category tag (e.g., 'SPORTS & GAMES', 'ODISHA & DISASTER', 'INDIAN POLITY', 'ECONOMY & ENERGY', 'SCIENCE & TECH', 'AWARDS & HONOURS').
-7. Output ONLY valid pure JSON starting with {{ and ending with }}. Zero introductory words, zero reasoning preamble.
+    system_prompt = f"""You are an Elite Senior Current Affairs Editor for UPSC, OPSC, and Odisha State Competitive Examinations (OCS, OSSC, OSSSC). Today's date is: {today_date_str_prompt}.
+
+CRITICAL COGNITIVE MANDATE:
+1. SIZING & VOLUME: You MUST generate exactly 5 to 7 high-impact, syllabus-aligned slides (minimum 5 required, target 6-7). NEVER generate fewer than 5 slides.
+2. MULTI-DOMAIN SYLLABUS DECOMPOSITION: Extract a comprehensive, balanced spectrum of current affairs across all examinable domains:
+   - 🏛️ ODISHA STATE AFFAIRS (1-2 slides): Odisha Cabinet decisions, state schemes (Subhadra, KALIA, BSKY, Mission Shakti), infrastructure, cultural heritage, districts, coastal/disaster management.
+   - 🇮🇳 NATIONAL POLITY & GOVERNANCE (1-2 slides): Union Cabinet, Supreme Court/High Court verdicts, Parliament acts/bills, constitutional bodies (ECI, CAG, NITI Aayog).
+   - 💰 ECONOMY, BANKING & TRADE (1 slide): RBI monetary policy, repo rates, GDP metrics, inflation, fiscal deficit, banking mergers, SEBI, foreign trade.
+   - 🚀 SCIENCE, SPACE & DEFENSE (1 slide): ISRO missions, DRDO missile/defense tests, deep tech, AI, quantum, biotech, defense procurements.
+   - 🏆 SPORTS & AWARDS (1 slide): Asian Games, Olympics, National championships, Arjuna/Khel Ratna, Padma awards, major sports milestones.
+   - 🌐 INTERNATIONAL RELATIONS & SUMMITS (1 slide): Bilateral agreements, multilateral summits (UN, G20, BRICS, SCO, ASEAN), geopolitical developments.
+3. FILTERING: Purge local petty crime, political party verbal mudslinging/rally speeches, celebrity gossip, and opinion columns.
+4. BULLET STRUCTURE: Every bullet MUST begin with a 2-3 word capitalized keyword label followed immediately by a colon (e.g., 'Financial Outlay: ...', 'Nodal Ministry: ...', 'Constitutional Article: ...').
+5. EXAM TAKEAWAY: Every slide MUST include an 'exam_takeaway' with 1 high-yield static syllabus fact (e.g. related Constitutional Article, Headquarters, Parent Ministry, or Historical Background).
+6. SYLLABUS CATEGORIES: Assign standard category names ('ODISHA STATE NEWS', 'INDIAN POLITY', 'ECONOMY & ENERGY', 'SCIENCE & TECH', 'SPORTS & GAMES', 'AWARDS & HONOURS', 'INTERNATIONAL RELATIONS').
+7. OUTPUT: Output ONLY a valid JSON object matching the schema below. Zero preamble, zero conversational commentary.
 
 Output JSON Schema:
 {{
   "top_slides": [
     {{
       "headline": "Short headline under 48 characters",
-      "category": "SYLLABUS CATEGORY (e.g. SPORTS & GAMES, ODISHA & DISASTER, INDIAN POLITY, ECONOMY & ENERGY, SCIENCE & TECH)",
+      "category": "SYLLABUS CATEGORY (e.g. ODISHA STATE NEWS, INDIAN POLITY, ECONOMY & ENERGY, SCIENCE & TECH, SPORTS & GAMES, INTERNATIONAL RELATIONS)",
       "sovereign_entity": "Entity name (e.g. Odisha Cabinet, ISRO, RBI, Ministry of Finance)",
       "exam_questionability_fact": "One factual MCQ-testable statement",
       "bullets": [
@@ -726,9 +733,9 @@ Output JSON Schema:
 
     user_prompt_content = (
         f"Today is: {today_date_str_prompt}.\n\n"
-        f"Extract top exam-relevant current affairs slides into JSON from these authentic news candidates:\n\n"
-        f"{raw_text_payload[:4000]}\n\n"
-        f"CRITICAL: Output ONLY the pure JSON object starting with '{{' and ending with '}}'. Zero intro text."
+        f"From the authentic news candidates below, reason like a Senior UPSC/OPSC Current Affairs Editor and extract a complete, multi-domain daily briefing of 5 to 7 high-yield slides (minimum 5 slides required across Odisha, National, Economy, Science, Sports, and International):\n\n"
+        f"{raw_text_payload[:30000]}\n\n"
+        f"CRITICAL: Generate at least 5 slides in 'top_slides'. Output ONLY the pure JSON object starting with '{{' and ending with '}}'."
     )
 
     # Pass the balanced multi-stream payload
@@ -739,7 +746,7 @@ Output JSON Schema:
             {"role": "user", "content": user_prompt_content}
         ],
         "temperature": 0.1,
-        "max_tokens": 2500,
+        "max_tokens": 4000,
         "response_format": {"type": "json_object"}
     }
 
@@ -828,7 +835,7 @@ Output JSON Schema:
                             "generationConfig": {
                                 "response_mime_type": "application/json",
                                 "temperature": 0.1,
-                                "maxOutputTokens": 6000
+                                "maxOutputTokens": 8192
                             }
                         }
                         g_res = requests.post(g_url, headers={"Content-Type": "application/json"}, json=g_payload, timeout=45)

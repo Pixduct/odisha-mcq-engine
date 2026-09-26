@@ -5,9 +5,12 @@ import base64
 import time
 import re
 import requests
-from datetime import datetime
-import gspread
-from google.oauth2.service_account import Credentials
+try:
+    import gspread
+    from google.oauth2.service_account import Credentials
+except ImportError:
+    gspread = None
+    Credentials = None
 from playwright.sync_api import sync_playwright
 
 if hasattr(sys.stdout, 'reconfigure'):
@@ -23,8 +26,28 @@ TELEGRAM_CHAT_ID = os.getenv("TELEGRAM_CHAT_ID", "")
 TELEGRAM_ADMIN_CHAT_ID = os.getenv("TELEGRAM_ADMIN_CHAT_ID", "")
 MCQ_BATCH_SIZE = int(os.getenv("MCQ_BATCH_SIZE", "1"))
 
+GEMINI_API_KEY = (
+    os.getenv("GEMINI_API_KEY") or
+    os.getenv("VITE_GEMINI_API_KEY") or
+    ""
+).strip('"')
+
+DEEPSEEK_API_KEY = (
+    os.getenv("DEEPSEEK_API_KEY") or
+    os.getenv("NVIDIA_NIM_API_KEY") or
+    os.getenv("OPENAI_API_KEY") or
+    os.getenv("VITE_DEEPSEEK_API_KEY") or
+    ""
+).strip('"')
+DEEPSEEK_BASE_URL = (
+    os.getenv("DEEPSEEK_BASE_URL") or
+    os.getenv("VITE_DEEPSEEK_BASE_URL") or
+    "https://integrate.api.nvidia.com/v1"
+).strip('"')
+
 SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
 CREDS_FILE = os.path.join(SCRIPT_DIR, "google_credentials.json")
+HISTORY_FILE = os.path.join(SCRIPT_DIR, "published_history.json")
 TEMPLATE_FILE = os.path.join(SCRIPT_DIR, "templates", "template_mcq.html")
 TEMP_HTML_FILE = os.path.join(SCRIPT_DIR, "temp.html")
 OUTPUT_IMAGE_FILE = os.path.join(SCRIPT_DIR, "output_mcq.png")
@@ -126,6 +149,8 @@ def retry_google_api(func, max_retries=5, initial_delay=3, backoff_factor=2, act
 
 def fetch_pending_questions(limit=1):
     print(f"[VERBOSE LOG] Fetching pending questions from Google Sheets (Limit: {limit})...")
+    if not gspread or not Credentials:
+        raise ImportError("gspread or google-auth not installed.")
     
     creds_json_str = os.getenv("GOOGLE_CREDENTIALS_JSON")
     if creds_json_str:
@@ -306,6 +331,210 @@ def generate_mcq_image(data):
         if os.path.exists(TEMP_HTML_FILE):
             os.remove(TEMP_HTML_FILE)
 
+def jaccard_similarity(str1: str, str2: str) -> float:
+    words1 = set(re.findall(r'\w+', str1.lower()))
+    words2 = set(re.findall(r'\w+', str2.lower()))
+    if not words1 or not words2:
+        return 0.0
+    return len(words1 & words2) / len(words1 | words2)
+
+def save_autonomous_mcq_to_history(mcq_row: dict):
+    os.makedirs(os.path.dirname(HISTORY_FILE), exist_ok=True)
+    history = []
+    if os.path.exists(HISTORY_FILE):
+        try:
+            with open(HISTORY_FILE, "r", encoding="utf-8") as f:
+                history = json.load(f)
+        except Exception:
+            history = []
+    
+    entry = {
+        "date": datetime.now().strftime("%Y-%m-%d"),
+        "exam": mcq_row.get("Target_Exam", "Odisha Competitive Exams"),
+        "content_stage": "EXAM_SPECIFIC",
+        "topic": "autonomous_mcq_" + datetime.now().strftime("%Y%m%d_%H%M%S"),
+        "question": mcq_row.get("Question_Text", ""),
+        "options": [
+            mcq_row.get("Option_A", ""),
+            mcq_row.get("Option_B", ""),
+            mcq_row.get("Option_C", ""),
+            mcq_row.get("Option_D", "")
+        ],
+        "correct_option_index": {"A": 0, "B": 1, "C": 2, "D": 3}.get(str(mcq_row.get("Correct_Option", "A")).upper(), 0),
+        "explanation": mcq_row.get("Explanation", "")
+    }
+    history.append(entry)
+    try:
+        with open(HISTORY_FILE, "w", encoding="utf-8") as f:
+            json.dump(history, f, indent=2, ensure_ascii=False)
+        print(f"📁 Saved autonomous MCQ to history ({HISTORY_FILE}).")
+    except Exception as e:
+        print(f"⚠️ Failed to save history entry: {e}")
+
+def generate_autonomous_mcq(target_exam: str = None) -> dict:
+    """
+    Autonomous Cognitive MCQ Generator with Frontier LLM Reasoning, Zero-Hallucination Grounding,
+    and Anti-Leakage / Distractor Engineering.
+    """
+    EXAM_POOL = [
+        "OSSC CGL (Combined Graduate Level)",
+        "OPSC ASO (Assistant Section Officer)",
+        "OSSSC CRE (RI, Amin, Forest Guard)",
+        "Odisha Police SI & Constable",
+        "OPSC Odisha Civil Services (OCS)",
+        "BSE Odisha OTET / OSSTET"
+    ]
+    TOPIC_POOL = [
+        {"subject": "Odisha State History, Heritage & Geography", "focus": "Ancient & Medieval dynasties (Bhauma-Kara, Somavamshi, Eastern Ganga, Gajapati), Paika Rebellion 1817, Salt Satyagraha at Inchudi, Major rivers (Mahanadi, Brahmani, Baitarani), and Ramsar wetlands."},
+        {"subject": "Indian Polity & Constitutional Framework", "focus": "Fundamental Rights, DPSP, 73rd & 74th Constitutional Amendments, Election Commission, CAG, Finance Commission, and High Court / Subordinate Judiciary."},
+        {"subject": "General Science & Environmental Ecology", "focus": "Optics, Laws of Motion, Chemical reactions & acids/bases, Human organ systems & nutrition, Wildlife Sanctuaries & National Parks of Odisha (Similipal, Bhitarkanika, Satkosia)."},
+        {"subject": "Quantitative Aptitude & Number Systems", "focus": "LCM & HCF conceptual traps, Percentage changes, Profit & Loss discount tricks, Simple & Compound Interest, Time & Distance relative speed."},
+        {"subject": "Odia & English Language Grammar Rules", "focus": "Odia Sandhi, Samasa, Krutanta, Tadhita, Krukari, Idioms (Rudhi & Lokabani), Subject-Verb agreement, and Prepositional idioms."}
+    ]
+
+    day_idx = datetime.now().timetuple().tm_yday
+    chosen_exam = target_exam or EXAM_POOL[day_idx % len(EXAM_POOL)]
+    chosen_topic = TOPIC_POOL[(day_idx + 1) % len(TOPIC_POOL)]
+
+    published_stems = []
+    if os.path.exists(HISTORY_FILE):
+        try:
+            with open(HISTORY_FILE, "r", encoding="utf-8") as f:
+                h_data = json.load(f)
+                for item in h_data[-60:]:
+                    q = item.get("question") or item.get("Question_Text")
+                    if q:
+                        published_stems.append(q)
+        except Exception:
+            pass
+
+    history_ban_list = "\n".join([f"- {s}" for s in published_stems[-20:]]) if published_stems else "(None)"
+
+    system_prompt = f"""You are the Chief Academic Paper Setter & Senior Content Specialist for Odisha Competitive Examinations (OPSC, OSSC, OSSSC).
+Your task is to generate ONE ORIGINAL, HIGH-YIELD competitive exam multiple-choice question (MCQ) for {chosen_exam}.
+
+Subject/Domain: {chosen_topic['subject']}
+Focus Curriculum: {chosen_topic['focus']}
+
+======================================================================
+1. ZERO-HALLUCINATION & FACTUAL ACCURACY MANDATE
+======================================================================
+- The question stem, options, and explanation must be 100% FACTUALLY ACCURATE and grounded in official textbooks, standard reference works, statutory Acts, or government gazettes.
+- Never invent imaginary historical events, fake government schemes, or distorted constitutional articles.
+- Every metric, date, or provision must be authentic.
+
+======================================================================
+2. PEDAGOGICAL DISTRACTOR ENGINEERING (AUTHENTIC EXAM TRAPS)
+======================================================================
+- Provide exactly 4 options: Option A, Option B, Option C, Option D.
+- One option is strictly correct.
+- The 3 incorrect options (distractors) MUST represent genuine candidate traps:
+  * Trap 1: A near-neighbor year, article, or term commonly confused by students.
+  * Trap 2: A closely related entity, committee, river, or district.
+  * Trap 3: A common arithmetic or grammatical sign/tense misconception.
+- NO silly, unrealistic, or placeholder options.
+
+======================================================================
+3. TWO-PART COMPREHENSIVE EXPLANATION (UNDER 180 CHARACTERS)
+======================================================================
+In `Explanation`, provide:
+1) Core Reason: Why the correct option is factually right.
+2) Trap Breakdown: Why the primary distractor option is incorrect.
+Keep the explanation under 180 characters for Telegram/YouTube display.
+
+======================================================================
+4. ANTI-LEAKAGE / NO REPEATS
+DO NOT generate any question similar to these recently published questions:
+{history_ban_list}
+
+Return ONLY valid JSON matching this schema:
+{{
+  "Target_Exam": "{chosen_exam}",
+  "Question_Text": "Clear, concise exam question stem?",
+  "Option_A": "Option text A",
+  "Option_B": "Option text B",
+  "Option_C": "Option text C",
+  "Option_D": "Option text D",
+  "Correct_Option": "A" or "B" or "C" or "D",
+  "Explanation": "Core reason why correct option is right. Trap breakdown why other is wrong."
+}}
+"""
+
+    gemini_key = GEMINI_API_KEY
+    api_key = DEEPSEEK_API_KEY
+
+    GEMINI_MODELS = ["gemini-3.5-flash", "gemini-3.5-flash-lite", "gemini-3.6-flash", "gemini-3.7-flash", "gemini-3.8-flash", "gemini-3.1-flash-lite"]
+    if gemini_key:
+        for g_model in GEMINI_MODELS:
+            try:
+                print(f"🚀 [MCQEngine Autonomous] Calling Gemini ({g_model})...")
+                g_url = f"https://generativelanguage.googleapis.com/v1beta/models/{g_model}:generateContent?key={gemini_key}"
+                g_payload = {
+                    "contents": [{"parts": [{"text": f"{system_prompt}\n\nCRITICAL: Output ONLY pure valid JSON."}]}],
+                    "generationConfig": {
+                        "response_mime_type": "application/json",
+                        "temperature": 0.4,
+                        "maxOutputTokens": 1000
+                    }
+                }
+                g_res = requests.post(g_url, headers={"Content-Type": "application/json"}, json=g_payload, timeout=25)
+                if g_res.ok:
+                    data = g_res.json()
+                    candidates = data.get("candidates", [])
+                    if candidates:
+                        raw_c = candidates[0].get("content", {}).get("parts", [{}])[0].get("text", "")
+                        from shared.ai_parser import parse_ai_json_response
+                        parsed = parse_ai_json_response(raw_c)
+                        if parsed and parsed.get("Question_Text") and parsed.get("Option_A"):
+                            is_dup = False
+                            for past_q in published_stems:
+                                if jaccard_similarity(parsed["Question_Text"], past_q) > 0.55:
+                                    print(f"⚠️ [MCQEngine Autonomous] Jaccard duplicate detected against: '{past_q[:40]}'.")
+                                    is_dup = True
+                                    break
+                            if not is_dup:
+                                print(f"✅ [MCQEngine Autonomous] Gemini ({g_model}) generated high-yield MCQ successfully.")
+                                return parsed
+            except Exception as ex:
+                print(f"⚠️ [MCQEngine Autonomous] Gemini ({g_model}) note: {ex}")
+
+    if api_key:
+        try:
+            print("🚀 [MCQEngine Autonomous] Invoking NVIDIA NIM fallback...")
+            headers = {"Authorization": f"Bearer {api_key}", "Content-Type": "application/json"}
+            payload = {
+                "model": "nvidia/nemotron-3-super-120b-a12b",
+                "messages": [
+                    {"role": "system", "content": system_prompt},
+                    {"role": "user", "content": "Generate the exam-grade MCQ JSON now."}
+                ],
+                "temperature": 0.4,
+                "max_tokens": 1000,
+                "response_format": {"type": "json_object"}
+            }
+            res = requests.post(f"{DEEPSEEK_BASE_URL.rstrip('/')}/chat/completions", headers=headers, json=payload, timeout=30)
+            if res.ok:
+                from shared.ai_parser import parse_ai_json_response
+                raw_c = res.json().get('choices', [{}])[0].get('message', {}).get('content', '')
+                parsed = parse_ai_json_response(raw_c)
+                if parsed and parsed.get("Question_Text") and parsed.get("Option_A"):
+                    print("✅ [MCQEngine Autonomous] NVIDIA NIM generated MCQ successfully.")
+                    return parsed
+        except Exception as ex:
+            print(f"⚠️ [MCQEngine Autonomous] NVIDIA NIM error: {ex}")
+
+    print("ℹ️ [MCQEngine Autonomous] Deploying verified static syllabus reserve question.")
+    return {
+        "Target_Exam": chosen_exam,
+        "Question_Text": "Under which Article of the Constitution of India is the Finance Commission constituted by the President?",
+        "Option_A": "Article 280",
+        "Option_B": "Article 243-I",
+        "Option_C": "Article 324",
+        "Option_D": "Article 356",
+        "Correct_Option": "A",
+        "Explanation": "Article 280 mandates Union Finance Commission. Art 243-I governs State Finance Commissions; Art 324 is Election Commission."
+    }
+
 from post_to_youtube import post_to_youtube
 
 def main():
@@ -314,18 +543,33 @@ def main():
     print("==================================================\n")
 
     try:
-        sheet, pending_items, status_col_idx = fetch_pending_questions(limit=MCQ_BATCH_SIZE)
+        sheet = None
+        pending_items = []
+        status_col_idx = 10
+        is_autonomous = False
+
+        try:
+            sheet, pending_items, status_col_idx = fetch_pending_questions(limit=MCQ_BATCH_SIZE)
+        except Exception as fetch_err:
+            print(f"⚠️ Google Sheet access note: {fetch_err}. Activating Autonomous Cognitive Question Setter...")
+
         if not pending_items:
-            print("ℹ️ Execution complete: No pending questions to process.")
-            today_date_str = datetime.now().strftime("%d %B %Y %I:%M %p")
-            admin_msg = (
-                f"🎯 <b>Daily MCQ Engine Execution Report</b> ℹ️\n\n"
-                f"📅 <b>Time:</b> {today_date_str}\n"
-                f"ℹ️ <b>Status:</b> No pending MCQs found in Google Sheet (All questions published / up to date).\n"
-                f"🌐 <b>Website CTA:</b> Active ✅"
-            )
-            send_telegram_notification(TELEGRAM_BOT_TOKEN, TELEGRAM_ADMIN_CHAT_ID, admin_msg)
-            return
+            print("💡 No pending questions in Google Sheet. Engaging Autonomous Cognitive Question Setter...")
+            auto_mcq = generate_autonomous_mcq()
+            if auto_mcq:
+                pending_items = [(-1, auto_mcq)]
+                is_autonomous = True
+            else:
+                print("❌ Autonomous MCQ generation yielded no valid question.")
+                today_date_str = datetime.now().strftime("%d %B %Y %I:%M %p")
+                admin_msg = (
+                    f"🎯 <b>Daily MCQ Engine Execution Report</b> ⚠️\n\n"
+                    f"📅 <b>Time:</b> {today_date_str}\n"
+                    f"ℹ️ <b>Status:</b> No pending MCQs found and Autonomous Setter failed.\n"
+                    f"🌐 <b>Website CTA:</b> Active ✅"
+                )
+                send_telegram_notification(TELEGRAM_BOT_TOKEN, TELEGRAM_ADMIN_CHAT_ID, admin_msg)
+                return
 
         total_batch = len(pending_items)
         processed_count = 0
@@ -413,24 +657,30 @@ def main():
                 print(f"⚠️ YouTube Community posting error (non-fatal): {yt_err}")
                 yt_success = False
 
-            # Step 3: Update Google Sheet Status ONLY IF PUBLISHED
-            if tg_success or yt_success:
-                def _update_sheet_row():
-                    sheet.update_cell(row_index, status_col_idx, 'Published')
+            # Step 3: Update Google Sheet Status ONLY IF PUBLISHED (or save to history if autonomous)
+            if row_index == -1:
+                if tg_success or yt_success:
+                    save_autonomous_mcq_to_history(row)
+                    print("✅ Autonomous MCQ saved to published history.")
+            elif tg_success or yt_success:
+                if sheet:
+                    def _update_sheet_row():
+                        sheet.update_cell(row_index, status_col_idx, 'Published')
 
-                try:
-                    retry_google_api(_update_sheet_row, max_retries=4, initial_delay=2, action_name=f"Update Row {row_index} Status")
-                    print(f"✅ Google Sheet row {row_index} status updated to 'Published' (Col {status_col_idx})")
-                except Exception as cell_err:
-                    print(f"⚠️ Warning: Could not update status in Google Sheet for row {row_index}: {cell_err}")
+                    try:
+                        retry_google_api(_update_sheet_row, max_retries=4, initial_delay=2, action_name=f"Update Row {row_index} Status")
+                        print(f"✅ Google Sheet row {row_index} status updated to 'Published' (Col {status_col_idx})")
+                    except Exception as cell_err:
+                        print(f"⚠️ Warning: Could not update status in Google Sheet for row {row_index}: {cell_err}")
             else:
-                print(f"❌ Row {row_index} was NOT published to Telegram or YouTube. Preserving status as 'Failed - Retry'.")
-                def _mark_sheet_failed():
-                    sheet.update_cell(row_index, status_col_idx, 'Failed - Retry')
-                try:
-                    retry_google_api(_mark_sheet_failed, max_retries=3, initial_delay=2, action_name=f"Mark Row {row_index} Failed")
-                except Exception:
-                    pass
+                if row_index != -1 and sheet:
+                    print(f"❌ Row {row_index} was NOT published to Telegram or YouTube. Preserving status as 'Failed - Retry'.")
+                    def _mark_sheet_failed():
+                        sheet.update_cell(row_index, status_col_idx, 'Failed - Retry')
+                    try:
+                        retry_google_api(_mark_sheet_failed, max_retries=3, initial_delay=2, action_name=f"Mark Row {row_index} Failed")
+                    except Exception:
+                        pass
 
             processed_count += 1
 

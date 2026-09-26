@@ -152,7 +152,7 @@ def call_ai_api(messages: list, temperature: float = 0.3) -> Tuple[str, str, boo
                         "contents": [{"parts": [{"text": gemini_prompt}]}],
                         "generationConfig": {
                             "temperature": temperature,
-                            "maxOutputTokens": 4096
+                            "maxOutputTokens": 8192
                         }
                     }
                     g_res = requests.post(g_url, headers={"Content-Type": "application/json"}, json=g_payload, timeout=40)
@@ -282,14 +282,20 @@ def build_intent_adaptive_prompts(
 ======================================================================
 EDITORIAL MANDATE: SALARY, PERKS & PROMOTION HIERARCHY GUIDE
 ======================================================================
-1. EXECUTIVE PAY MATRIX (7th Pay Commission Level, Pay Band, Grade Pay).
+1. OFFICIAL SCALE OF PAY GROUNDING (ORSP RULES 2017 & 7TH PAY COMMISSION):
+   - Ground all salary figures strictly in the official Odisha Revised Scales of Pay (ORSP) Rules, 2017.
+   - For Group B (OSSC CGL, Sub-Inspector): Level-9 (Cell 1: ₹35,400 to ₹1,12,400) or Level-10 (Cell 1: ₹44,900 to ₹1,42,400).
+   - For Group A (OPSC OAS / OFS): Level-12 (Cell 1: ₹56,100 to ₹1,77,500).
+   - Dearness Allowance (DA): Apply prevailing state rate (50%+).
+   - House Rent Allowance (HRA): 18% for Bhubaneswar/Cuttack, 9% for other district headquarters.
+   - Zero-Hallucination: Do NOT quote obsolete 6th Pay Commission grade pays or fabricated numbers.
 2. IN-HAND TAKE-HOME SALARY CALCULATION HTML TABLE:
-   - Provide a clean <table> with columns: Component | Percentage / Rate | Amount (₹).
-   - Rows: Basic Pay, DA, HRA, Medical Allowance, Gross Salary, NPS (10%), Professional Tax, Net In-Hand Salary.
-3. ALLOWANCES & GOVERNMENT BENEFITS (Quarters / HRA categories, medical reimbursement, travel perks).
-4. 10-YEAR CAREER GROWTH & PROMOTION HIERARCHY TREE (Entry level -> Senior posts -> Departmental exam criteria).
-5. JOB PROFILE & DAILY RESPONSIBILITIES (Office duties, field inspections, public dealing).
-6. 4 FREQUENTLY ASKED QUESTIONS (Probation period pay, yearly increments, pension benefits).
+   - Provide a clean <table> with columns: Component | Percentage / Calculation | Amount (₹).
+   - Rows: Basic Pay, DA, HRA, Medical Allowance, Gross Salary, NPS Employee Tier-1 (10% of Basic+DA), Professional Tax (₹200), Net In-Hand Take-Home Salary.
+3. ALLOWANCES & GOVERNMENT BENEFITS (Government quarters entitlement, medical reimbursement under OSTF, travel concessions).
+4. 10-YEAR CAREER GROWTH & PROMOTION HIERARCHY TREE (Entry Cadre -> Senior Assistant / Section Officer / DSP / Joint Secretary -> Departmental exam criteria).
+5. JOB PROFILE & DAILY RESPONSIBILITIES (Office administration, field inspections, public grievance handling, reporting hierarchy).
+6. 4 FREQUENTLY ASKED QUESTIONS (Probation period pay policy, yearly increment of 3%, NPS vs GPF).
 """
     elif archetype == "LIFESTYLE_ROUTINE":
         archetype_instructions = """

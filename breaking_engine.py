@@ -350,6 +350,10 @@ def clean_utf8_text(text: str) -> str:
     text = text.replace("\u00c2\u00bb", "").replace("\u00c2\u00ab", "").replace("\u00c2", "")
     text = text.replace("»", "").replace("«", "")
     text = text.replace("â€“", "–").replace("â€”", "—").replace("â€™", "'").replace("â€œ", '"').replace("â€ ", '"')
+    # Strip unrendered template placeholders and JS artifacts
+    text = re.sub(r'\[(topic|district|option|exam|insert|placeholder|name)[^\]]*\]', '', text, flags=re.IGNORECASE)
+    text = text.replace("[object Object]", "")
+    text = re.sub(r'\b(undefined|null)\b', '', text)
     return re.sub(r'\s+', ' ', text).strip()
 
 def truncate_word_safe(text: str, max_len: int = 80) -> str:
@@ -521,7 +525,16 @@ You are the Official Exam Alert Specialist & Senior Content Specialist for Odish
 Your primary directive is to AUTONOMOUSLY THINK, EVALUATE, and DYNAMICALLY EXTRACT 100% complete, non-truncated exam alert details from official notices.
 
 ======================================================================
-1. INTELLECTUAL RELEVANCE EVALUATION & 20-CATEGORY GATEKEEPER
+1. ZERO-HALLUCINATION GROUNDING & STRICT SOURCE AUTHENTICITY MANDATE
+======================================================================
+- ZERO TOLERANCE FOR FABRICATED DATA: Every date, vacancy count, and advertisement number MUST be grounded in the official notice text provided.
+- UNVERIFIED METRICS: If the vacancy figure is not explicitly detailed in the notice, you MUST output "Refer to Official Notice PDF". NEVER guess, hallucinate, or extrapolate vacancy figures.
+- TENTATIVE/UNANNOUNCED DATES: If the exam date or schedule is marked "to be intimated later" or not explicitly stated, you MUST output "To Be Intimated Later" or "Check Official Schedule". NEVER invent dates.
+- EXACT ADVT / NOTIFICATION NO: Extract the exact recruitment reference (e.g., "Advt No. IIE-58/2024/4125/OSSC") verbatim.
+- PROHIBITION OF GHOST CLAIMS: Never assert syllabus changes or application re-openings unless verbatim in the notice text.
+
+======================================================================
+2. INTELLECTUAL RELEVANCE EVALUATION & 20-CATEGORY GATEKEEPER
 ======================================================================
 Analyze the incoming raw notice text critically:
 • APPROVED RECRUITMENT NOTIFICATION CATEGORIES (Accept & Assign category_code 1 to 20):
@@ -533,7 +546,7 @@ Analyze the incoming raw notice text critically:
   - IF REJECTED: Return "status": "REJECT" and provide a clear "reason".
 
 ======================================================================
-2. RECRUITMENT DOMAIN KNOWLEDGE & UN-TRUNCATED EXAM TITLES
+3. RECRUITMENT DOMAIN KNOWLEDGE & UN-TRUNCATED EXAM TITLES
 ======================================================================
 Use your deep knowledge of competitive exam boards to recognize complete exam titles:
 • OSSC: Combined Graduate Level (CGL) Recruitment Examination, Combined Higher Secondary Level (CHSL), Combined Technical Services (CTS), Junior Fisheries Technical Assistant, Accountant, Vital Statistics Assistant.
@@ -546,12 +559,12 @@ Use your deep knowledge of competitive exam boards to recognize complete exam ti
 CRITICAL RULE: NEVER TRUNCATE EXAM TITLES (e.g. NEVER write "Combined Graduate" — ALWAYS write "Combined Graduate Level (CGL) Recruitment 2025").
 
 ======================================================================
-3. DYNAMIC CONTEXT EXTRACTION & RICH HIGHLIGHT BULLETS
+4. DYNAMIC CONTEXT EXTRACTION & RICH HIGHLIGHT BULLETS
 ======================================================================
 Extract specific details dynamically from the real notice text (do NOT use static placeholders):
 - Extract the real Advertisement/Notice Number (e.g. "Advt No. IIE-58/2024/4125/OSSC")
 - Extract the real Post Names & Cadres (e.g. "Auditor, Inspector of Supplies, Junior Assistant")
-- Extract the real Vacancy Count (e.g. "595 Posts") or "Refer to Official Notification PDF"
+- Extract the real Vacancy Count (e.g. "595 Posts") or "Refer to Official Notice PDF"
 - Extract the real Stage & Dates (e.g. "Preliminary Exam: 20-Oct-2026 | Admit Card: 10-Oct-2026")
 - Extract 3 to 4 concise, high-value highlight bullets with bold labels (e.g. "<b>Advt No:</b> 4125/OSSC", "<b>Exam Date:</b> 20 October 2026", "<b>Admit Card Download:</b> Active from 10 October 2026", "<b>Official Link:</b> www.ossc.gov.in")
 - Ensure 100% complete sentences with ZERO trailing "..."
@@ -565,7 +578,7 @@ Return ONLY valid JSON matching this schema:
   "exam_board_full": "Odisha Staff Selection Commission",
   "exam_name": "Combined Graduate Level (CGL) Recruitment Examination 2025",
   "headline": "OSSC CGL 2025 Preliminary Exam Schedule Announced",
-  "vacancies": "595 Posts" or "Refer to Official Notice",
+  "vacancies": "595 Posts" or "Refer to Official Notice PDF",
   "dates": "20 October 2026" or "Check Official Schedule",
   "official_link": "https://...",
   "bullets": [
@@ -589,10 +602,10 @@ Return ONLY valid JSON matching this schema:
         "model": model_name,
         "messages": [
             {"role": "system", "content": system_prompt.strip()},
-            {"role": "user", "content": f"Official Link Provided: {link_url}\n\nNotice Text:\n{raw_notice_text[:4000]}"}
+            {"role": "user", "content": f"Official Link Provided: {link_url}\n\nNotice Text:\n{raw_notice_text[:35000]}"}
         ],
         "temperature": 0.1,
-        "max_tokens": 1000,
+        "max_tokens": 3000,
         "response_format": {"type": "json_object"}
     }
 
@@ -606,7 +619,7 @@ Return ONLY valid JSON matching this schema:
         gemini_last_err = ""
         GEMINI_MODELS = ["gemini-3.5-flash", "gemini-3.5-flash-lite", "gemini-3.6-flash", "gemini-3.7-flash", "gemini-3.8-flash", "gemini-3.1-flash-lite"]
         if GEMINI_API_KEY:
-            gemini_prompt = f"{system_prompt.strip()}\n\nOfficial Link Provided: {link_url}\n\nNotice Text:\n{raw_notice_text[:4000]}\n\nCRITICAL: Output ONLY valid pure JSON starting with '{{' and ending with '}}'."
+            gemini_prompt = f"{system_prompt.strip()}\n\nOfficial Link Provided: {link_url}\n\nNotice Text:\n{raw_notice_text[:35000]}\n\nCRITICAL: Output ONLY valid pure JSON starting with '{{' and ending with '}}'."
             for g_model in GEMINI_MODELS:
                 if not gemini_last_err.startswith("__success"):
                     max_model_attempts = 2
@@ -619,7 +632,7 @@ Return ONLY valid JSON matching this schema:
                                 "generationConfig": {
                                     "response_mime_type": "application/json",
                                     "temperature": 0.1,
-                                    "maxOutputTokens": 1500
+                                    "maxOutputTokens": 3000
                                 }
                             }
                             g_res = requests.post(g_url, headers={"Content-Type": "application/json"}, json=g_payload, timeout=40)

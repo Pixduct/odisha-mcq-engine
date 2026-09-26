@@ -223,8 +223,11 @@ def call_ai_synthesizer(news_item: Dict[str, Any]) -> Optional[Dict[str, Any]]:
         "   - Break long paragraphs into short, comfortable 2-3 sentence paragraphs.\n"
         "   - Use formatted unordered lists (`<ul class=\"list-disc pl-5 space-y-1.5 my-3\"><li>...</li></ul>`) for key provisions.\n"
         "   - Embed high-yield static GK links and constitutional articles where applicable.\n"
-        "5. HIGH-YIELD EXAM MCQS REQUIREMENT (TARGET: UP TO 5 IMPORTANT MCQS PER TOPIC):\n"
-        "   - Generate UP TO 5 HIGHLY IMPORTANT, exam-aligned MCQs in `mcqs` array. Focus on core syllabus concepts, constitutional articles, nodal ministries, static GK background, and analytical impacts.\n"
+        "5. HIGH-YIELD EXAM MCQS REQUIREMENT (TARGET: UP TO 5 HIGH-YIELD MCQS WITH DISTRACTOR TRAPS):\n"
+        "   - Generate UP TO 5 HIGH-YIELD, exam-aligned MCQs in `mcqs` array. Focus on core syllabus concepts, constitutional articles, nodal ministries, static GK background, and analytical impacts.\n"
+        "   - ZERO-HALLUCINATION INTEGRITY: Questions, options, and explanations must be 100% grounded in authentic facts. Never guess or fabricate data.\n"
+        "   - PEDAGOGICAL DISTRACTOR ENGINEERING: Each distractor (Options A, B, C, D) must represent an authentic exam trap (e.g. adjacent constitutional article, closely related ministry, adjacent calendar year, or common candidate misconception) rather than an obvious joke or nonsensical option.\n"
+        "   - TWO-PART DETAILED EXPLANATION: In `explanation`, clearly state: 1) Why the correct option is right, and 2) Why the primary trap option is incorrect.\n"
         "   - DO NOT generate shallow, trivial, or generic questions. If a topic has rich exam potential, generate 5 strong MCQs. If the content has less depth, generate as many strong MCQs as naturally fit (e.g. 3 or 4). It is NOT mandatory to force 5 questions if the content does not support it.\n"
         "   - Each MCQ object must have `question`, `options` [A, B, C, D], `correct_answer` ('A', 'B', 'C', or 'D'), and detailed `explanation`.\n\n"
         "Return ONLY valid JSON matching this schema:\n"
@@ -255,6 +258,7 @@ def call_ai_synthesizer(news_item: Dict[str, Any]) -> Optional[Dict[str, Any]]:
             {"role": "user", "content": user_prompt}
         ],
         "temperature": 0.3,
+        "max_tokens": 4096,
         "response_format": {"type": "json_object"}
     }
 
@@ -305,7 +309,7 @@ def call_ai_synthesizer(news_item: Dict[str, Any]) -> Optional[Dict[str, Any]]:
                             "generationConfig": {
                                 "response_mime_type": "application/json",
                                 "temperature": 0.2,
-                                "maxOutputTokens": 3000
+                                "maxOutputTokens": 8192
                             }
                         }
                         g_res = requests.post(g_url, headers={"Content-Type": "application/json"}, json=g_payload, timeout=35)

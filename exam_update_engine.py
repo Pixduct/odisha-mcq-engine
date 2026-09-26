@@ -417,7 +417,7 @@ def extract_pdf_text_from_url(pdf_url: str, max_pages: int = 2) -> str:
                     pages_text.append(p_txt.strip())
             extracted = "\n".join(pages_text)
             logger.info(f"✅ Extracted {len(extracted)} characters from PDF notice.")
-            return extracted[:4000]
+            return extracted[:35000]
         except ImportError:
             logger.warning("⚠️ pypdf not installed. Falling back to raw regex extraction...")
         except Exception as pdf_parse_err:

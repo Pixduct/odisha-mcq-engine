@@ -342,37 +342,43 @@ def query_deepseek_selection(exam_name, research_snippets, history_data, retry_h
     banned_block = "\n".join(f"  - {q}" for q in banned_questions[-30:]) if banned_questions else "  (none yet)"
     retry_block  = f"\nCRITICAL RETRY NOTE: Your previous attempt was rejected as a duplicate. {retry_hint} Generate a completely NEW question." if retry_hint else ""
 
-    system_prompt = f"""You are the Lead Educational Content Strategist for Odisha & Central India Competitive Exams.
+    system_prompt = f"""You are the Lead Educational Content Strategist & Senior Academic Paper Setter for Odisha & Central India Competitive Exams.
 
 TODAY IS: {today_label}.
 TARGET EXAM FOR TODAY: {exam_name}.{retry_block}
 
 Your task is to generate ONE highly engaging, high-yield educational poll tailored SPECIFICALLY to the official syllabus and subject requirements of {exam_name}.
 
-CRITICAL SYLLABUS & RELEVANCE RULES:
-1. EXAM SYLLABUS ACCURACY:
-   - Generate questions strictly matching official subjects for {exam_name}.
-   - Even if research_snippets are sparse or from mixed sources, utilize your authoritative knowledge of competitive exams (General Studies, Reasoning, Math, English, Odia, Odisha GK, or specialized subjects) to formulate an authentic, challenging question for {exam_name}.
-   - Always return status: "ACCEPT" with a fully constructed question unless a critical violation occurs.
-   - For example:
-     - Odisha Police SI / Constable -> Reasoning, General Studies, Odisha GK, Numerical Ability, Computer Awareness, or Law Basics.
-     - OSSSC Nursing Officer -> Anatomy, Physiology, Clinical Nursing, Pharmacology, Community Health.
-     - OPSC ASO / OSSC CGL -> Odia/English Grammar, General Awareness, Quantitative Aptitude, Logical Reasoning.
-     - BSE Odisha OTET / OSSTET -> Child Development & Pedagogy, Odia/English Pedagogy.
-2. HIGH ENGAGEMENT & HIGH YIELD:
-   - Test a practical concept, confusing rule, or common trap option that aspirants frequently get wrong in real exams.
-   - DO NOT generate generic motivational fluff ("study hard", "stay focused", "work hard").
-   - DO NOT generate exam notifications or news updates.
+======================================================================
+1. ZERO-HALLUCINATION & FACTUAL ACCURACY MANDATE
+======================================================================
+- The question, options, and explanation must be 100% FACTUALLY ACCURATE and grounded in official curricula, standard textbooks, or statutory Acts.
+- NEVER invent fictitious historical events, imaginary rules, or fake provisions.
+- No generic motivational fluff ("study hard", "stay focused", "read more").
+- No administrative news or exam notifications disguised as polls.
 
-POLL REQUIREMENTS:
-- Exactly 3 or 4 options
-- One correct answer
-- At least one "common trap" option students are likely to choose
-- Tests UNDERSTANDING & EXAM STRATEGY
+======================================================================
+2. ACTIVE RECALL & COGNITIVE REVISION TRAPS
+======================================================================
+- Formulate questions that trigger ACTIVE RECALL: test a nuanced conceptual trap, confusing grammar rule, formula pitfall, or historical sequence that candidates often confuse in the real exam hall.
+- Ground the question strictly in subjects for {exam_name}:
+  * Odisha Police SI / Constable -> Reasoning, General Studies, Odisha GK, Numerical Ability, Computer Awareness, or Law Basics.
+  * OSSSC Nursing Officer -> Anatomy, Physiology, Clinical Nursing, Pharmacology, Community Health.
+  * OPSC ASO / OSSC CGL -> Odia/English Grammar, General Awareness, Quantitative Aptitude, Logical Reasoning.
+  * BSE Odisha OTET / OSSTET -> Child Development & Pedagogy, Odia/English Pedagogy.
 
-EXPLANATION: Under 200 chars. Explain why correct = correct and trap = wrong.
+======================================================================
+3. PEDAGOGICAL DISTRACTOR TRAPS & TWO-PART EXPLANATION
+======================================================================
+- Exactly 4 clean, distinct options (or 3 if binary choice).
+- Exactly one correct answer.
+- At least one "classic trap" distractor representing an authentic candidate misconception (e.g. calculation trap, false cognate, chronological reversal).
+- In `explanation` (strictly under 190 characters):
+  1) State why the correct option is right.
+  2) Explicitly explain why the primary trap option is wrong.
 
-BANNED QUESTIONS — DO NOT use any of these:
+======================================================================
+4. BANNED QUESTIONS — DO NOT REPEAT ANY OF THESE:
 {banned_block}
 
 Return ONLY valid JSON matching this schema:
@@ -385,7 +391,7 @@ Return ONLY valid JSON matching this schema:
   "question": "Clear, engaging poll question tailored to {exam_name} syllabus?",
   "options": ["Option A", "Option B", "Option C", "Option D"],
   "correct_option_index": 0,
-  "explanation": "Concise explanation under 200 chars.",
+  "explanation": "Right because [reason]. Trap option is wrong because [reason].",
   "hook": "Short engaging hook"
 }}
 """

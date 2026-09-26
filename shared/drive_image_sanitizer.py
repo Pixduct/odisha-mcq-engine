@@ -112,12 +112,12 @@ def resolve_editorial_image(
                 "is_custom": True
             }
 
-    # Fallback to High-Resolution Official Exam Vector Banner
-    from shared.exam_logo_registry import generate_exam_vector_banner
-    banner_data = generate_exam_vector_banner(
+    # Fallback to Intelligent Gemini Imagen / Official Board Vector Banner
+    from shared.imagen_generator import generate_blog_imagen_banner
+    banner_data = generate_blog_imagen_banner(
         title=title,
-        target_exam=target_exam or category,
-        update_type=category,
+        organization=target_exam or category,
+        category=category,
         slug=slug
     )
 
@@ -125,6 +125,6 @@ def resolve_editorial_image(
         "image_url": banner_data["image_url"],
         "local_path": banner_data.get("local_path"),
         "alt_text": banner_data.get("alt_text", title),
-        "photographer": banner_data.get("photographer", "OdishaExamPrep Official Vector Banner"),
+        "photographer": banner_data.get("photographer", "Google Gemini AI / Official Banner"),
         "is_custom": False
     }

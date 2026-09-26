@@ -132,6 +132,18 @@ BOARD_THEMES = {
         "gold_accent": (245, 158, 11),
         "icon_symbol": "🏦"
     },
+    "HIGH COURT": {
+        "full_name": "High Court of Orissa, Cuttack",
+        "short_name": "ORISSA HIGH COURT",
+        "bg_top": (15, 23, 42),        # #0F172A Deep Midnight Judicial Navy
+        "bg_bottom": (10, 15, 30),     # #0A0F1E
+        "accent": (217, 119, 6),       # #D97706 Judicial Bronze / Gold
+        "accent_glow": (245, 158, 11), # #F59E0B
+        "badge_bg": (180, 83, 9),      # #B45309 Rich Gold-Brown
+        "badge_text": (255, 255, 255),
+        "gold_accent": (251, 191, 36),
+        "icon_symbol": "⚖️"
+    },
     "GENERAL_STRATEGY": {
         "full_name": "OdishaExamPrep Masterclass & Strategy Guide",
         "short_name": "EXAM PREPARATION & STRATEGY",
@@ -150,7 +162,9 @@ DEFAULT_THEME = BOARD_THEMES["GENERAL_STRATEGY"]
 
 def detect_exam_board_key(text: str) -> str:
     lower = text.lower()
-    if "opsc" in lower or "oas" in lower:
+    if "high court" in lower or "orissa high court" in lower or "ohc" in lower or "judiciary" in lower or "court" in lower:
+        return "HIGH COURT"
+    elif "opsc" in lower or "oas" in lower:
         return "OPSC"
     elif "ossc" in lower and "osssc" not in lower:
         return "OSSC"

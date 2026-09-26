@@ -28,7 +28,7 @@ from shared.supabase_client import SupabaseBlogClient
 from shared.source_validator import SourceValidator
 from shared.seo_validator import SEOValidator
 from shared.duplicate_detector import DuplicateDetector
-from shared.pexels_image_fetcher import fetch_pexels_featured_image
+from shared.imagen_generator import generate_blog_imagen_banner
 
 logger = setup_logger("ExamUpdateEngine")
 
@@ -976,22 +976,17 @@ def main():
                 save_json_file(SEEN_NOTICES_FILE, seen_notices)
                 continue
 
-            # Real Stock Photo search from Pexels API (NO AI image generation)
-            img_query = article_data.get("image_search_query") or f"{org_name} exam study"
-            pexels_img = fetch_pexels_featured_image(
-                img_query,
-                article_slug=article_data.get("slug", ""),
+            # Context-Aware Gemini Imagen / Official Board Vector Banner generation
+            imagen_banner = generate_blog_imagen_banner(
                 title=article_data.get("title", ""),
+                organization=org_name,
                 category="Exam Update",
-                target_exam=org_name
+                context_summary=article_data.get("summary") or article_data.get("intro_hook", ""),
+                slug=article_data.get("slug", "")
             )
-            if pexels_img:
-                article_data["featured_image"] = pexels_img["image_url"]
-                article_data["featured_image_alt"] = pexels_img["alt_text"]
-                article_data["photographer"] = pexels_img["photographer"]
-            else:
-                article_data["featured_image"] = "https://images.pexels.com/photos/3184325/pexels-photo-3184325.jpeg?auto=compress&cs=tinysrgb&w=1200"
-                article_data["featured_image_alt"] = "Official exam notification update"
+            article_data["featured_image"] = imagen_banner["image_url"]
+            article_data["featured_image_alt"] = imagen_banner.get("alt_text", article_data.get("title", ""))
+            article_data["photographer"] = imagen_banner.get("photographer", "Google Gemini AI (Imagen)")
 
             # Technical SEO Validation
             article_data = SEOValidator.validate_article(article_data)

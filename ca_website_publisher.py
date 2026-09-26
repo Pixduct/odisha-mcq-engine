@@ -17,7 +17,7 @@ sys.path.append(SCRIPT_DIR)
 
 from ca_scraper import scrape_current_affairs
 from shared.supabase_client import SupabaseBlogClient
-from shared.pexels_image_fetcher import fetch_pexels_featured_image
+from shared.imagen_generator import generate_blog_imagen_banner
 from shared.ai_parser import parse_ai_json_response
 from shared.telegram import send_admin_alert as send_telegram_alert
 
@@ -508,22 +508,19 @@ def publish_daily_ca_website():
 
         if not slug:
             slug = re.sub(r'[^a-z0-9]+', '-', title.lower()).strip('-')
-        pexels_res = fetch_pexels_featured_image(
-            search_query=title,
-            article_slug=slug,
+        
+        imagen_res = generate_blog_imagen_banner(
             title=title,
+            organization="Current Affairs",
             category=category,
-            target_exam="Current Affairs"
+            context_summary=digest.get("summary", ""),
+            slug=slug
         )
-        if isinstance(pexels_res, dict):
-            img_url = pexels_res.get("image_url") or "https://images.pexels.com/photos/3184325/pexels-photo-3184325.jpeg?auto=compress&cs=tinysrgb&w=1200"
-        elif isinstance(pexels_res, str) and pexels_res.startswith("http"):
-            img_url = pexels_res
-        else:
-            img_url = "https://images.pexels.com/photos/3184325/pexels-photo-3184325.jpeg?auto=compress&cs=tinysrgb&w=1200"
+        img_url = imagen_res.get("image_url") or "https://www.odishaexamprep.in/blog_covers/banner_general_strategy_ca.png"
 
         digest["image_url"] = img_url
         digest["featured_image"] = img_url
+        digest["photographer"] = imagen_res.get("photographer", "Google Gemini AI (Imagen)")
 
         try:
             res = client.insert_current_affairs(digest)

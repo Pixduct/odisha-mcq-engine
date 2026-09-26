@@ -265,16 +265,18 @@ def normalize_and_heal_mcq(row):
     
     stem_indicators = [
         "is defined as", "is known as", "refers to", "characterized by", "means that",
-        "which of the following", "ending with the", "beginning with", "period of"
+        "which of the following", "ending with the", "beginning with", "period of", "vested with", "under the"
     ]
     should_merge = False
     if opt_a:
-        is_short_stem = len(question_text.split()) <= 6 or len(question_text) < 35
-        ends_with_colon = opt_a.endswith(":")
-        ends_with_open = question_text.lower().rstrip().endswith((",", "in", "the", "for", "with", "during", "at", "by", "of", "to"))
+        is_short_stem = len(question_text.split()) <= 8 or len(question_text) < 45
+        ends_with_colon = opt_a.endswith(":") and not opt_b.endswith(":")
+        ends_with_open = question_text.lower().rstrip().endswith((
+            ",", "in", "the", "for", "with", "during", "at", "by", "of", "to", "are", "is", "was", "were", "be", "as", "under", "which", "that"
+        ))
         contains_stem_phrase = any(phrase in opt_a.lower() for phrase in stem_indicators)
         
-        if (is_short_stem or ends_with_open) and (ends_with_colon or contains_stem_phrase):
+        if ends_with_colon or ((is_short_stem or ends_with_open) and contains_stem_phrase):
             should_merge = True
 
     if should_merge:

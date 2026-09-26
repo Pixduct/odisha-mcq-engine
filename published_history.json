@@ -334,5 +334,21 @@
     "correct_option_index": 3,
     "explanation": "Kalahandi is under the Southern Revenue Division. Sambalpur, Sundargarh, and Mayurbhanj are part of the Northern Division.",
     "hook": "Test your Odisha Admin GK! 🏛️"
+  },
+  {
+    "date": "2026-09-26",
+    "exam": "IBPS PO & Clerk",
+    "content_stage": "EXAM_SPECIFIC",
+    "topic": "english_grammar_conditional_sentences",
+    "question": "Which of the following sentences is grammatically correct and appropriate for an IBPS PO exam?",
+    "options": [
+      "Had I realized the gravity of the situation, I would have intervened earlier.",
+      "If I would have realized the gravity of the situation, I had intervened earlier.",
+      "Had I realized the gravity of the situation, I will intervene earlier.",
+      "If I realized the gravity of the situation, I would have intervened earlier."
+    ],
+    "correct_option_index": 0,
+    "explanation": "Option A uses correct inversion for third conditional ('Had + subject + V3'). Option B & C mix tenses incorrectly. Option D uses simple past instead of past perfect in the 'if' clause.",
+    "hook": "Master the tricky Conditional Sentences frequently asked in IBPS English!"
   }
 ]

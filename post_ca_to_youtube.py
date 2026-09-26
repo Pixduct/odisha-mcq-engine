@@ -128,10 +128,10 @@ def post_ca_to_youtube(image_paths, caption=""):
 
             valid_images = [img for img in image_paths if (img and os.path.exists(img))]
             if valid_images:
-                # CRITICAL: YouTube Community strictly enforces a maximum of 5 images per post.
-                if len(valid_images) > 5:
-                    print(f"ℹ️ YouTube Community allows a maximum of 5 images per post. Clamping {len(valid_images)} slides to top 5.")
-                    valid_images = valid_images[:5]
+                # YouTube Community allows up to 10 images per carousel post.
+                if len(valid_images) > 10:
+                    print(f"ℹ️ YouTube Community allows a maximum of 10 images per post. Clamping {len(valid_images)} slides to 10.")
+                    valid_images = valid_images[:10]
 
                 print(f"🖼️ Activating Image Post mode for {len(valid_images)} images...")
                 img_btn = page.locator("button[aria-label='Add an image']:visible, #image-post-button:visible, button:has-text('Image'):visible, ytd-button-renderer[aria-label*='Image']:visible").first
@@ -221,6 +221,6 @@ def post_ca_to_youtube(image_paths, caption=""):
         return False
 
 if __name__ == "__main__":
-    sample_slides = [os.path.join(SCRIPT_DIR, f"ca_slide_{i}.png") for i in range(1, 6)]
-    sample_caption = "📰 Daily Current Affairs Update — 13 August 2026\n\nTop exam-relevant highlights for OPSC, OSSC, OSSSC & Odisha State Exams:\n\n1. [Schemes And Policies] Odisha Cabinet Approves ₹10,000 Cr Subhadra Yojana\n2. [Appointments And Honours] Manoj Ahuja Appointed as Chief Secretary of Odisha\n3. [Breaking Notices] OPSC Exam Schedule Released for ASO & Civil Services\n4. [Economy And Tech] RBI Keeps Repo Rate Unchanged at 6.5% in MPC Meeting\n5. [General News] Odisha Athletes Win 3 Medals at National Games\n\n🎯 Practice Today's Current Affairs Quiz & Download PDFs:\n👉 https://www.odishaexamprep.in/"
+    sample_slides = [os.path.join(SCRIPT_DIR, f"ca_slide_{i}.png") for i in range(1, 7)]
+    sample_caption = "📰 Daily Current Affairs Update — 26 September 2026\n\nTop exam-relevant highlights for OPSC, OSSC, OSSSC & Odisha State Exams:\n\n1. [Odisha State News] Odisha Launches DIPTI Portal & Welfare Hikes\n2. [Indian Polity] AP High Court Closes Three-Capitals Petitions\n3. [Indian Polity] SC Orders Demolition of Meerut Illegal Colonies\n4. [Economy & Energy] RBI Intervenes to Cushion Rupee Amid Rate Stance\n5. [Science & Tech] DRDO Partners for 20 mK Quantum Refrigerator\n6. [International Relations] PM Modi Embarks on Strategic Central Asia Visit\n\n🎯 Practice Today's Current Affairs Quiz & Download PDFs:\n👉 https://www.odishaexamprep.in/"
     post_ca_to_youtube(sample_slides, sample_caption)

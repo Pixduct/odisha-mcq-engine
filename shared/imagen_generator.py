@@ -191,7 +191,7 @@ def generate_blog_imagen_banner(
     GUARANTEES ZERO MISMATCHED STOCK PHOTOS.
     """
     api_key = get_gemini_api_key()
-    safe_slug = re.sub(r'[^a-z0-9]+', '-', (slug or title).lower()).strip('-')[:50]
+    safe_slug = re.sub(r'[^a-z0-9]+', '-', (slug or title or "update").lower()).strip('-')[:50] or "update"
 
     if api_key:
         print(f"[Gemini Imagen] Synthesizing intelligent Art Director prompt for '{title[:45]}...'")

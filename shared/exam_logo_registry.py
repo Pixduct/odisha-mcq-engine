@@ -161,7 +161,7 @@ BOARD_THEMES = {
 DEFAULT_THEME = BOARD_THEMES["GENERAL_STRATEGY"]
 
 def detect_exam_board_key(text: str) -> str:
-    lower = text.lower()
+    lower = str(text or "").lower()
     if "high court" in lower or "orissa high court" in lower or "ohc" in lower or "judiciary" in lower or "court" in lower:
         return "HIGH COURT"
     elif "opsc" in lower or "oas" in lower:
@@ -185,8 +185,10 @@ def detect_exam_board_key(text: str) -> str:
     return "GENERAL_STRATEGY"
 
 def detect_update_badge(title: str, update_type: str = "") -> str:
-    combined = f"{title} {update_type}".lower()
-    if any(k in combined for k in ["admit card", "hall ticket", "call letter"]):
+    combined = f"{str(title or '')} {str(update_type or '')}".lower()
+    if any(k in combined for k in ["mock test", "test series", "negative marking", "practice set"]):
+        return "MOCK TEST MASTERY"
+    elif any(k in combined for k in ["admit card", "hall ticket", "call letter"]):
         return "ADMIT CARD RELEASED"
     elif any(k in combined for k in ["exam date", "schedule", "exam time", "timing", "postponed", "rescheduled"]):
         return "EXAM DATE ANNOUNCED"
@@ -194,12 +196,10 @@ def detect_update_badge(title: str, update_type: str = "") -> str:
         return "RESULTS & MERIT LIST"
     elif any(k in combined for k in ["answer key", "objection", "response sheet", "key release"]):
         return "ANSWER KEY RELEASED"
-    elif any(k in combined for k in ["syllabus", "exam pattern", "scheme", "marking"]):
+    elif any(k in combined for k in ["syllabus", "exam pattern", "marking scheme", "scheme of exam"]):
         return "OFFICIAL SYLLABUS"
     elif any(k in combined for k in ["vacancy", "recruitment", "notification", "apply online", "form fill up", "posts"]):
         return "OFFICIAL RECRUITMENT"
-    elif any(k in combined for k in ["mock test", "test series", "negative marking", "score"]):
-        return "MOCK TEST MASTERY"
     elif any(k in combined for k in ["speed", "math", "aptitude", "calculation", "arithmetic"]):
         return "QUANTITATIVE APTITUDE"
     elif any(k in combined for k in ["reasoning", "puzzle", "syllogism"]):
@@ -354,7 +354,7 @@ def generate_exam_vector_banner(
     draw.text((width - 430, footer_y + 4), seal_text, fill=(52, 211, 153), font=font_footer)
 
     # 9. Save Image File
-    safe_slug = re.sub(r'[^a-z0-9]+', '-', (slug or title).lower()).strip('-')[:50]
+    safe_slug = re.sub(r'[^a-z0-9]+', '-', (slug or title or "update").lower()).strip('-')[:50] or "update"
     filename = f"banner_{board_key.lower().replace(' ', '_')}_{safe_slug}.png"
     file_path = os.path.join(COVERS_DIR, filename)
 

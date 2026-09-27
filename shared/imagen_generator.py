@@ -2,11 +2,22 @@ import os
 import sys
 import re
 import json
-import base64
 import requests
 from io import BytesIO
-from PIL import Image
-from typing import Dict, Any, Optional
+from PIL import Image, ImageDraw, ImageFont, ImageFilter
+from typing import Dict, Any, Optional, List
+
+try:
+    from dotenv import load_dotenv
+    load_dotenv()
+    cur = os.path.dirname(os.path.abspath(__file__))
+    for _ in range(3):
+        p_env = os.path.join(cur, ".env")
+        if os.path.exists(p_env):
+            load_dotenv(p_env)
+        cur = os.path.dirname(cur)
+except Exception:
+    pass
 
 if hasattr(sys.stdout, 'reconfigure'):
     try:
@@ -26,6 +37,27 @@ else:
 
 os.makedirs(COVERS_DIR, exist_ok=True)
 
+# Import branding and board themes from exam_logo_registry
+try:
+    from shared.exam_logo_registry import BOARD_THEMES, DEFAULT_THEME, detect_exam_board_key, detect_update_badge
+except ImportError:
+    try:
+        from exam_logo_registry import BOARD_THEMES, DEFAULT_THEME, detect_exam_board_key, detect_update_badge
+    except ImportError:
+        BOARD_THEMES = {}
+        DEFAULT_THEME = {
+            "full_name": "Odisha State Examination Portal",
+            "short_name": "ODISHA GOVT",
+            "accent": (37, 99, 235),
+            "accent_glow": (59, 130, 246),
+            "badge_bg": (37, 99, 235),
+            "badge_text": (255, 255, 255),
+            "gold_accent": (245, 158, 11)
+        }
+        def detect_exam_board_key(t): return "GENERAL_STRATEGY"
+        def detect_update_badge(t, u=""): return "OFFICIAL NOTIFICATION"
+
+
 def get_gemini_api_key() -> Optional[str]:
     """Retrieves GEMINI_API_KEY from environment."""
     key = os.getenv("GEMINI_API_KEY") or os.getenv("VITE_GEMINI_API_KEY")
@@ -33,151 +65,287 @@ def get_gemini_api_key() -> Optional[str]:
         return key.strip()
     return None
 
-def synthesize_ai_art_prompt(
+
+def get_best_font(size: int, bold: bool = False):
+    """Safely loads system or default TrueType font across Windows & Linux runners."""
+    candidates = [
+        "C:\\Windows\\Fonts\\segoeuib.ttf" if bold else "C:\\Windows\\Fonts\\segoeui.ttf",
+        "C:\\Windows\\Fonts\\arialbd.ttf" if bold else "C:\\Windows\\Fonts\\arial.ttf",
+        "C:\\Windows\\Fonts\\calibrib.ttf" if bold else "C:\\Windows\\Fonts\\calibri.ttf",
+        "/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf" if bold else "/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf",
+        "/usr/share/fonts/truetype/liberation/LiberationSans-Bold.ttf" if bold else "/usr/share/fonts/truetype/liberation/LiberationSans-Regular.ttf",
+        "/usr/share/fonts/truetype/freefont/FreeSansBold.ttf" if bold else "/usr/share/fonts/truetype/freefont/FreeSans.ttf"
+    ]
+    for p in candidates:
+        if os.path.exists(p):
+            try:
+                return ImageFont.truetype(p, size)
+            except Exception:
+                pass
+    return ImageFont.load_default()
+
+
+def wrap_text(text: str, font, max_width: int, draw: ImageDraw.ImageDraw) -> List[str]:
+    """Wraps text into multiple lines fitting within max_width pixels."""
+    words = text.split()
+    lines = []
+    curr = []
+    for w in words:
+        test = " ".join(curr + [w])
+        box = draw.textbbox((0, 0), test, font=font)
+        if (box[2] - box[0]) <= max_width:
+            curr.append(w)
+        else:
+            if curr:
+                lines.append(" ".join(curr))
+            curr = [w]
+    if curr:
+        lines.append(" ".join(curr))
+    return lines
+
+
+def extract_card_metadata(
     title: str,
     organization: str = "",
     category: str = "",
     context_summary: str = "",
     api_key: str = ""
-) -> str:
+) -> Dict[str, Any]:
     """
-    Acts as an AI Art Director (like DALL-E / ChatGPT):
-    Analyzes blog context and reasons out a dramatic, photorealistic, text-free visual scene.
+    Intelligently derives structured executive card metadata:
+    - clean_title: Punchy, unbloated headline (under 55 chars)
+    - summary: Crisp 1-2 sentence executive summary (under 160 chars)
+    - key_points: Exactly 3 structured micro-card objects [label, value, sub]
+    Uses Gemini 3.5 Flash Lite first, with guaranteed deterministic fallback.
     """
-    system_instruction = (
-        "You are an expert visual Art Director for OdishaExamPrep, an Indian competitive examination "
-        "and public governance portal. Your job is to formulate a single, highly detailed, photorealistic "
-        "scene prompt for an AI image generator (16:9 widescreen composition).\n\n"
-        "CRITICAL RULES:\n"
-        "1. Setting & Context: MUST reflect dignified, authentic Indian administrative, judicial, or examination environments "
-        "(e.g., historic colonial-era High Court judicial courtroom chamber with soaring arches, polished teakwood benches, "
-        "or a dignified state secretariat administrative office with official documents and Ashoka Lion Capital emblem, "
-        "or a grand public service commission library with quiet study ambience).\n"
-        "2. PURE VISUAL SCENE ONLY — NO TEXT: Absolutely NEVER request any text, words, titles, numbers, labels, signs, or watermarks. "
-        "The image is a cover photograph, not a poster.\n"
-        "3. Strict Negatives: Banned elements: western classrooms, green chalkboards, children, cartoons, 3D renders, anime, "
-        "and people pointing at boards.\n"
-        "4. Photographic Quality: 16:9 widescreen, cinematic lighting, sharp architectural focus, 8k resolution, documentary editorial photography.\n"
-        "Output ONLY the prompt text, nothing else."
-    )
+    if api_key:
+        prompt = (
+            "You are an expert executive content editor for OdishaExamPrep portal.\n"
+            "Analyze this exam update and output a STRICT JSON object with no markdown fences, no formatting, just raw JSON:\n"
+            "{\n"
+            '  "clean_title": "Concise impactful title under 55 characters",\n'
+            '  "summary": "Clear 1-2 sentence executive summary explaining what happened (max 150 chars)",\n'
+            '  "key_points": [\n'
+            '    {"label": "ORGANIZATION", "value": "Short Primary Value", "sub": "Short subtext"},\n'
+            '    {"label": "EXAMINATION POSTS", "value": "Short Primary Value", "sub": "Short subtext"},\n'
+            '    {"label": "STATUS", "value": "Short Primary Value", "sub": "Short subtext"}\n'
+            "  ]\n"
+            "}\n\n"
+            f"Input:\nTitle: {title}\nOrganization: {organization}\nCategory: {category}\nContext: {context_summary[:400]}"
+        )
 
-    user_content = (
-        f"Article Title: {title}\n"
-        f"Organization / Commission: {organization or 'Odisha Government'}\n"
-        f"Category: {category or 'Government Exam Update'}\n"
-        f"Context Details: {context_summary[:300] if context_summary else 'Official government examination and recruitment notice in Odisha.'}\n\n"
-        f"Formulate the ideal 16:9 photorealistic visual scene prompt (zero text):"
-    )
-
-    models_to_try = ["gemini-3.8-flash", "gemini-flash-latest", "gemini-3.5-flash-lite"]
-    for model in models_to_try:
-        try:
-            url = f"https://generativelanguage.googleapis.com/v1beta/models/{model}:generateContent?key={api_key}"
-            payload = {
-                "contents": [
-                    {"role": "user", "parts": [{"text": f"{system_instruction}\n\n{user_content}"}]}
-                ],
-                "generationConfig": {
-                    "temperature": 0.4,
-                    "maxOutputTokens": 300
+        models_to_try = ["gemini-3.5-flash-lite", "gemini-3.8-flash"]
+        for model in models_to_try:
+            try:
+                url = f"https://generativelanguage.googleapis.com/v1beta/models/{model}:generateContent?key={api_key}"
+                payload = {
+                    "contents": [{"parts": [{"text": prompt}]}],
+                    "generationConfig": {"temperature": 0.2, "maxOutputTokens": 400}
                 }
-            }
-            res = requests.post(url, json=payload, timeout=20)
-            if res.status_code == 200:
-                data = res.json()
-                candidates = data.get("candidates", [])
-                if candidates:
-                    parts = candidates[0].get("content", {}).get("parts", [])
-                    for part in parts:
-                        text = part.get("text", "").strip()
-                        if text:
-                            clean = text.strip('"\'')
-                            return clean
-        except Exception:
-            continue
+                res = requests.post(url, json=payload, timeout=12)
+                if res.status_code == 200:
+                    data = res.json()
+                    candidates = data.get("candidates", [])
+                    if candidates:
+                        text = candidates[0].get("content", {}).get("parts", [{}])[0].get("text", "")
+                        cleaned = text.strip().replace("```json", "").replace("```", "").strip()
+                        parsed = json.loads(cleaned)
+                        if "clean_title" in parsed and "summary" in parsed and isinstance(parsed.get("key_points"), list):
+                            if len(parsed["key_points"]) >= 3:
+                                return {
+                                    "clean_title": str(parsed["clean_title"]).strip()[:65],
+                                    "summary": str(parsed["summary"]).strip()[:180],
+                                    "key_points": parsed["key_points"][:3]
+                                }
+            except Exception:
+                continue
 
-    # Fallback default prompt if Art Director API fails
-    org_clean = organization or "Odisha State Government"
-    return (
-        f"Photorealistic 16:9 documentary photograph of a dignified Indian government administrative office, "
-        f"representing {org_clean}. Polished teakwood desk with official files, Ashoka Lion Capital emblem, "
-        f"scales of justice and fountain pen in soft natural sunlight through high windows, cinematic lighting, "
-        f"ultra-realistic editorial photography, absolutely no text."
-    )
+    # Deterministic Algorithmic Fallback
+    clean_t = re.sub(
+        r'\s*(?:out|released|announced|download\s+pdf|pdf\s+link|direct\s+link|check\s+details|official\s+notice|here|active|published)[\s:]*.*$',
+        '',
+        title,
+        flags=re.IGNORECASE
+    ).strip()
+    if not clean_t or len(clean_t) < 10:
+        clean_t = title[:60].strip()
 
-def request_gemini_image_generation(prompt: str, api_key: str) -> Optional[bytes]:
-    """
-    Attempts image generation via Gemini multimodal image generation models:
-    gemini-3.1-flash-image and gemini-2.5-flash-image.
-    Returns raw image bytes if successful, None otherwise.
-    """
-    image_models = ["gemini-3.1-flash-image", "gemini-2.5-flash-image"]
-    payload = {
-        "contents": [
-            {
-                "parts": [
-                    {"text": f"Generate a photorealistic 16:9 widescreen image without text: {prompt}"}
-                ]
-            }
+    clean_summary = ""
+    if context_summary:
+        sentences = re.split(r'(?<=[.!?])\s+', context_summary.strip())
+        clean_summary = " ".join(sentences[:2]).strip()
+    if not clean_summary or len(clean_summary) < 20:
+        org_name = organization or "State Examination Authority"
+        clean_summary = f"Official update published by {org_name}. Candidates can review verified eligibility, key dates, and official notification details."
+    clean_summary = clean_summary[:160]
+
+    t_lower = f"{title} {category}".lower()
+    if any(k in t_lower for k in ["result", "merit list", "scorecard", "qualified"]):
+        kp = [
+            {"label": "ORGANIZATION", "value": organization or "Odisha State Board", "sub": "Judicial / State Cadre"},
+            {"label": "EXAMINATION POSTS", "value": "Senior Posts & Staff", "sub": "Merit List Shortlisted"},
+            {"label": "STATUS", "value": "Merit List Released", "sub": "PDF Download Active"}
         ]
+    elif any(k in t_lower for k in ["admit card", "hall ticket", "call letter"]):
+        kp = [
+            {"label": "ORGANIZATION", "value": organization or "State Examination Board", "sub": "Exam Administration"},
+            {"label": "HALL TICKET", "value": "Admit Card Released", "sub": "Download via Candidate Login"},
+            {"label": "EXAM DAY", "value": "Carry Photo ID & Slip", "sub": "Reporting Time Verified"}
+        ]
+    elif any(k in t_lower for k in ["answer key", "response sheet", "objection"]):
+        kp = [
+            {"label": "ORGANIZATION", "value": organization or "State Examination Board", "sub": "Official Assessment"},
+            {"label": "ANSWER KEY", "value": "Provisional Key Active", "sub": "Question Paper & Solutions"},
+            {"label": "OBJECTION WINDOW", "value": "Online Representation", "sub": "Check Cutoff Timeline"}
+        ]
+    elif any(k in t_lower for k in ["current affairs", "roundup", "daily ca", "weekly ca"]):
+        kp = [
+            {"label": "KNOWLEDGE DOMAIN", "value": "Odisha & National CA", "sub": "Daily Exam Digest"},
+            {"label": "TARGET EXAMS", "value": "OPSC, OSSSC & Police", "sub": "High-Yield Questions"},
+            {"label": "FORMAT", "value": "Editorial & MCQs", "sub": "Exam-Oriented Insights"}
+        ]
+    else:
+        kp = [
+            {"label": "RECRUITING BODY", "value": organization or "Odisha Public Commission", "sub": "State Government"},
+            {"label": "APPLICATION MODE", "value": "Online Registration", "sub": "Official Government Portal"},
+            {"label": "SELECTION PROCESS", "value": "Written Exam & Skill Test", "sub": "Verified Notification"}
+        ]
+
+    return {
+        "clean_title": clean_t[:60],
+        "summary": clean_summary,
+        "key_points": kp
     }
 
-    for model in image_models:
-        try:
-            url = f"https://generativelanguage.googleapis.com/v1beta/models/{model}:generateContent?key={api_key}"
-            res = requests.post(url, json=payload, timeout=25)
-            if res.status_code == 200:
-                data = res.json()
-                candidates = data.get("candidates", [])
-                if candidates:
-                    parts = candidates[0].get("content", {}).get("parts", [])
-                    for part in parts:
-                        inline_data = part.get("inlineData")
-                        if inline_data and "data" in inline_data:
-                            b64_data = inline_data["data"]
-                            img_bytes = base64.b64decode(b64_data)
-                            print(f"[Gemini Imagen] Successfully generated image via {model} ({len(img_bytes)} bytes)")
-                            return img_bytes
-            elif res.status_code == 429:
-                print(f"[Gemini Imagen] Notice: Model {model} returned 429 (Unbilled Google AI Studio tier).")
-            else:
-                print(f"[Gemini Imagen] Model {model} returned HTTP {res.status_code}")
-        except Exception as e:
-            print(f"[Gemini Imagen] Error calling {model}: {e}")
 
-    return None
-
-def request_flux_image_generation(prompt: str) -> Optional[bytes]:
+def render_executive_graphic_card(
+    card_data: Dict[str, Any],
+    organization: str = "",
+    category: str = ""
+) -> Image.Image:
     """
-    High-fidelity neural AI image generator using Flux.1 & Turbo models.
-    Produces text-free, photorealistic editorial visuals without API key constraints.
-    Crops any edge watermark and resizes to crisp 1200x675 (16:9).
+    Renders a 1200x675 (16:9) executive graphic card:
+    - Deep obsidian slate background (#0A0F1C)
+    - Ambient radial blur glows (royal blue, teal, warm amber)
+    - Outer glassmorphic container card with subtle border & highlight sheen
+    - Header: Board pill on left with glowing dot + Category badge on right
+    - Clean Title (1-2 lines, high-contrast pure white)
+    - Summary (1-2 lines, readable muted slate #94A3B8)
+    - 3 Structured micro-cards with color accent indicators (blue, green, amber)
+    - Footer bar with verified status seal (no broken character glyphs)
     """
-    clean_prompt = f"{prompt}, photorealistic editorial photography, 8k resolution, cinematic lighting, no text, no watermark"
-    encoded = requests.utils.quote(clean_prompt)
-    
-    models = ["flux", "turbo"]
-    for model_name in models:
-        try:
-            url = f"https://image.pollinations.ai/prompt/{encoded}?width=1024&height=600&model={model_name}&nologo=true&seed=42"
-            print(f"[AI Neural Visualizer] Requesting photorealistic {model_name} render...")
-            res = requests.get(url, timeout=35)
-            if res.status_code == 200 and len(res.content) > 5000:
-                # Post-process: Crop bottom 30px to guarantee zero watermark, resize to 1200x675
-                img = Image.open(BytesIO(res.content))
-                w, h = img.size
-                cropped = img.crop((0, 0, w, h - 30)).resize((1200, 675), Image.LANCZOS)
-                
-                out_buffer = BytesIO()
-                cropped.save(out_buffer, format="JPEG", quality=95, optimize=True)
-                img_bytes = out_buffer.getvalue()
-                print(f"[AI Neural Visualizer] ✅ Generated pristine {model_name} image ({len(img_bytes)} bytes, 1200x675)")
-                return img_bytes
-        except Exception as e:
-            print(f"[AI Neural Visualizer] {model_name} error: {e}")
-            continue
+    width, height = 1200, 675
+    board_key = detect_exam_board_key(f"{organization} {category} {card_data.get('clean_title', '')}")
+    theme = BOARD_THEMES.get(board_key, DEFAULT_THEME)
+    badge_label = detect_update_badge(card_data.get("clean_title", ""), category)
 
-    return None
+    img = Image.new("RGB", (width, height), (10, 15, 28))
+
+    # 1. Smooth Ambient Radial Glows
+    glow = Image.new("RGBA", (width, height), (0, 0, 0, 0))
+    gd = ImageDraw.Draw(glow)
+    gd.ellipse([-100, -100, 500, 500], fill=(*theme["accent"], 75))
+    gd.ellipse([width - 450, -50, width + 150, 450], fill=(20, 184, 166, 40))
+    gd.ellipse([width - 400, height - 350, width + 100, height + 100], fill=(*theme["gold_accent"], 45))
+    glow = glow.filter(ImageFilter.GaussianBlur(radius=100))
+    img.paste(glow, (0, 0), glow)
+
+    draw = ImageDraw.Draw(img)
+
+    # 2. Main Executive Card Container
+    pad = 40
+    card_rect = [pad, pad, width - pad, height - pad]
+    draw.rounded_rectangle(card_rect, radius=24, fill=(15, 23, 42, 235), outline=(255, 255, 255, 28), width=1)
+    draw.line([(pad + 24, pad + 1), (width - pad - 24, pad + 1)], fill=(255, 255, 255, 60), width=1)
+
+    # Fonts
+    font_brand = get_best_font(15, bold=True)
+    font_badge = get_best_font(13, bold=True)
+    font_title = get_best_font(38, bold=True)
+    font_summary = get_best_font(18, bold=False)
+    font_card_label = get_best_font(12, bold=True)
+    font_card_val = get_best_font(17, bold=True)
+    font_card_sub = get_best_font(14, bold=False)
+    font_footer = get_best_font(14, bold=False)
+    font_footer_bold = get_best_font(14, bold=True)
+
+    # 3. Header: Board Authority Pill (Left)
+    board_display_name = theme.get("full_name") or organization or "Odisha Examination Portal"
+    if len(board_display_name) > 42:
+        board_display_name = f"{theme.get('short_name', 'ODISHA')} • {board_display_name[:35]}..."
+    pill_tw = draw.textlength(board_display_name.upper(), font=font_brand)
+    pill_w = max(int(pill_tw + 64), 380)
+    pill_w = min(pill_w, 640)
+
+    draw.rounded_rectangle([72, 70, 72 + pill_w, 114], radius=14, fill=(30, 41, 59, 230), outline=theme["accent"], width=1)
+    draw.ellipse([90, 88, 100, 98], fill=theme["gold_accent"])
+    draw.text((112, 81), board_display_name.upper(), fill=(248, 250, 252), font=font_brand)
+
+    # Category / Status Tag (Right)
+    badge_text = badge_label.upper()
+    badge_tw = draw.textlength(badge_text, font=font_badge)
+    badge_w = int(badge_tw + 48)
+    draw.rounded_rectangle([width - 72 - badge_w, 70, width - 72, 114], radius=14, fill=theme["badge_bg"], outline=(255, 255, 255, 90), width=1)
+    draw.text((width - 72 - badge_w + 24, 82), badge_text, fill=(255, 255, 255), font=font_badge)
+
+    # 4. Main Title
+    clean_title = card_data.get("clean_title", "Official Examination Update")
+    lines = wrap_text(clean_title, font_title, 1040, draw)[:2]
+    y = 152
+    for line in lines:
+        draw.text((72, y), line, fill=(255, 255, 255), font=font_title)
+        y += 50
+
+    # 5. Executive Summary Text
+    summary_text = card_data.get("summary", "")
+    summary_lines = wrap_text(summary_text, font_summary, 1040, draw)[:2]
+    y += 8
+    for line in summary_lines:
+        draw.text((72, y), line, fill=(148, 163, 184), font=font_summary)
+        y += 28
+
+    # 6. Key Points Grid (3 Balanced Sleek Cards)
+    card_y = 352
+    card_h = 138
+    card_w = 328
+    gap = 36
+    start_x = 72
+
+    card_colors = [
+        (59, 130, 246),  # Card 1: Blue
+        (16, 185, 129),  # Card 2: Emerald
+        (245, 158, 11),  # Card 3: Amber
+    ]
+
+    key_points = card_data.get("key_points", [])
+    for i in range(3):
+        kp = key_points[i] if i < len(key_points) else {"label": "NOTIFICATION", "value": "Official Update", "sub": "Verified Portal"}
+        cx = start_x + i * (card_w + gap)
+        acc_color = card_colors[i]
+
+        draw.rounded_rectangle([cx, card_y, cx + card_w, card_y + card_h], radius=16, fill=(30, 41, 59, 190), outline=(51, 65, 85, 230), width=1)
+        draw.rounded_rectangle([cx, card_y + 14, cx + 4, card_y + card_h - 14], radius=2, fill=acc_color)
+
+        label_txt = str(kp.get("label", "DETAILS")).upper()[:24]
+        val_txt = str(kp.get("value", "Official Notice"))[:24]
+        sub_txt = str(kp.get("sub", "Government Cadre"))[:28]
+
+        draw.text((cx + 20, card_y + 20), label_txt, fill=acc_color, font=font_card_label)
+        draw.text((cx + 20, card_y + 48), val_txt, fill=(255, 255, 255), font=font_card_val)
+        draw.text((cx + 20, card_y + 82), sub_txt, fill=(148, 163, 184), font=font_card_sub)
+
+    # 7. Bottom Footer Status Bar
+    footer_y = height - 90
+    draw.line([(72, footer_y - 16), (width - 72, footer_y - 16)], fill=(51, 65, 85, 160), width=1)
+
+    draw.text((72, footer_y), "OdishaExamPrep Official Portal", fill=(241, 245, 249), font=font_footer_bold)
+    draw.text((320, footer_y), "•   https://www.odishaexamprep.in", fill=(100, 116, 139), font=font_footer)
+
+    draw.ellipse([width - 380, footer_y + 4, width - 370, footer_y + 14], fill=(52, 211, 153))
+    draw.text((width - 360, footer_y), "100% Verified Official State Notice", fill=(52, 211, 153), font=font_footer_bold)
+
+    return img
+
 
 def upload_to_supabase_storage(file_path: str, filename: str) -> Optional[str]:
     """Optionally uploads image to Supabase Storage bucket 'blog-covers' if credentials present."""
@@ -201,12 +369,13 @@ def upload_to_supabase_storage(file_path: str, filename: str) -> Optional[str]:
         res = requests.post(upload_url, headers=headers, data=file_bytes, timeout=20)
         if res.status_code in [200, 201]:
             public_cdn_url = f"{clean_url}/storage/v1/object/public/blog-covers/{filename}"
-            print(f"[AI Visualizer] Uploaded to Supabase CDN: {public_cdn_url}")
+            print(f"[Executive Card Engine] Uploaded to Supabase CDN: {public_cdn_url}")
             return public_cdn_url
     except Exception as e:
-        print(f"[AI Visualizer] Supabase upload note: {e}")
+        print(f"[Executive Card Engine] Supabase upload note: {e}")
 
     return None
+
 
 def generate_blog_imagen_banner(
     title: str,
@@ -217,74 +386,47 @@ def generate_blog_imagen_banner(
 ) -> Dict[str, Any]:
     """
     Main entry point for intelligent, context-aware blog cover image generation:
-    1. Gemini Art Director reasons over context and designs a text-free photorealistic scene prompt.
-    2. Primary: Attempts Gemini native image generation.
-    3. Secondary: Automatically engages Flux.1 Neural Generator for photorealistic 16:9 imagery.
-    4. Tertiary Fallback: Sleek official board vector banner with zero redundant title text.
-    GUARANTEES ZERO STOCK PHOTOS AND ZERO REPEATED TITLE TEXT.
+    Renders a sleek, high-end Executive Graphic Card using title, executive summary,
+    and 3 structured key points micro-cards.
+    GUARANTEES ZERO AI DISTORTIONS, ZERO STOCK PHOTOS, AND ZERO MISSING GLYPHS.
     """
     api_key = get_gemini_api_key()
     safe_slug = re.sub(r'[^a-z0-9]+', '-', (slug or title or "update").lower()).strip('-')[:50] or "update"
 
-    art_prompt = ""
-    if api_key:
-        print(f"[AI Art Director] Reasoning visual concept for '{title[:45]}...'")
-        art_prompt = synthesize_ai_art_prompt(
-            title=title,
-            organization=organization,
-            category=category,
-            context_summary=context_summary,
-            api_key=api_key
-        )
-        print(f"[AI Art Director] Synthesized Visual Scene: {art_prompt[:130]}...")
-
-    # Stage 1: Try Gemini native image generation
-    img_bytes = None
-    if api_key and art_prompt:
-        img_bytes = request_gemini_image_generation(art_prompt, api_key)
-
-    # Stage 2: Engage Flux Neural Generator (produces pristine photorealistic scenes)
-    if not img_bytes and art_prompt:
-        img_bytes = request_flux_image_generation(art_prompt)
-
-    if img_bytes:
-        filename = f"ai_{safe_slug}.jpg"
-        file_path = os.path.join(COVERS_DIR, filename)
-        with open(file_path, "wb") as f:
-            f.write(img_bytes)
-
-        # Sync to build dir if present
-        build_covers_dir = os.path.join(PROJECT_ROOT, "..", "build", "blog_covers")
-        if os.path.exists(os.path.dirname(build_covers_dir)):
-            os.makedirs(build_covers_dir, exist_ok=True)
-            with open(os.path.join(build_covers_dir, filename), "wb") as f:
-                f.write(img_bytes)
-
-        cdn_url = upload_to_supabase_storage(file_path, filename)
-        image_url = cdn_url or f"https://www.odishaexamprep.in/blog_covers/{filename}"
-
-        return {
-            "image_url": image_url,
-            "alt_text": f"{title} - Official Editorial Visual",
-            "local_path": file_path,
-            "photographer": "Google Gemini & Flux AI Visual Studio",
-            "is_ai_generated": True
-        }
-
-    # Stage 3: Tertiary Fallback to Clean Official Board Vector Banner
-    print(f"[AI Visualizer] Engaging clean official vector banner fallback for '{organization or 'General'}'.")
-    from shared.exam_logo_registry import generate_exam_vector_banner
-    banner_data = generate_exam_vector_banner(
+    print(f"[Executive Card Engine] Synthesizing executive visual card for '{title[:45]}...'")
+    card_data = extract_card_metadata(
         title=title,
-        target_exam=organization or category,
-        update_type=category,
-        slug=slug
+        organization=organization,
+        category=category,
+        context_summary=context_summary,
+        api_key=api_key or ""
     )
 
+    img = render_executive_graphic_card(
+        card_data=card_data,
+        organization=organization,
+        category=category
+    )
+
+    filename = f"ai_{safe_slug}.jpg"
+    file_path = os.path.join(COVERS_DIR, filename)
+    img.save(file_path, "JPEG", quality=95, optimize=True)
+    print(f"[Executive Card Engine] ✅ Generated sleek card: {file_path}")
+
+    # Sync to build dir if present
+    build_covers_dir = os.path.join(PROJECT_ROOT, "..", "build", "blog_covers")
+    if os.path.exists(os.path.dirname(build_covers_dir)):
+        os.makedirs(build_covers_dir, exist_ok=True)
+        img.save(os.path.join(build_covers_dir, filename), "JPEG", quality=95, optimize=True)
+
+    cdn_url = upload_to_supabase_storage(file_path, filename)
+    image_url = cdn_url or f"https://www.odishaexamprep.in/blog_covers/{filename}"
+
     return {
-        "image_url": banner_data["image_url"],
-        "alt_text": banner_data["alt_text"],
-        "local_path": banner_data.get("local_path"),
-        "photographer": banner_data.get("photographer", "OdishaExamPrep Official Visual"),
-        "is_ai_generated": False
+        "image_url": image_url,
+        "alt_text": f"{title} - Official Editorial Card",
+        "local_path": file_path,
+        "photographer": "OdishaExamPrep Executive Graphics Studio",
+        "is_ai_generated": True
     }
+

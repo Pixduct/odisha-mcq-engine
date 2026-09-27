@@ -253,120 +253,22 @@ def generate_exam_vector_banner(
     slug: str = ""
 ) -> Dict[str, str]:
     """
-    Generates a 1200x630px high-resolution vector graphic banner with official board branding,
-    procedural grid background, dynamic category badge, and clean typography.
+    Generates a 1200x675 high-resolution executive graphic card with official board branding,
+    crisp typography, executive summary, and structured key points.
     Returns dict with image_url, alt_text, and local_path.
     """
-    board_key = detect_exam_board_key(f"{target_exam} {title}")
-    theme = BOARD_THEMES.get(board_key, DEFAULT_THEME)
-    badge_label = detect_update_badge(title, update_type)
-
-    width, height = 1200, 630
-    img = Image.new("RGBA", (width, height), theme["bg_top"])
-    draw = ImageDraw.Draw(img)
-
-    # 1. Procedural Gradient Background
-    for y in range(height):
-        ratio = y / float(height)
-        r = int(theme["bg_top"][0] * (1 - ratio) + theme["bg_bottom"][0] * ratio)
-        g = int(theme["bg_top"][1] * (1 - ratio) + theme["bg_bottom"][1] * ratio)
-        b = int(theme["bg_top"][2] * (1 - ratio) + theme["bg_bottom"][2] * ratio)
-        draw.line([(0, y), (width, y)], fill=(r, g, b, 255))
-
-    # 2. Ambient Glow Spheres (Top-Left & Bottom-Right)
-    glow_overlay = Image.new("RGBA", (width, height), (0, 0, 0, 0))
-    glow_draw = ImageDraw.Draw(glow_overlay)
-    
-    # Top-Left Accent Glow
-    glow_draw.ellipse([-100, -100, 450, 450], fill=(*theme["accent"], 45))
-    # Bottom-Right Gold/Accent Glow
-    glow_draw.ellipse([width - 450, height - 350, width + 150, height + 150], fill=(*theme["gold_accent"], 25))
-    
-    glow_overlay = glow_overlay.filter(ImageFilter.GaussianBlur(radius=65))
-    img = Image.alpha_composite(img, glow_overlay)
-    draw = ImageDraw.Draw(img)
-
-    # 3. Procedural Vector Geometric Grid Lines
-    grid_color = (255, 255, 255, 14)
-    for x in range(0, width, 60):
-        draw.line([(x, 0), (x, height)], fill=grid_color, width=1)
-    for y in range(0, height, 60):
-        draw.line([(0, y), (width, y)], fill=grid_color, width=1)
-
-    # 4. Rounded Container Card Frame
-    card_margin = 32
-    card_rect = [card_margin, card_margin, width - card_margin, height - card_margin]
-    draw.rounded_rectangle(card_rect, radius=28, fill=(255, 255, 255, 8), outline=(255, 255, 255, 35), width=2)
-
-    # 5. Top Bar: Board Emblem Pill + Update Badge
-    font_board = get_best_font(18, bold=True)
-    font_badge = get_best_font(14, bold=True)
-    font_title = get_best_font(42, bold=True)
-    font_sub = get_best_font(20, bold=False)
-    font_footer = get_best_font(16, bold=True)
-
-    # Left Board Pill
-    board_pill_text = f"🏛️  {theme['short_name']} • {theme['full_name']}"
-    draw.rounded_rectangle([60, 60, 60 + 520, 108], radius=14, fill=(0, 0, 0, 120), outline=theme["accent"], width=2)
-    draw.text((78, 74), board_pill_text, fill=(255, 255, 255, 240), font=font_board)
-
-    # Right Category Badge
-    badge_full_text = f"🚨 {badge_label}"
-    badge_w = 320
-    draw.rounded_rectangle([width - 60 - badge_w, 60, width - 60, 108], radius=14, fill=theme["badge_bg"], outline=(255, 255, 255, 80), width=1)
-    draw.text((width - 60 - badge_w + 24, 76), badge_full_text, fill=(255, 255, 255), font=font_badge)
-
-    # 6. Main Headline (Center Hero)
-    clean_title = re.sub(r'\s+', ' ', title).strip()
-    headline_lines = wrap_text(clean_title, font_title, width - 180, draw)
-    
-    y_text = 175
-    for line in headline_lines:
-        # Subtle Drop Shadow
-        draw.text((62, y_text + 2), line, fill=(0, 0, 0, 160), font=font_title)
-        draw.text((60, y_text), line, fill=(255, 255, 255, 255), font=font_title)
-        y_text += 62
-
-    # 7. Metadata Highlights Pills (Below Title)
-    meta_y = max(y_text + 24, 380)
-    pills = [
-        f"🏢 Board: {theme['short_name']}",
-        f"📍 Odisha State Govt",
-        f"✓ Official Verification Active"
-    ]
-    x_pill = 60
-    font_pill = get_best_font(15, bold=True)
-    for p in pills:
-        draw.rounded_rectangle([x_pill, meta_y, x_pill + 240, meta_y + 44], radius=12, fill=(255, 255, 255, 18), outline=(255, 255, 255, 45), width=1)
-        draw.text((x_pill + 16, meta_y + 12), p, fill=theme["gold_accent"], font=font_pill)
-        x_pill += 260
-
-    # 8. Bottom Footer Status Bar
-    footer_y = height - 90
-    draw.line([(card_margin + 20, footer_y - 12), (width - card_margin - 20, footer_y - 12)], fill=(255, 255, 255, 25), width=1)
-
-    # Left Footer Branding
-    draw.text((60, footer_y + 4), "OdishaExamPrep Official Portal", fill=(255, 255, 255, 240), font=font_footer)
-    draw.text((360, footer_y + 4), "•  https://www.odishaexamprep.in", fill=theme["accent_glow"], font=font_sub)
-
-    # Right Verified Seal Badge
-    seal_text = "🛡️ 100% Verified Official Notification"
-    draw.text((width - 430, footer_y + 4), seal_text, fill=(52, 211, 153), font=font_footer)
-
-    # 9. Save Image File
-    safe_slug = re.sub(r'[^a-z0-9]+', '-', (slug or title or "update").lower()).strip('-')[:50] or "update"
-    filename = f"banner_{board_key.lower().replace(' ', '_')}_{safe_slug}.png"
-    file_path = os.path.join(COVERS_DIR, filename)
-
-    img.save(file_path, "PNG", optimize=True)
-    print(f"[ExamVectorEngine] ✅ Generated high-res official vector banner for {board_key}: {filename}")
-
-    public_url = f"https://www.odishaexamprep.in/blog_covers/{filename}"
-    alt_text = f"{theme['full_name']} ({theme['short_name']}) - {title} Official Notification"
-
+    from shared.imagen_generator import generate_blog_imagen_banner
+    res = generate_blog_imagen_banner(
+        title=title,
+        organization=target_exam,
+        category=update_type,
+        context_summary="",
+        slug=slug
+    )
     return {
-        "image_url": public_url,
-        "alt_text": alt_text,
-        "local_path": file_path,
-        "photographer": f"OdishaExamPrep Visual Team ({theme['short_name']} Official)"
+        "image_url": res["image_url"],
+        "alt_text": res["alt_text"],
+        "local_path": res.get("local_path"),
+        "photographer": res.get("photographer", "OdishaExamPrep Executive Graphics Studio")
     }
+

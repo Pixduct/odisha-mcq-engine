@@ -611,5 +611,60 @@
     "title": "Complaint Registration",
     "status": "REJECTED_BY_AI",
     "processed_at": "2026-09-26T10:08:04.427930"
+  },
+  "8d13936a53a4a6a238ad94aae99a10245dea857abe238b4a21068df8f1b18fad": {
+    "portal": "OSSC",
+    "title": "OSSC Rules",
+    "status": "REJECTED_BY_AI",
+    "processed_at": "2026-09-27T10:36:06.459640"
+  },
+  "00cdc0c3b428a35d77e769a87841f2b3e7993475ad2dd3b7584b8fbd9e4982c4": {
+    "portal": "OPSC",
+    "title": "RTI Orders",
+    "status": "REJECTED_BY_AI",
+    "processed_at": "2026-09-27T10:37:13.725611"
+  },
+  "854d98254ac99dea4d9a22087eacabeddc977bc8a5d59c2fec5735f8976447b9": {
+    "portal": "SSB Odisha",
+    "title": "Correction in Particulars of the Online Application Form for Recruitment to the Posts of Junior Assistant and Junior Clerk (Advertisement No. 01/2026 dated 09.03.2026) New",
+    "status": "FAILED_INTEGRITY_REJECTED_EXPIRED_ACTION_DATE_IN_AI_OUTPUT",
+    "processed_at": "2026-09-27T10:39:38.563863"
+  },
+  "a6ac5dad36fa5130fed57b6823f2e1cf5d86ceafa659cb8c0836010cef946b14": {
+    "portal": "Odisha High Court",
+    "title": "Result of recruitment to the Posts of Junior Grade Typist cum Data Entry Operator pursuant to Advertisement No. 01 of 2026.",
+    "article_id": "d7ede9f5-2f83-4d7d-8cd6-f8f9cf2eacd1",
+    "status": "PUBLISHED",
+    "processed_at": "2026-09-27T10:42:12.903756"
+  },
+  "c4a3a554dffc82407b24130a7b714ed0350f32a25712e01a60db13720250def4": {
+    "portal": "IBPS",
+    "title": "Highlights",
+    "status": "REJECTED_BY_AI",
+    "processed_at": "2026-09-27T10:43:30.195639"
+  },
+  "909ff11805e53416d16a8924f5cef62e08c2962a757eca05104efecb7c46e5f5": {
+    "portal": "RBI",
+    "title": "Download an Information Kit!",
+    "status": "REJECTED_BY_AI",
+    "processed_at": "2026-09-27T10:45:16.350052"
+  },
+  "08315c319e89f3de33ef49f4093e07e466e63dfa940367a2ba84cc323267e0c7": {
+    "portal": "OPTCL",
+    "title": "COMPLETED PROJECTS",
+    "status": "REJECTED_BY_AI",
+    "processed_at": "2026-09-27T10:45:53.272488"
+  },
+  "547725c1e76472c771c4ea8ed693b497231079403bfc98d167a3618a7f52f0b9": {
+    "portal": "OPGC",
+    "title": "Vision & Mission",
+    "status": "REJECTED_BY_AI",
+    "processed_at": "2026-09-27T10:46:47.254766"
+  },
+  "1a807e85a9498091baa1fb3ab806020b448f209fff063cc7d27efa8575b99e64": {
+    "portal": "GRIDCO",
+    "title": "Retail Supply Tariff",
+    "status": "REJECTED_BY_AI",
+    "processed_at": "2026-09-27T10:48:00.819657"
   }
 }

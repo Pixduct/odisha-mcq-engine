@@ -4,6 +4,8 @@ import re
 import json
 import base64
 import requests
+from io import BytesIO
+from PIL import Image
 from typing import Dict, Any, Optional
 
 if hasattr(sys.stdout, 'reconfigure'):
@@ -39,22 +41,23 @@ def synthesize_ai_art_prompt(
     api_key: str = ""
 ) -> str:
     """
-    Acts as an AI Art Director: Uses Gemini 3.8 Flash to analyze blog context
-    and synthesize a tailored, culturally authentic Indian exam/administrative visual prompt.
+    Acts as an AI Art Director (like DALL-E / ChatGPT):
+    Analyzes blog context and reasons out a dramatic, photorealistic, text-free visual scene.
     """
     system_instruction = (
         "You are an expert visual Art Director for OdishaExamPrep, an Indian competitive examination "
-        "and government portal. Your job is to formulate a single, highly detailed, photorealistic prompt "
-        "for an AI text-to-image generator (16:9 widescreen composition).\n\n"
-        "RULES:\n"
-        "1. Setting & Authenticity: MUST reflect authentic Indian government, judicial, administrative, "
-        "or university examination contexts (e.g. Orissa High Court courtroom/corridor with Ashok pillar seal, "
-        "OPSC/OSSSC administrative secretariat desk with government files, civil service aspirants studying in a quiet modern library, "
-        "official state notification desk with fountain pen and stamp).\n"
-        "2. Strict Negatives: NEVER use western classrooms, green chalkboards, children, graduation caps, "
-        "cartoons, anime, 3D renders, or casual western tropes.\n"
-        "3. Aesthetics: Photorealistic, cinematic lighting, 8k resolution, documentary photography, professional architectural and editorial style.\n"
-        "4. No Text: Do NOT ask for any letters, words, or text inside the image.\n"
+        "and public governance portal. Your job is to formulate a single, highly detailed, photorealistic "
+        "scene prompt for an AI image generator (16:9 widescreen composition).\n\n"
+        "CRITICAL RULES:\n"
+        "1. Setting & Context: MUST reflect dignified, authentic Indian administrative, judicial, or examination environments "
+        "(e.g., historic colonial-era High Court judicial courtroom chamber with soaring arches, polished teakwood benches, "
+        "or a dignified state secretariat administrative office with official documents and Ashoka Lion Capital emblem, "
+        "or a grand public service commission library with quiet study ambience).\n"
+        "2. PURE VISUAL SCENE ONLY — NO TEXT: Absolutely NEVER request any text, words, titles, numbers, labels, signs, or watermarks. "
+        "The image is a cover photograph, not a poster.\n"
+        "3. Strict Negatives: Banned elements: western classrooms, green chalkboards, children, cartoons, 3D renders, anime, "
+        "and people pointing at boards.\n"
+        "4. Photographic Quality: 16:9 widescreen, cinematic lighting, sharp architectural focus, 8k resolution, documentary editorial photography.\n"
         "Output ONLY the prompt text, nothing else."
     )
 
@@ -63,7 +66,7 @@ def synthesize_ai_art_prompt(
         f"Organization / Commission: {organization or 'Odisha Government'}\n"
         f"Category: {category or 'Government Exam Update'}\n"
         f"Context Details: {context_summary[:300] if context_summary else 'Official government examination and recruitment notice in Odisha.'}\n\n"
-        f"Formulate the ideal 16:9 photorealistic image generation prompt:"
+        f"Formulate the ideal 16:9 photorealistic visual scene prompt (zero text):"
     )
 
     models_to_try = ["gemini-3.8-flash", "gemini-flash-latest", "gemini-3.5-flash-lite"]
@@ -88,19 +91,18 @@ def synthesize_ai_art_prompt(
                     for part in parts:
                         text = part.get("text", "").strip()
                         if text:
-                            # Clean up quotes if wrapped
                             clean = text.strip('"\'')
                             return clean
-        except Exception as e:
+        except Exception:
             continue
 
     # Fallback default prompt if Art Director API fails
     org_clean = organization or "Odisha State Government"
     return (
-        f"Photorealistic 16:9 editorial photograph of a dignified Indian government administrative office, "
-        f"dedicated to {org_clean}. Polished wooden executive desk with official files, Ashoka Lion Capital emblem, "
-        f"brass scales of justice and fountain pen in foreground, soft morning sunlight through architectural windows, "
-        f"cinematic lighting, ultra-realistic documentary photography."
+        f"Photorealistic 16:9 documentary photograph of a dignified Indian government administrative office, "
+        f"representing {org_clean}. Polished teakwood desk with official files, Ashoka Lion Capital emblem, "
+        f"scales of justice and fountain pen in soft natural sunlight through high windows, cinematic lighting, "
+        f"ultra-realistic editorial photography, absolutely no text."
     )
 
 def request_gemini_image_generation(prompt: str, api_key: str) -> Optional[bytes]:
@@ -114,7 +116,7 @@ def request_gemini_image_generation(prompt: str, api_key: str) -> Optional[bytes
         "contents": [
             {
                 "parts": [
-                    {"text": f"Generate a photorealistic 16:9 widescreen image: {prompt}"}
+                    {"text": f"Generate a photorealistic 16:9 widescreen image without text: {prompt}"}
                 ]
             }
         ]
@@ -123,7 +125,7 @@ def request_gemini_image_generation(prompt: str, api_key: str) -> Optional[bytes
     for model in image_models:
         try:
             url = f"https://generativelanguage.googleapis.com/v1beta/models/{model}:generateContent?key={api_key}"
-            res = requests.post(url, json=payload, timeout=30)
+            res = requests.post(url, json=payload, timeout=25)
             if res.status_code == 200:
                 data = res.json()
                 candidates = data.get("candidates", [])
@@ -137,12 +139,43 @@ def request_gemini_image_generation(prompt: str, api_key: str) -> Optional[bytes
                             print(f"[Gemini Imagen] Successfully generated image via {model} ({len(img_bytes)} bytes)")
                             return img_bytes
             elif res.status_code == 429:
-                # Quota exceeded on free tier (limit: 0 until billing enabled)
-                print(f"[Gemini Imagen] Notice: Model {model} returned 429 (Requires Google AI Studio billing/tier).")
+                print(f"[Gemini Imagen] Notice: Model {model} returned 429 (Unbilled Google AI Studio tier).")
             else:
-                print(f"[Gemini Imagen] Model {model} returned HTTP {res.status_code}: {res.text[:120]}")
+                print(f"[Gemini Imagen] Model {model} returned HTTP {res.status_code}")
         except Exception as e:
             print(f"[Gemini Imagen] Error calling {model}: {e}")
+
+    return None
+
+def request_flux_image_generation(prompt: str) -> Optional[bytes]:
+    """
+    High-fidelity neural AI image generator using Flux.1 & Turbo models.
+    Produces text-free, photorealistic editorial visuals without API key constraints.
+    Crops any edge watermark and resizes to crisp 1200x675 (16:9).
+    """
+    clean_prompt = f"{prompt}, photorealistic editorial photography, 8k resolution, cinematic lighting, no text, no watermark"
+    encoded = requests.utils.quote(clean_prompt)
+    
+    models = ["flux", "turbo"]
+    for model_name in models:
+        try:
+            url = f"https://image.pollinations.ai/prompt/{encoded}?width=1024&height=600&model={model_name}&nologo=true&seed=42"
+            print(f"[AI Neural Visualizer] Requesting photorealistic {model_name} render...")
+            res = requests.get(url, timeout=35)
+            if res.status_code == 200 and len(res.content) > 5000:
+                # Post-process: Crop bottom 30px to guarantee zero watermark, resize to 1200x675
+                img = Image.open(BytesIO(res.content))
+                w, h = img.size
+                cropped = img.crop((0, 0, w, h - 30)).resize((1200, 675), Image.LANCZOS)
+                
+                out_buffer = BytesIO()
+                cropped.save(out_buffer, format="JPEG", quality=95, optimize=True)
+                img_bytes = out_buffer.getvalue()
+                print(f"[AI Neural Visualizer] ✅ Generated pristine {model_name} image ({len(img_bytes)} bytes, 1200x675)")
+                return img_bytes
+        except Exception as e:
+            print(f"[AI Neural Visualizer] {model_name} error: {e}")
+            continue
 
     return None
 
@@ -168,10 +201,10 @@ def upload_to_supabase_storage(file_path: str, filename: str) -> Optional[str]:
         res = requests.post(upload_url, headers=headers, data=file_bytes, timeout=20)
         if res.status_code in [200, 201]:
             public_cdn_url = f"{clean_url}/storage/v1/object/public/blog-covers/{filename}"
-            print(f"[Gemini Imagen] Uploaded to Supabase CDN: {public_cdn_url}")
+            print(f"[AI Visualizer] Uploaded to Supabase CDN: {public_cdn_url}")
             return public_cdn_url
     except Exception as e:
-        print(f"[Gemini Imagen] Supabase upload error (non-fatal): {e}")
+        print(f"[AI Visualizer] Supabase upload note: {e}")
 
     return None
 
@@ -184,17 +217,18 @@ def generate_blog_imagen_banner(
 ) -> Dict[str, Any]:
     """
     Main entry point for intelligent, context-aware blog cover image generation:
-    1. Evaluates Gemini Art Director prompt based on blog context.
-    2. Requests image generation from Gemini Imagen/Flash Image models.
-    3. Saves locally and optionally uploads to Supabase CDN.
-    4. Seamlessly falls back to official verified exam board vector banner if Gemini Image quota is not enabled.
-    GUARANTEES ZERO MISMATCHED STOCK PHOTOS.
+    1. Gemini Art Director reasons over context and designs a text-free photorealistic scene prompt.
+    2. Primary: Attempts Gemini native image generation.
+    3. Secondary: Automatically engages Flux.1 Neural Generator for photorealistic 16:9 imagery.
+    4. Tertiary Fallback: Sleek official board vector banner with zero redundant title text.
+    GUARANTEES ZERO STOCK PHOTOS AND ZERO REPEATED TITLE TEXT.
     """
     api_key = get_gemini_api_key()
     safe_slug = re.sub(r'[^a-z0-9]+', '-', (slug or title or "update").lower()).strip('-')[:50] or "update"
 
+    art_prompt = ""
     if api_key:
-        print(f"[Gemini Imagen] Synthesizing intelligent Art Director prompt for '{title[:45]}...'")
+        print(f"[AI Art Director] Reasoning visual concept for '{title[:45]}...'")
         art_prompt = synthesize_ai_art_prompt(
             title=title,
             organization=organization,
@@ -202,29 +236,43 @@ def generate_blog_imagen_banner(
             context_summary=context_summary,
             api_key=api_key
         )
-        print(f"[Gemini Imagen] Generated Visual Prompt: {art_prompt[:120]}...")
+        print(f"[AI Art Director] Synthesized Visual Scene: {art_prompt[:130]}...")
 
-        # Request image generation
+    # Stage 1: Try Gemini native image generation
+    img_bytes = None
+    if api_key and art_prompt:
         img_bytes = request_gemini_image_generation(art_prompt, api_key)
-        if img_bytes:
-            filename = f"ai_{safe_slug}.jpg"
-            file_path = os.path.join(COVERS_DIR, filename)
-            with open(file_path, "wb") as f:
+
+    # Stage 2: Engage Flux Neural Generator (produces pristine photorealistic scenes)
+    if not img_bytes and art_prompt:
+        img_bytes = request_flux_image_generation(art_prompt)
+
+    if img_bytes:
+        filename = f"ai_{safe_slug}.jpg"
+        file_path = os.path.join(COVERS_DIR, filename)
+        with open(file_path, "wb") as f:
+            f.write(img_bytes)
+
+        # Sync to build dir if present
+        build_covers_dir = os.path.join(PROJECT_ROOT, "..", "build", "blog_covers")
+        if os.path.exists(os.path.dirname(build_covers_dir)):
+            os.makedirs(build_covers_dir, exist_ok=True)
+            with open(os.path.join(build_covers_dir, filename), "wb") as f:
                 f.write(img_bytes)
 
-            cdn_url = upload_to_supabase_storage(file_path, filename)
-            image_url = cdn_url or f"https://www.odishaexamprep.in/blog_covers/{filename}"
+        cdn_url = upload_to_supabase_storage(file_path, filename)
+        image_url = cdn_url or f"https://www.odishaexamprep.in/blog_covers/{filename}"
 
-            return {
-                "image_url": image_url,
-                "alt_text": f"{title} - Official Update Visual",
-                "local_path": file_path,
-                "photographer": "Google Gemini Imagen AI",
-                "is_ai_generated": True
-            }
+        return {
+            "image_url": image_url,
+            "alt_text": f"{title} - Official Editorial Visual",
+            "local_path": file_path,
+            "photographer": "Google Gemini & Flux AI Visual Studio",
+            "is_ai_generated": True
+        }
 
-    # Fallback: Official Board Branded Vector Banner (100% Authentic, zero stock photo clichés)
-    print(f"[Gemini Imagen] Using official exam board vector banner fallback for '{organization or 'General'}'.")
+    # Stage 3: Tertiary Fallback to Clean Official Board Vector Banner
+    print(f"[AI Visualizer] Engaging clean official vector banner fallback for '{organization or 'General'}'.")
     from shared.exam_logo_registry import generate_exam_vector_banner
     banner_data = generate_exam_vector_banner(
         title=title,
@@ -237,6 +285,6 @@ def generate_blog_imagen_banner(
         "image_url": banner_data["image_url"],
         "alt_text": banner_data["alt_text"],
         "local_path": banner_data.get("local_path"),
-        "photographer": banner_data.get("photographer", "OdishaExamPrep Official Banner"),
+        "photographer": banner_data.get("photographer", "OdishaExamPrep Official Visual"),
         "is_ai_generated": False
     }

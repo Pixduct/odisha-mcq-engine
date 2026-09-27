@@ -112,26 +112,30 @@ def extract_card_metadata(
     api_key: str = ""
 ) -> Dict[str, Any]:
     """
-    Intelligently derives structured executive card metadata:
-    - clean_title: Punchy, unbloated headline (under 55 chars)
-    - summary: Crisp 1-2 sentence executive summary (under 160 chars)
-    - key_points: Exactly 3 structured micro-card objects [label, value, sub]
-    Uses Gemini 3.5 Flash Lite first, with guaranteed deterministic fallback.
+    Intelligently derives structured executive card metadata with STRICT FACTUAL GROUNDING:
+    - clean_title: Punchy, unbloated headline (under 55 chars) strictly based on title
+    - summary: Crisp 1-2 sentence executive summary (under 160 chars) strictly based on input
+    - key_points: Exactly 3 structured micro-card objects [label, value, sub] with zero hallucination
+    Uses Gemini 3.5 Flash Lite with strict grounding rules, backed by deterministic fallback.
     """
     if api_key:
         prompt = (
             "You are an expert executive content editor for OdishaExamPrep portal.\n"
-            "Analyze this exam update and output a STRICT JSON object with no markdown fences, no formatting, just raw JSON:\n"
+            "CRITICAL FACTUAL GROUNDING RULES:\n"
+            "1. STRICT ACCURACY: Extract ONLY facts, numbers, dates, post names, and organizations explicitly mentioned in the provided input. Absolutely DO NOT invent, assume, or hallucinate any dates, vacancy counts, salaries, or cutoff numbers.\n"
+            "2. NO MISLEADING INFORMATION: If a piece of information is not mentioned in the input, do not invent it; instead use verified context directly from the title.\n"
+            "3. ADAPTIVE LABELS: Choose 3 concise uppercase labels that accurately reflect the article type (e.g. for Strategy use TARGET EXAM, SUBJECT FOCUS, STUDY PLAN; for Recruitment use ORGANIZATION, POSTS, STATUS; for Results use ORGANIZATION, POSTS, RESULT STATUS).\n"
+            "4. Output STRICT JSON with no markdown fences, no formatting:\n"
             "{\n"
-            '  "clean_title": "Concise impactful title under 55 characters",\n'
-            '  "summary": "Clear 1-2 sentence executive summary explaining what happened (max 150 chars)",\n'
+            '  "clean_title": "Accurate, impactful title under 55 characters strictly derived from title",\n'
+            '  "summary": "Accurate 1-2 sentence executive summary strictly based on input",\n'
             '  "key_points": [\n'
-            '    {"label": "ORGANIZATION", "value": "Short Primary Value", "sub": "Short subtext"},\n'
-            '    {"label": "EXAMINATION POSTS", "value": "Short Primary Value", "sub": "Short subtext"},\n'
-            '    {"label": "STATUS", "value": "Short Primary Value", "sub": "Short subtext"}\n'
+            '    {"label": "ACCURATE_LABEL_1", "value": "Fact from input", "sub": "Subtext from input"},\n'
+            '    {"label": "ACCURATE_LABEL_2", "value": "Fact from input", "sub": "Subtext from input"},\n'
+            '    {"label": "ACCURATE_LABEL_3", "value": "Fact from input", "sub": "Subtext from input"}\n'
             "  ]\n"
             "}\n\n"
-            f"Input:\nTitle: {title}\nOrganization: {organization}\nCategory: {category}\nContext: {context_summary[:400]}"
+            f"Input:\nTitle: {title}\nOrganization: {organization}\nCategory: {category}\nContext: {context_summary[:500]}"
         )
 
         models_to_try = ["gemini-3.5-flash-lite", "gemini-3.8-flash"]
@@ -140,7 +144,7 @@ def extract_card_metadata(
                 url = f"https://generativelanguage.googleapis.com/v1beta/models/{model}:generateContent?key={api_key}"
                 payload = {
                     "contents": [{"parts": [{"text": prompt}]}],
-                    "generationConfig": {"temperature": 0.2, "maxOutputTokens": 400}
+                    "generationConfig": {"temperature": 0.1, "maxOutputTokens": 400}
                 }
                 res = requests.post(url, json=payload, timeout=12)
                 if res.status_code == 200:
@@ -160,7 +164,7 @@ def extract_card_metadata(
             except Exception:
                 continue
 
-    # Deterministic Algorithmic Fallback
+    # Deterministic Algorithmic Fallback (Strictly Grounded in Title & Input)
     clean_t = re.sub(
         r'\s*(?:out|released|announced|download\s+pdf|pdf\s+link|direct\s+link|check\s+details|official\s+notice|here|active|published)[\s:]*.*$',
         '',
@@ -179,36 +183,63 @@ def extract_card_metadata(
         clean_summary = f"Official update published by {org_name}. Candidates can review verified eligibility, key dates, and official notification details."
     clean_summary = clean_summary[:160]
 
+    # Extract any explicit vacancy/post count if present in title (e.g. 2872 Posts, 1422 Vacancies)
+    vac_match = re.search(r'(\d+)\s+(?:vacancies|posts|openings)', title, flags=re.IGNORECASE)
+    vac_text = vac_match.group(0).title() if vac_match else ""
+
+    # Extract target post or exam name from title
+    post_label = "POSTS / CADRE"
+    post_val = vac_text or "Recruitment Posts"
+    sub_val = "State Cadre"
+    if "typist" in title.lower() or "deo" in title.lower():
+        post_val = "Junior Typist & DEO"
+        sub_val = "Judicial Service Cadre"
+    elif "amin" in title.lower() or "ri" in title.lower():
+        post_val = "RI, ARI & Amin"
+        sub_val = "Revenue Cadre"
+    elif "police" in title.lower() or "constable" in title.lower():
+        post_val = "Constable (Civil)"
+        sub_val = "State Police Battalions"
+    elif "aso" in title.lower():
+        post_val = "Assistant Section Officer"
+        sub_val = "State Secretariat Cadre"
+
     t_lower = f"{title} {category}".lower()
     if any(k in t_lower for k in ["result", "merit list", "scorecard", "qualified"]):
         kp = [
-            {"label": "ORGANIZATION", "value": organization or "Odisha State Board", "sub": "Judicial / State Cadre"},
-            {"label": "EXAMINATION POSTS", "value": "Senior Posts & Staff", "sub": "Merit List Shortlisted"},
-            {"label": "STATUS", "value": "Merit List Released", "sub": "PDF Download Active"}
+            {"label": "ORGANIZATION", "value": organization or "State Judicial Board", "sub": "Official Authority"},
+            {"label": "EXAMINATION POSTS", "value": post_val, "sub": sub_val},
+            {"label": "RESULT STATUS", "value": "Merit List Published", "sub": "Selection List PDF Available"}
         ]
     elif any(k in t_lower for k in ["admit card", "hall ticket", "call letter"]):
         kp = [
             {"label": "ORGANIZATION", "value": organization or "State Examination Board", "sub": "Exam Administration"},
-            {"label": "HALL TICKET", "value": "Admit Card Released", "sub": "Download via Candidate Login"},
-            {"label": "EXAM DAY", "value": "Carry Photo ID & Slip", "sub": "Reporting Time Verified"}
+            {"label": "HALL TICKET", "value": "Admit Card Released", "sub": "Available via Candidate Login"},
+            {"label": "STATUS", "value": "Download Active", "sub": "Check Reporting Time"}
         ]
     elif any(k in t_lower for k in ["answer key", "response sheet", "objection"]):
         kp = [
             {"label": "ORGANIZATION", "value": organization or "State Examination Board", "sub": "Official Assessment"},
-            {"label": "ANSWER KEY", "value": "Provisional Key Active", "sub": "Question Paper & Solutions"},
-            {"label": "OBJECTION WINDOW", "value": "Online Representation", "sub": "Check Cutoff Timeline"}
+            {"label": "ANSWER KEY", "value": "Provisional Key Published", "sub": "Question Paper Solutions"},
+            {"label": "STATUS", "value": "Objection Window Open", "sub": "Online Representation"}
         ]
     elif any(k in t_lower for k in ["current affairs", "roundup", "daily ca", "weekly ca"]):
         kp = [
             {"label": "KNOWLEDGE DOMAIN", "value": "Odisha & National CA", "sub": "Daily Exam Digest"},
-            {"label": "TARGET EXAMS", "value": "OPSC, OSSSC & Police", "sub": "High-Yield Questions"},
-            {"label": "FORMAT", "value": "Editorial & MCQs", "sub": "Exam-Oriented Insights"}
+            {"label": "TARGET EXAMS", "value": "OPSC, OSSSC & Police", "sub": "High-Yield Coverage"},
+            {"label": "FORMAT", "value": "Editorial & Key Facts", "sub": "Exam-Oriented Insights"}
+        ]
+    elif any(k in t_lower for k in ["strategy", "revision", "preparation", "mastering", "plan"]):
+        kp = [
+            {"label": "TARGET EXAM", "value": organization or "State Competitive Exam", "sub": "Preparation Guide"},
+            {"label": "STUDY DOMAIN", "value": "Syllabus Mastery", "sub": "High-Yield Concepts"},
+            {"label": "ACTION PLAN", "value": "Structured Revision", "sub": "Official Exam Pattern"}
         ]
     else:
         kp = [
             {"label": "RECRUITING BODY", "value": organization or "Odisha Public Commission", "sub": "State Government"},
-            {"label": "APPLICATION MODE", "value": "Online Registration", "sub": "Official Government Portal"},
-            {"label": "SELECTION PROCESS", "value": "Written Exam & Skill Test", "sub": "Verified Notification"}
+            {"label": "VACANCIES / POSTS", "value": post_val, "sub": sub_val},
+            {"label": "APPLICATION", "value": "Official Notification", "sub": "Online Portal Active"}
         ]
 
     return {
@@ -305,8 +336,8 @@ def render_executive_graphic_card(
         y += 28
 
     # 6. Key Points Grid (3 Balanced Sleek Cards)
-    card_y = 352
-    card_h = 138
+    card_y = 348
+    card_h = 146
     card_w = 328
     gap = 36
     start_x = 72
@@ -318,6 +349,8 @@ def render_executive_graphic_card(
     ]
 
     key_points = card_data.get("key_points", [])
+    max_card_text_w = 286
+
     for i in range(3):
         kp = key_points[i] if i < len(key_points) else {"label": "NOTIFICATION", "value": "Official Update", "sub": "Verified Portal"}
         cx = start_x + i * (card_w + gap)
@@ -326,13 +359,26 @@ def render_executive_graphic_card(
         draw.rounded_rectangle([cx, card_y, cx + card_w, card_y + card_h], radius=16, fill=(30, 41, 59, 190), outline=(51, 65, 85, 230), width=1)
         draw.rounded_rectangle([cx, card_y + 14, cx + 4, card_y + card_h - 14], radius=2, fill=acc_color)
 
-        label_txt = str(kp.get("label", "DETAILS")).upper()[:24]
-        val_txt = str(kp.get("value", "Official Notice"))[:24]
-        sub_txt = str(kp.get("sub", "Government Cadre"))[:28]
+        label_txt = str(kp.get("label", "DETAILS")).upper()
+        draw.text((cx + 20, card_y + 16), label_txt[:28], fill=acc_color, font=font_card_label)
 
-        draw.text((cx + 20, card_y + 20), label_txt, fill=acc_color, font=font_card_label)
-        draw.text((cx + 20, card_y + 48), val_txt, fill=(255, 255, 255), font=font_card_val)
-        draw.text((cx + 20, card_y + 82), sub_txt, fill=(148, 163, 184), font=font_card_sub)
+        # Wrap value text (up to 2 lines)
+        val_txt = str(kp.get("value", "Official Notice"))
+        val_lines = wrap_text(val_txt, font_card_val, max_card_text_w, draw)[:2]
+        
+        cur_y = card_y + 40
+        for vline in val_lines:
+            draw.text((cx + 20, cur_y), vline, fill=(255, 255, 255), font=font_card_val)
+            cur_y += 24
+
+        # Wrap subtext (up to 2 lines, positioned neatly under value)
+        sub_txt = str(kp.get("sub", "Government Cadre"))
+        sub_lines = wrap_text(sub_txt, font_card_sub, max_card_text_w, draw)[:2]
+        cur_y = max(cur_y + 6, card_y + 92 if len(val_lines) == 1 else card_y + 94)
+        for sline in sub_lines:
+            if cur_y + 16 <= card_y + card_h:
+                draw.text((cx + 20, cur_y), sline, fill=(148, 163, 184), font=font_card_sub)
+                cur_y += 20
 
     # 7. Bottom Footer Status Bar
     footer_y = height - 90

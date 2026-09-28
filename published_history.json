@@ -350,5 +350,21 @@
     "correct_option_index": 0,
     "explanation": "Option A uses correct inversion for third conditional ('Had + subject + V3'). Option B & C mix tenses incorrectly. Option D uses simple past instead of past perfect in the 'if' clause.",
     "hook": "Master the tricky Conditional Sentences frequently asked in IBPS English!"
+  },
+  {
+    "date": "2026-09-28",
+    "exam": "Odisha Police SI",
+    "content_stage": "EXAM_SPECIFIC",
+    "topic": "polity_fundamental_rights_writs",
+    "question": "Which of the following writs can be issued against both public authorities and private individuals?",
+    "options": [
+      "Mandamus",
+      "Habeas Corpus",
+      "Quo-Warranto",
+      "Certiorari"
+    ],
+    "correct_option_index": 1,
+    "explanation": "Habeas Corpus applies to both public and private illegal detentions. Mandamus is a trap because it is strictly issued against public officials and statutory bodies.",
+    "hook": "Can you spot the only writ enforceable against private citizens?"
   }
 ]

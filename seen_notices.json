@@ -715,5 +715,54 @@
     "title": "Tariff Proceedings",
     "status": "REJECTED_BY_AI",
     "processed_at": "2026-09-27T17:31:21.875671"
+  },
+  "1dd3912190d400e27856fcdb1fda08a9c8a426547a00c2748297f984954c4a9e": {
+    "portal": "OSSC",
+    "title": "Annual Reports",
+    "status": "REJECTED_BY_AI",
+    "processed_at": "2026-09-28T11:45:04.470262"
+  },
+  "940c66942a8df9a936f235e6944d105db02795f1bcc3d12e61388b4028313b74": {
+    "portal": "SSB Odisha",
+    "title": "Advertisement No.03/2026 Dated 29.06.2026. (Recruitment to the post of Junior Assistant in CHSE(O), S & ME Department ) New",
+    "status": "REJECTED_BY_AI",
+    "processed_at": "2026-09-28T11:46:29.873928"
+  },
+  "79d61a2e0b6c3218fa75e6805e1088980f020c8b0af5541b508db49f31bbe5a7": {
+    "portal": "Odisha High Court",
+    "title": "Result of Computer Application Test held today i.e. 19.08.2026 for recruitment to the posts of Junior Grade Typist/ Data Entry Operator pursuant to Advertisement No. 01 of 2026",
+    "article_id": "f3711589-fa09-40ba-8eea-231f9dd7662a",
+    "status": "PUBLISHED",
+    "processed_at": "2026-09-28T11:49:05.726613"
+  },
+  "10e76bd779366cfb0faf60564cc4e2e48a1226c3191d44fdd52b823a25ec5ba1": {
+    "portal": "IBPS",
+    "title": "CRP CSA(Customer Service Associates)",
+    "status": "REJECTED_BY_AI",
+    "processed_at": "2026-09-28T11:51:30.164661"
+  },
+  "71ea6acbc0e482d97f63addadd2f58c0d36ad2041a4650b4f475fc774d20d825": {
+    "portal": "SBI",
+    "title": "CTC NEGOTIATION FORM",
+    "status": "REJECTED_BY_AI",
+    "processed_at": "2026-09-28T11:52:39.823438"
+  },
+  "7742731879b81066b4a4b61152b218105f8c723aa843963dd9ce1a15e928a6d7": {
+    "portal": "OPTCL",
+    "title": "COMPLETED PROJECTS",
+    "status": "REJECTED_BY_AI",
+    "processed_at": "2026-09-28T11:54:33.058804"
+  },
+  "7e2be197ed5933a68e0c7af3642b8df550f2cce7c4f2b8b56a603770beea3eed": {
+    "portal": "OPGC",
+    "title": "Board of Directors",
+    "status": "REJECTED_BY_AI",
+    "processed_at": "2026-09-28T11:55:46.775491"
+  },
+  "77e79443dc25f2656744492d7dfa130c1a8e550f6c35f90ef44d4f961ceea10c": {
+    "portal": "GRIDCO",
+    "title": "Mission & Vision",
+    "status": "REJECTED_BY_AI",
+    "processed_at": "2026-09-28T11:56:58.262630"
   }
 }

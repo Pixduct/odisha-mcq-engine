@@ -14,4 +14,5 @@ __pycache__/
 *.log
 .env
 yt_state.json
+output/
 

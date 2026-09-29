@@ -601,18 +601,34 @@ def fetch_direct_portal_notices(org_info: dict) -> list:
                 candidate_rows = soup.find_all(["tr", "li"])
 
             for row in candidate_rows[:25]:
-                a_tag = row.find("a")
-                if not a_tag:
-                    continue
-                title = a_tag.get_text(" ", strip=True)
-                href = a_tag.get("href", "").strip()
-                if not href or href in ["#", "javascript:void(0);", "javascript:void(0)", "javascript:;"]:
+                all_a = row.find_all("a")
+                if not all_a:
                     continue
 
-                full_link = href if href.startswith("http") else requests.compat.urljoin(portal_url, href)
-
+                # Find title from primary text anchor
+                title_tag = next((a for a in all_a if len(a.get_text(" ", strip=True)) >= 10), all_a[0])
+                title = title_tag.get_text(" ", strip=True)
                 if len(title) < 10:
                     continue
+
+                # Prioritize direct PDF or HTTP download link over script anchors
+                full_link = None
+                for a in all_a:
+                    cand_href = a.get("href", "").strip()
+                    if not cand_href or cand_href in ["#", "javascript:void(0);", "javascript:void(0)", "javascript:;"]:
+                        continue
+                    if cand_href.lower().startswith("javascript:") or "__dopostback" in cand_href.lower():
+                        continue
+                    resolved = cand_href if cand_href.startswith("http") else requests.compat.urljoin(portal_url, cand_href)
+                    if resolved.lower().endswith(".pdf"):
+                        full_link = resolved
+                        break
+                    elif not full_link and resolved.startswith("http"):
+                        full_link = resolved
+
+                # If no valid href was found in row, fallback cleanly to official portal_url (never raw javascript:__doPostBack)
+                if not full_link:
+                    full_link = portal_url
 
                 if any(re.search(pat, title, re.IGNORECASE) for pat in EXAM_UPDATE_HARD_REJECT_PATTERNS):
                     continue
@@ -647,7 +663,10 @@ def fetch_direct_portal_notices(org_info: dict) -> list:
                 clean_title = re.sub(r'<[^>]+>', '', raw_title).strip()
                 if len(clean_title) < 12 or href in ["#", "javascript:void(0);", "javascript:;"]:
                     continue
-                full_link = href if href.startswith("http") else requests.compat.urljoin(portal_url, href)
+                if href.lower().startswith("javascript:") or "__dopostback" in href.lower():
+                    full_link = portal_url
+                else:
+                    full_link = href if href.startswith("http") else requests.compat.urljoin(portal_url, href)
                 if any(re.search(pat, clean_title, re.IGNORECASE) for pat in EXAM_UPDATE_HARD_REJECT_PATTERNS):
                     continue
                 
@@ -999,7 +1018,13 @@ def main():
             article_data["exam_schedule"] = article_data.get("exam_schedule", "")
             article_data["timeline_events"] = article_data.get("timeline_events", [])
             article_data["bullets"] = article_data.get("bullets", [])
-            article_data["official_link"] = top_candidate.get("url") or article_data.get("official_source")
+            # Sanitize official_link to ensure valid HTTPS URL (never raw javascript:__doPostBack)
+            raw_official_link = str(top_candidate.get("url") or article_data.get("official_source") or "").strip()
+            if not raw_official_link.lower().startswith("http") or any(bad in raw_official_link.lower() for bad in ["javascript:", "__dopostback"]):
+                known_domains = org.get("official_domains", [])
+                primary_domain = known_domains[0] if known_domains else "ossc.gov.in"
+                raw_official_link = org.get("portal_url") or org.get("url") or f"https://www.{primary_domain}"
+            article_data["official_link"] = raw_official_link
 
             # Determine unified 20-category taxonomy
             try:

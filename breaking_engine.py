@@ -923,8 +923,13 @@ def build_standalone_caption(alert_data: dict) -> str:
     headline = clean_utf8_text(alert_data.get("headline", "Official Exam Notification"))
     board_full = clean_utf8_text(alert_data.get("exam_board_full", "Official Recruitment Board"))
     board_short = clean_utf8_text(alert_data.get("exam_board_short", "Official Board"))
-    bullets = alert_data.get("bullets", [])
-    official_link = alert_data.get("official_link", "https://ossc.gov.in")
+    official_link_raw = alert_data.get("official_link", "https://ossc.gov.in")
+    try:
+        from shared.telegram import sanitize_official_link
+        official_link = sanitize_official_link(official_link_raw, board_short or board_full)
+    except Exception:
+        clean_raw = str(official_link_raw or "").strip()
+        official_link = clean_raw if clean_raw.startswith("http") and "javascript:" not in clean_raw.lower() else "https://www.ossc.gov.in"
 
     try:
         from shared.telegram import is_valid_metric

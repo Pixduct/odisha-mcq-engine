@@ -467,7 +467,84 @@ def extract_short_board_name(name: str) -> str:
 
     if len(name_upper) > 22:
         return name_upper[:20].strip() + "…"
-    return name_upper
+BOARD_OFFICIAL_DOMAINS = {
+    "OSSC": "ossc.gov.in",
+    "OSSSC": "osssc.gov.in",
+    "OPSC": "opsc.gov.in",
+    "ODISHA POLICE": "odishapolice.gov.in",
+    "ODISHA HIGH COURT": "orissahighcourt.nic.in",
+    "HIGH COURT OF ORISSA": "orissahighcourt.nic.in",
+    "ORISSA HIGH COURT": "orissahighcourt.nic.in",
+    "SSB ODISHA": "ssbodisha.ac.in",
+    "BSE ODISHA": "bseodisha.ac.in",
+    "OAVS": "oav.edu.in",
+    "DSE ODISHA": "dseodisha.gov.in",
+    "CHSE ODISHA": "chseodisha.nic.in",
+    "OPTCL": "optcl.co.in",
+    "OMC": "omcltd.in",
+    "OPGC": "opgc.co.in",
+    "OHPC": "ohpcltd.com",
+    "GRIDCO": "gridco.co.in",
+    "SCERT ODISHA": "scertodisha.nic.in",
+    "UPSC": "upsc.gov.in",
+    "SSC": "ssc.gov.in",
+    "RRB": "rrbapply.gov.in",
+    "IBPS": "ibps.in",
+    "SBI": "sbi.co.in",
+    "RBI": "rbi.org.in",
+    "NTA": "nta.ac.in",
+    "INDIA POST": "indiapostgdsonline.gov.in",
+    "INTELLIGENCE BUREAU": "mha.gov.in",
+    "CTET": "ctet.nic.in",
+    "KVS": "kvsangathan.nic.in",
+    "NVS": "navodaya.gov.in",
+    "EMRS": "emrs.tribal.gov.in",
+    "FCI": "fci.gov.in",
+    "LIC": "licindia.in",
+    "DRDO": "drdo.gov.in",
+    "ISRO": "isro.gov.in",
+}
+
+def resolve_clean_display_domain(official_link: str, org_name: str = "", board_short: str = "") -> str:
+    """
+    Extracts an authoritative, clean domain name for visual graphic cards.
+    Guarantees: NEVER leaks raw javascript:__doPostBack, code, anchors, or query params.
+    """
+    clean_link = str(official_link or "").strip()
+
+    # 1. If valid HTTP/HTTPS URL, extract clean netloc
+    if clean_link.lower().startswith(("http://", "https://")):
+        try:
+            parsed = urllib.parse.urlparse(clean_link)
+            host = parsed.netloc.lower().replace("www.", "").strip()
+            # Must look like a real domain: contains a dot and no invalid/script characters
+            if host and "." in host and not any(bad in host for bad in ["javascript", "$", "<", ">", ";", "'", '"', "(", ")"]):
+                return host
+        except Exception:
+            pass
+
+    # 2. Look up known authoritative board domains from org_name or board_short
+    lookup_candidates = [
+        str(board_short or "").upper().strip(),
+        str(org_name or "").upper().strip()
+    ]
+    for cand in lookup_candidates:
+        if not cand:
+            continue
+        if cand in BOARD_OFFICIAL_DOMAINS:
+            return BOARD_OFFICIAL_DOMAINS[cand]
+        for kb, dom in BOARD_OFFICIAL_DOMAINS.items():
+            if kb in cand:
+                return dom
+
+    # 3. If clean_link itself looks like a domain without protocol (e.g. "ossc.gov.in")
+    if "." in clean_link and not any(bad in clean_link.lower() for bad in ["javascript", "$", "<", ">", ";", "'", '"', "(", ")", " "]):
+        candidate = clean_link.split("/")[0].replace("www.", "").strip()
+        if candidate and "." in candidate:
+            return candidate
+
+    return "odishaexamprep.in"
+
 
 def render_exam_alert_card(article_data: dict, output_path: str = None) -> str:
     """
@@ -513,13 +590,7 @@ def render_exam_alert_card(article_data: dict, output_path: str = None) -> str:
         headline_line_height = "1.22"
 
     # Extract official domain host cleanly
-    try:
-        if official_link.startswith("http"):
-            domain = urllib.parse.urlparse(official_link).netloc.replace("www.", "")
-        else:
-            domain = official_link
-    except Exception:
-        domain = "Official Portal"
+    domain = resolve_clean_display_domain(official_link, org_name, board_short)
 
     # Format date label (prefer notice date if available, otherwise current date)
     notice_date_raw = article_data.get("notice_date") or article_data.get("published_date")

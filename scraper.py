@@ -96,34 +96,52 @@ def parse_generic_portal(url, portal_name, min_text_len=8):
     ]
 
     for row in candidate_rows:
-        a_tag = row.find("a")
-        if a_tag:
-            if not href or href in ["#", "javascript:void(0);", "javascript:void(0)", "javascript:;"]:
+        all_a = row.find_all("a")
+        if not all_a:
+            continue
+
+        title_tag = next((a for a in all_a if len(a.get_text(" ", strip=True)) >= min_text_len), all_a[0])
+        title = title_tag.get_text(" ", strip=True)
+
+        full_link = None
+        for a in all_a:
+            cand_href = a.get("href", "").strip()
+            if not cand_href or cand_href in ["#", "javascript:void(0);", "javascript:void(0)", "javascript:;"]:
                 continue
+            if cand_href.lower().startswith("javascript:") or "__dopostback" in cand_href.lower():
+                continue
+            resolved = cand_href if cand_href.startswith("http") else requests.compat.urljoin(url, cand_href)
+            if resolved.lower().endswith(".pdf"):
+                full_link = resolved
+                break
+            elif not full_link and resolved.startswith("http"):
+                full_link = resolved
 
-            if href.lower().startswith("javascript:"):
-                full_link = url
-            else:
-                full_link = href if href.startswith("http") else requests.compat.urljoin(url, href)
+        if not full_link:
+            full_link = url
 
-            if len(title) >= min_text_len and not any(ik in title.lower() for ik in ignored_keywords):
-                c_text = row.get_text(" ", strip=True)
-                items.append({
-                    "portal": portal_name,
-                    "title": title,
-                    "link": full_link,
-                    "full_text": c_text
-                })
+        if len(title) >= min_text_len and not any(ik in title.lower() for ik in ignored_keywords):
+            c_text = row.get_text(" ", strip=True)
+            items.append({
+                "portal": portal_name,
+                "title": title,
+                "link": full_link,
+                "full_text": c_text
+            })
 
     # Strategy 2: Direct links fallback within page body
     if not items:
         for a_tag in soup.find_all("a"):
             title = a_tag.get_text(" ", strip=True)
             href = a_tag.get("href", "").strip()
-            if not href or href in ["#", "javascript:void(0);", "javascript:void(0)"]:
+            if not href or href in ["#", "javascript:void(0);", "javascript:void(0)", "javascript:;"]:
                 continue
-            if len(title) >= min_text_len and not any(ik in title.lower() for ik in ignored_keywords):
+            if href.lower().startswith("javascript:") or "__dopostback" in href.lower():
+                full_link = url
+            else:
                 full_link = href if href.startswith("http") else requests.compat.urljoin(url, href)
+
+            if len(title) >= min_text_len and not any(ik in title.lower() for ik in ignored_keywords):
                 items.append({
                     "portal": portal_name,
                     "title": title,

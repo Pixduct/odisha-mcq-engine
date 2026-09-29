@@ -57,6 +57,31 @@ def clean_html_caption(caption: str, max_len: int = 1020) -> str:
 
     return truncated
 
+def sanitize_official_link(url: str, org_name: str = "") -> str:
+    """Ensures official link is a valid clickable HTTP/HTTPS URL, never raw javascript: or code."""
+    clean = str(url or "").strip()
+    if clean.lower().startswith(("http://", "https://")) and not any(bad in clean.lower() for bad in ["javascript:", "__dopostback"]):
+        return clean
+
+    org_upper = str(org_name or "").upper()
+    if "OSSC" in org_upper and "OSSSC" not in org_upper:
+        return "https://www.ossc.gov.in"
+    if "OSSSC" in org_upper:
+        return "https://www.osssc.gov.in"
+    if "OPSC" in org_upper:
+        return "https://www.opsc.gov.in"
+    if "POLICE" in org_upper:
+        return "https://odishapolice.gov.in"
+    if "HIGH COURT" in org_upper:
+        return "https://orissahighcourt.nic.in"
+    if "SSB" in org_upper:
+        return "https://ssbodisha.ac.in"
+    if "BSE" in org_upper:
+        return "https://bseodisha.ac.in"
+    if "OAVS" in org_upper:
+        return "https://oav.edu.in"
+    return "https://www.odishaexamprep.in"
+
 def is_valid_metric(val: str) -> bool:
     """Checks whether a vacancy or date metric contains actual data, not boilerplate placeholders."""
     if not val:
@@ -140,7 +165,7 @@ def broadcast_public_telegram_post(engine: str, details: dict) -> bool:
             org = details.get("organization") or details.get("exam_board") or "Official Recruitment Board"
             headline = details.get("headline", title)
             category_badge = details.get("category_badge", "OFFICIAL EXAM NOTIFICATION")
-            official_link = details.get("official_link") or details.get("link") or details.get("official_source") or "https://ossc.gov.in"
+            official_link = sanitize_official_link(details.get("official_link") or details.get("link") or details.get("official_source"), org)
             vacancies = details.get("vacancies", "")
             dates = details.get("dates", "")
             bullets = details.get("bullets", [])
@@ -187,7 +212,7 @@ def broadcast_public_telegram_post(engine: str, details: dict) -> bool:
             else:
                 header_line = f"<b>{clean_badge}</b>\n"
 
-            official_link = details.get("official_link") or details.get("link") or details.get("official_source") or "https://ossc.gov.in"
+            official_link = sanitize_official_link(details.get("official_link") or details.get("link") or details.get("official_source"), org)
             vacancies = str(details.get("vacancies", "")).strip()
             eligibility = str(details.get("eligibility", "")).strip()
             dates = str(details.get("dates", "")).strip()

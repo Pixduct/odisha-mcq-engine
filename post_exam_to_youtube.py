@@ -41,8 +41,12 @@ def format_exam_notification_youtube_caption(article_data: dict) -> str:
     Formats a clean, high-impact YouTube Community post for official exam notifications.
     """
     title = article_data.get("title", "Official Exam Notification")
-    org = article_data.get("organization") or article_data.get("target_exam") or "Odisha Recruitment Board"
-    official_link = article_data.get("official_link") or article_data.get("official_notification_link") or article_data.get("source_url") or "https://www.ossc.gov.in"
+    raw_link = article_data.get("official_link") or article_data.get("official_notification_link") or article_data.get("source_url") or "https://www.ossc.gov.in"
+    try:
+        from shared.telegram import sanitize_official_link
+        official_link = sanitize_official_link(raw_link, org)
+    except Exception:
+        official_link = str(raw_link).strip() if str(raw_link).strip().startswith("http") and "javascript:" not in str(raw_link).lower() else "https://www.ossc.gov.in"
     article_url = article_data.get("article_url") or "https://www.odishaexamprep.in"
     bullets = article_data.get("bullets") or article_data.get("key_highlights") or article_data.get("highlights") or []
 

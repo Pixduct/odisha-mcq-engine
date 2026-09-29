@@ -785,5 +785,59 @@
     "article_id": "7dbcda73-3770-429f-8b90-653380eb49e3",
     "status": "PUBLISHED",
     "processed_at": "2026-09-28T20:02:58.960884"
+  },
+  "f0593d9db5358f2be81eefadbe311d34f58a863a424740d74844c0f47fb56435": {
+    "portal": "Odisha Police",
+    "title": "Odisha Tourism : Visit Odisha | Travel & Tourism | Official Site",
+    "status": "REJECTED_BY_AI",
+    "processed_at": "2026-09-29T11:25:28.182032"
+  },
+  "27e8b5d36b4f36ea1077bb8417121e0667d6118f50b97659617ec3b75a0f4dad": {
+    "portal": "SBI",
+    "title": "CTC NEGOTIATION FORMAT",
+    "status": "REJECTED_BY_AI",
+    "processed_at": "2026-09-29T11:28:50.949829"
+  },
+  "b22ed118c4e302cfd7ea2a4dd3122cd3e23ee0337065743c30eee204e7951353": {
+    "portal": "OPTCL",
+    "title": "ONGOING PROJECTS",
+    "status": "REJECTED_BY_AI",
+    "processed_at": "2026-09-29T11:30:23.766849"
+  },
+  "465aee5de12c9daf2f48f2dc227593020aa773565ab1eff20279dc95c21911f1": {
+    "portal": "GRIDCO",
+    "title": "Board Of Director",
+    "status": "REJECTED_BY_AI",
+    "processed_at": "2026-09-29T11:31:35.207691"
+  },
+  "536239f1c3d4a94a7799318e96c6ca4f391d2f9a82aa6029a811cdfaac2c2fc2": {
+    "portal": "Odisha Prisons",
+    "title": "Home | Government Of Odisha",
+    "status": "REJECTED_BY_AI",
+    "processed_at": "2026-09-29T11:33:19.981279"
+  },
+  "bf9a3518989d809632e03959e46fe398e5606c602e287214b3d3d7b9421cd8e8": {
+    "portal": "OFDC",
+    "title": "Annual sale schedule of Kenduleaf for 2026 and arrear crop years during June 2026 to March 2027",
+    "status": "REJECTED_BY_AI",
+    "processed_at": "2026-09-29T11:34:36.773880"
+  },
+  "9b2ea390d7739e7d367d03e62b0fcc8b492d7535860146600492d3e8bf0e2a70": {
+    "portal": "SEBI",
+    "title": "Send Reminder",
+    "status": "REJECTED_BY_AI",
+    "processed_at": "2026-09-29T11:35:36.944102"
+  },
+  "cfcc49c28cd21a41215db66f42438f1701a222b2cef543e66236f1ce076c0bcd": {
+    "portal": "SIDBI",
+    "title": "Mission & Vision",
+    "status": "REJECTED_BY_AI",
+    "processed_at": "2026-09-29T11:36:12.555691"
+  },
+  "071352759fabfe31dcad7570075bb442436b0e43ef4d293b762af0c6d6ab3ccb": {
+    "portal": "LIC",
+    "title": "Recruitment of AAO Generalists Specialists Assistant Engineers 2025",
+    "status": "REJECTED_BY_AI",
+    "processed_at": "2026-09-29T11:37:23.472445"
   }
 }

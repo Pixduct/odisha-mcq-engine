@@ -366,5 +366,21 @@
     "correct_option_index": 1,
     "explanation": "Habeas Corpus applies to both public and private illegal detentions. Mandamus is a trap because it is strictly issued against public officials and statutory bodies.",
     "hook": "Can you spot the only writ enforceable against private citizens?"
+  },
+  {
+    "date": "2026-09-29",
+    "exam": "BSE Odisha OTET / OSSTET",
+    "content_stage": "EXAM_SPECIFIC",
+    "topic": "kohlberg_moral_development_stage3_vs_stage4",
+    "question": "A student obeys school rules primarily to gain the approval of teachers and peers, considering themselves a \"good boy/girl.\" According to Lawrence Kohlberg's stages of moral development, which specific stage does this behavior represent?",
+    "options": [
+      "Stage 1: Obedience and Punishment Orientation",
+      "Stage 2: Individualism and Exchange",
+      "Stage 3: Interpersonal Accord and Conformity",
+      "Stage 4: Authority and Social-Order Maintaining Orientation"
+    ],
+    "correct_option_index": 2,
+    "explanation": "Right because Stage 3 focuses on social approval and interpersonal relationships (\"good boy/good girl\"). Stage 4 is wrong because it reflects obedience to fixed laws and social order rather than peer/teacher approval.",
+    "hook": "Test your mastery of Kohlberg's moral dilemmas often tested in OTET & OSSTET!"
   }
 ]

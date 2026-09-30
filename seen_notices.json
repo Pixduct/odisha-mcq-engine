@@ -968,5 +968,30 @@
     "title": "0% GST Health",
     "status": "REJECTED_BY_AI",
     "processed_at": "2026-09-30T11:25:21.588485"
+  },
+  "c4f738da8a6c7eefa7784bf174b580a51a91b9ac5d256342c98e1b222f111882": {
+    "portal": "OSSC",
+    "title": "Admission Link",
+    "article_id": "4ffb7625-4048-4055-94dd-da8e44232b99",
+    "status": "PUBLISHED",
+    "processed_at": "2026-09-30T18:11:49.328031"
+  },
+  "4e2513dc485e8a81eee98b5e6d3c8b6a3b2047a1c3ac194ae48d81e08f2aeb07": {
+    "portal": "SSB Odisha",
+    "title": "Link for Correction in Particulars of the Online Application Form for Recruitment to the Posts of Librarian (Advertisement No. 02/2026 dated 16.04.2026)",
+    "status": "REJECTED_BY_AI",
+    "processed_at": "2026-09-30T18:13:23.049281"
+  },
+  "6f58cbcede40bac1b4817cf23d9e4943612c76d43e1f8d1d88508a1cf0418755": {
+    "portal": "IBPS",
+    "title": "CRP PO/MTs",
+    "status": "REJECTED_BY_AI",
+    "processed_at": "2026-09-30T18:20:05.787529"
+  },
+  "e91a81eac17df5ac0276159d430620d11ffd2504f2ce0e00681b9718f9fb64cd": {
+    "portal": "SBI",
+    "title": "UNDERTAKING FORMAT",
+    "status": "REJECTED_BY_AI",
+    "processed_at": "2026-09-30T18:21:43.064226"
   }
 }

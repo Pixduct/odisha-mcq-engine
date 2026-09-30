@@ -382,5 +382,21 @@
     "correct_option_index": 2,
     "explanation": "Right because Stage 3 focuses on social approval and interpersonal relationships (\"good boy/good girl\"). Stage 4 is wrong because it reflects obedience to fixed laws and social order rather than peer/teacher approval.",
     "hook": "Test your mastery of Kohlberg's moral dilemmas often tested in OTET & OSSTET!"
+  },
+  {
+    "date": "2026-09-30",
+    "exam": "OSSSC Nursing Officer",
+    "content_stage": "EXAM_SPECIFIC",
+    "topic": "ecg_changes_electrolyte_imbalance",
+    "question": "A patient's lab report shows a serum potassium level of 2.8 mEq/L. Which ECG abnormality should the Nursing Officer closely monitor for?",
+    "options": [
+      "Tall, peaked T waves",
+      "Prominent U waves",
+      "Widened QRS complex",
+      "Shortened QT interval"
+    ],
+    "correct_option_index": 1,
+    "explanation": "Prominent U waves indicate hypokalemia (<3.5 mEq/L). Tall peaked T waves is a trap as it represents hyperkalemia (>5.0 mEq/L), which candidates frequently confuse.",
+    "hook": "Master ECG changes in electrolyte imbalances!"
   }
 ]

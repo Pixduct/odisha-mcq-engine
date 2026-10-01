@@ -1059,5 +1059,43 @@
     "title": "Miscellaneous",
     "status": "REJECTED_BY_AI",
     "processed_at": "2026-10-01T11:52:08.562379"
+  },
+  "921d6e3946b097596c1594eb2fd81502f1d538a4b9cd1a687456548ea69ef39d": {
+    "portal": "OSSC",
+    "title": "Objection_Link",
+    "article_id": "45cf2899-c606-42fb-bd9c-58ab2e3eb526",
+    "status": "PUBLISHED",
+    "processed_at": "2026-10-01T18:37:04.272449"
+  },
+  "cbf74e17c94c8439ff5819cd0008080e591efdde4815c81222532f98b012faaa": {
+    "portal": "SSB Odisha",
+    "title": "Link for correction/ new field fill up window for candidates already successfully submitted online application form for Advt. No. 01/2026",
+    "article_id": "4f7d7613-2b9c-4c22-9aea-2f357775d73f",
+    "status": "PUBLISHED",
+    "processed_at": "2026-10-01T18:39:34.799988"
+  },
+  "ebe28f1cbd0f6aa2ab0d09d5202c11fc29a37e047061da2b7f195cc1e0df2c43": {
+    "portal": "SSC",
+    "title": "Home | Staff Selection Commission | GoI",
+    "status": "REJECTED_BY_AI",
+    "processed_at": "2026-10-01T18:41:34.917234"
+  },
+  "0afa7d8fe7f7defa4c4bc4362c6503555bfcf5f248778187ad39c124e15f4bef": {
+    "portal": "OPTCL",
+    "title": "NORTHERN ZONE",
+    "status": "REJECTED_BY_AI",
+    "processed_at": "2026-10-01T18:43:43.211693"
+  },
+  "3137e166f4d5f51de1d7857a16c1a4c1f45823fbfe7ccf1463439de75612636e": {
+    "portal": "SCERT Odisha",
+    "title": "Home | State Council of Educational Research and Training (SCERT)",
+    "status": "REJECTED_BY_AI",
+    "processed_at": "2026-10-01T18:45:50.319545"
+  },
+  "a6edefaeaebbe579f36dbb8691132360f95248c0c1f044d47d517afc7b51433d": {
+    "portal": "SIDBI",
+    "title": "Historical Journey",
+    "status": "REJECTED_BY_AI",
+    "processed_at": "2026-10-01T18:48:02.224114"
   }
 }

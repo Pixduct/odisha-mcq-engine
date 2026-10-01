@@ -398,5 +398,21 @@
     "correct_option_index": 1,
     "explanation": "Prominent U waves indicate hypokalemia (<3.5 mEq/L). Tall peaked T waves is a trap as it represents hyperkalemia (>5.0 mEq/L), which candidates frequently confuse.",
     "hook": "Master ECG changes in electrolyte imbalances!"
+  },
+  {
+    "date": "2026-10-01",
+    "exam": "BSE Odisha OTET / OSSTET",
+    "content_stage": "EXAM_SPECIFIC",
+    "topic": "vygotsky_scaffolding_zpd",
+    "question": "A teacher provides temporary, adjustable support to students while they master a complex mathematical problem, gradually withdrawing help as their competence increases. According to Lev Vygotsky, what is this instructional strategy called?",
+    "options": [
+      "Scaffolding",
+      "Discovery learning",
+      "Conditioning",
+      "Assimilation"
+    ],
+    "correct_option_index": 0,
+    "explanation": "Right because scaffolding refers to temporary support given during learning. Discovery learning is wrong as it is primarily associated with Bruner, not Vygotsky's mediated instruction.",
+    "hook": "Master Vygotsky's core pedagogical concepts for OTET & OSSTET!"
   }
 ]

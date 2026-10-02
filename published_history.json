@@ -414,5 +414,21 @@
     "correct_option_index": 0,
     "explanation": "Right because scaffolding refers to temporary support given during learning. Discovery learning is wrong as it is primarily associated with Bruner, not Vygotsky's mediated instruction.",
     "hook": "Master Vygotsky's core pedagogical concepts for OTET & OSSTET!"
+  },
+  {
+    "date": "2026-10-02",
+    "exam": "OSSC CGL",
+    "content_stage": "EXAM_SPECIFIC",
+    "topic": "quantitative_aptitude_simple_compound_interest",
+    "question": "A sum of money placed at compound interest doubles itself in 4 years. In how many years will it amount to 8 times itself at the same rate of interest?",
+    "options": [
+      "8 years",
+      "12 years",
+      "16 years",
+      "24 years"
+    ],
+    "correct_option_index": 1,
+    "explanation": "Right because compound interest grows geometrically: $2^3 = 8$, so $3 \\times 4 = 12$ years. The trap option 8 years incorrectly uses linear multiplication ($2 \\times 4$).",
+    "hook": "Master the compound interest power-growth trick often asked in OSSC CGL!"
   }
 ]

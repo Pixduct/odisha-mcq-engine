@@ -1201,5 +1201,42 @@
     "title": "training schools",
     "status": "REJECTED_BY_AI",
     "processed_at": "2026-10-03T10:38:28.042469"
+  },
+  "2f08e47e5a96457fd193c2c49ad11d2d70b3bc1b9f460d09a1f70ef5dd47076a": {
+    "portal": "UPSC",
+    "title": "UPSC",
+    "status": "REJECTED_BY_AI",
+    "processed_at": "2026-10-03T16:47:29.026111"
+  },
+  "e085b17f13fd7ad5c213d0491d586593216e53e7f9fe758b29a8dca4285d70a3": {
+    "portal": "SIDBI",
+    "title": "MSME Loans",
+    "status": "REJECTED_BY_AI",
+    "processed_at": "2026-10-03T16:50:30.575242"
+  },
+  "33f29c360d36b35f261f84da4a54574940060098db68a4883e03d9e3d706c7a2": {
+    "portal": "LIC",
+    "title": "Why Invest",
+    "status": "REJECTED_BY_AI",
+    "processed_at": "2026-10-03T16:51:40.411719"
+  },
+  "e4b10655ea205bc4ff52305724e143df7ba12f7b47e7705efc07f58f602be3cb": {
+    "portal": "NIACL",
+    "title": "Indian Operations",
+    "status": "REJECTED_BY_AI",
+    "processed_at": "2026-10-03T16:53:10.248080"
+  },
+  "58e748944657c6a65fd6c603c7b4f4053df11d902da27530122e0f1456d3b46d": {
+    "portal": "ISRO",
+    "title": "Advertisement No. URSC:01:2026 dated 21.03.2026 -Answer keys for the written test to the post of Scientist/Engineer - 'SC' (Industrial Engineering) held on 27.09.2026. Read More",
+    "article_id": "17f3827b-6024-4fbe-a08e-7681c3c645d9",
+    "status": "PUBLISHED",
+    "processed_at": "2026-10-03T16:54:28.615671"
+  },
+  "1bf9c7963c91fd002a85b8e782fee2a37e0b5b12ec8693fc7a1baf66da620851": {
+    "portal": "CAPF",
+    "title": "Download 1.05 MB)",
+    "status": "REJECTED_BY_AI",
+    "processed_at": "2026-10-03T16:57:30.781410"
   }
 }

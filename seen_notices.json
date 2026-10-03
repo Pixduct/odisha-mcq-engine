@@ -1146,5 +1146,60 @@
     "title": "Things you must know",
     "status": "REJECTED_BY_AI",
     "processed_at": "2026-10-02T18:16:20.240699"
+  },
+  "48e621c146218e05ad0c756ef8888409d9d8683583ae45ee63616f8467024bf7": {
+    "portal": "Odisha Police",
+    "title": "About Odisha - Government Of Odisha",
+    "status": "REJECTED_BY_AI",
+    "processed_at": "2026-10-03T10:29:03.033882"
+  },
+  "d295d9479725c0c5d63be377cc22963bc36a2a5594f431e042034f11c55c43cc": {
+    "portal": "OAVS",
+    "title": "Odisha Adarsha Vidyalaya Sangathan,",
+    "status": "REJECTED_BY_AI",
+    "processed_at": "2026-10-03T10:31:59.411506"
+  },
+  "c53c0c20b932ac0ccf180d3a78fa1c9a50d34c5678bf25c5755fcf49683bd7df": {
+    "portal": "SSC",
+    "title": "Home | Staff Selection Commission | GoI",
+    "status": "REJECTED_BY_AI",
+    "processed_at": "2026-10-03T10:32:14.197199"
+  },
+  "7275854089f323362f3056b9b6c363c3104869b7d707066d3134574211a031a7": {
+    "portal": "NTA",
+    "title": "National Testing Agency",
+    "status": "REJECTED_BY_AI",
+    "processed_at": "2026-10-03T10:33:57.232323"
+  },
+  "36827310d13e9632d07ab4f0eba331a7df0845dc46be8d76b2c4dee54fba8f62": {
+    "portal": "SIDBI",
+    "title": "Annual Reports",
+    "status": "REJECTED_BY_AI",
+    "processed_at": "2026-10-03T10:35:46.320741"
+  },
+  "195397a2d84a5ff816bf6db07923cfd86d0789b4f50ea445e7811acde5056178": {
+    "portal": "LIC",
+    "title": "Why Life Insurance",
+    "status": "REJECTED_BY_AI",
+    "processed_at": "2026-10-03T10:36:03.941876"
+  },
+  "d74fdfe18516b42506ac119f74c365517650df3b188613f0ac0e95c70284ce57": {
+    "portal": "NIACL",
+    "title": "All Products",
+    "status": "REJECTED_BY_AI",
+    "processed_at": "2026-10-03T10:36:47.396362"
+  },
+  "a214748aec0c184223fa65e26c04f200aa9d950276e46a7e79cea25afdbdd60f": {
+    "portal": "ISRO",
+    "title": "Advertisement No. ISTRAC:02:2026 dated 27.06.2026 - The Computer Based Test (CBT) was successfully conducted on 25.09.2026. Candidates may now access their response sheets and can object to the published QP/Answer Key. Read More",
+    "article_id": "8fdcfe2b-24e8-4c23-a105-019a0dd039f0",
+    "status": "PUBLISHED",
+    "processed_at": "2026-10-03T10:37:59.092461"
+  },
+  "ea6e777ad821baca5929b4cd1f0790ecd87f1e00fde20086cbff33162ef8e96b": {
+    "portal": "BARC",
+    "title": "training schools",
+    "status": "REJECTED_BY_AI",
+    "processed_at": "2026-10-03T10:38:28.042469"
   }
 }

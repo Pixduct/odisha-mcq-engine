@@ -1,0 +1,82 @@
+name: Telegram Direct Dispatcher
+
+on:
+  workflow_dispatch:
+    inputs:
+      target:
+        description: 'Target: admin, channel, or both'
+        required: false
+        default: 'admin'
+      title:
+        description: 'Title of message'
+        required: false
+        default: 'Odisha Exam Updates Review'
+      message:
+        description: 'Custom message body (HTML)'
+        required: false
+        default: ''
+
+concurrency:
+  group: telegram-direct-dispatcher
+  cancel-in-progress: false
+
+jobs:
+  dispatch-telegram:
+    runs-on: ubuntu-latest
+    timeout-minutes: 3
+    steps:
+      - name: Send Telegram Message
+        env:
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+          TELEGRAM_ADMIN_CHAT_ID: ${{ secrets.TELEGRAM_ADMIN_CHAT_ID }}
+          INPUT_TARGET: ${{ github.event.inputs.target }}
+          INPUT_TITLE: ${{ github.event.inputs.title }}
+          INPUT_MESSAGE: ${{ github.event.inputs.message }}
+        run: |
+          python -c "
+          import os, requests, re, json
+
+          token = os.getenv('TELEGRAM_BOT_TOKEN', '').strip()
+          admin_chat = os.getenv('TELEGRAM_ADMIN_CHAT_ID', '').strip()
+          public_channel = os.getenv('TELEGRAM_CHAT_ID', '').strip()
+          target = os.getenv('INPUT_TARGET', 'admin').lower().strip()
+          title = os.getenv('INPUT_TITLE', 'Odisha Exam Updates Review').strip()
+          msg_body = os.getenv('INPUT_MESSAGE', '').strip()
+
+          if not token:
+              print('❌ Error: TELEGRAM_BOT_TOKEN secret is not set.')
+              exit(1)
+
+          if not msg_body:
+              msg_body = '⚡ No specific payload provided. All automation engines nominal.'
+
+          full_msg = f'📢 <b>{title}</b>\n\n{msg_body}\n\n<i>Dispatched by Executive Chief of Staff (Sara)</i>'
+          url = f'https://api.telegram.org/bot{token}/sendMessage'
+
+          targets = []
+          if ('admin' in target or 'both' in target) and admin_chat:
+              targets.append(('Admin Bot', admin_chat))
+          if ('channel' in target or 'public' in target or 'both' in target) and public_channel:
+              targets.append(('Public Channel', public_channel))
+          if not targets and admin_chat:
+              targets.append(('Admin Bot', admin_chat))
+
+          success_count = 0
+          for name, chat_id in targets:
+              payload = {
+                  'chat_id': chat_id,
+                  'text': full_msg,
+                  'parse_mode': 'HTML',
+                  'disable_web_page_preview': False
+              }
+              res = requests.post(url, data=payload, timeout=20)
+              if not res.ok:
+                  plain = re.sub(r'<[^>]+>', '', full_msg)
+                  res = requests.post(url, data={'chat_id': chat_id, 'text': plain}, timeout=20)
+              print(f'✅ Dispatched to {name} ({chat_id}): status {res.status_code}')
+              if res.ok:
+                  success_count += 1
+
+          print(f'Successfully delivered to {success_count}/{len(targets)} targets.')
+          "

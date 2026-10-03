@@ -430,5 +430,21 @@
     "correct_option_index": 1,
     "explanation": "Right because compound interest grows geometrically: $2^3 = 8$, so $3 \\times 4 = 12$ years. The trap option 8 years incorrectly uses linear multiplication ($2 \\times 4$).",
     "hook": "Master the compound interest power-growth trick often asked in OSSC CGL!"
+  },
+  {
+    "date": "2026-10-03",
+    "exam": "SSC CGL",
+    "content_stage": "EXAM_SPECIFIC",
+    "topic": "compound_interest_power_rule",
+    "question": "If a principal amount invested at compound interest becomes 3 times itself in 5 years, in how many years will it become 27 times itself at the same rate?",
+    "options": [
+      "10 years",
+      "15 years",
+      "20 years",
+      "25 years"
+    ],
+    "correct_option_index": 1,
+    "explanation": "Right because for compound interest, if a sum becomes $a$ times in $t$ years, it becomes $a^n$ times in $n \\times t$ years ($27 = 3^3$, so $3 \\times 5 = 15$). 10 years is wrong as it incorrectly applies linear addition instead of geometric progression.",
+    "hook": "Master the compound interest shortcut often tested in SSC CGL!"
   }
 ]

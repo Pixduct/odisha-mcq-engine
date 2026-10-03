@@ -111,7 +111,7 @@ def filter_and_curate_news(news_items: List[Dict[str, Any]], max_items: int = 8)
             stream_pools["science_tech"].append(item)
         elif "sport" in st or any(w in full_text_lower for w in ['champion', 'grand slam', 'olympic', 'world cup', 'chess', 'fide', 'gold medal']):
             stream_pools["sports"].append(item)
-        elif "world" in st or item.get("priority") == "WORLD":
+        elif "world" in st or item.get("priority") == "WORLD" or any(w in full_text_lower for w in ['bilateral', 'multilateral', 'summit', 'treaty', 'accord', 'unsc', 'unga', 'united nations', 'g20', 'g7', 'brics', 'quad', 'asean', 'pentagon', 'white house', 'mea', 'external affairs', 'foreign minister']):
             stream_pools["world"].append(item)
         else:
             stream_pools["national"].append(item)

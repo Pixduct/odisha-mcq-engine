@@ -259,7 +259,7 @@ def publish_to_instagram(image_paths, caption):
         print(f"⚠️ Error publishing to Instagram: {e}")
         return False, f"Error: {e}"
 
-def shorten_headline_without_truncation(headline: str, max_chars: int = 48) -> str:
+def shorten_headline_without_truncation(headline: str, max_chars: int = 65) -> str:
     if not headline:
         return ""
     clean = str(headline).strip()
@@ -270,6 +270,8 @@ def shorten_headline_without_truncation(headline: str, max_chars: int = 48) -> s
     
     trimmed = clean[:max_chars].rsplit(" ", 1)[0].strip()
     trimmed = re.sub(r'[,:\-\s]+$', '', trimmed).strip()
+    if trimmed and not trimmed.endswith(('.', '!', '?')):
+        trimmed += "..."
     return trimmed
 
 def build_bulletproof_caption(today_date_str, top_slides, extra_highlights, platform="telegram"):
@@ -294,9 +296,9 @@ def build_bulletproof_caption(today_date_str, top_slides, extra_highlights, plat
     
     max_body_budget = 1000 - len(header) - len(cta_footer)
     body_lines = []
-    max_title_len = 48 if card_count > 6 else 65
+    max_title_len = 50 if card_count > 6 else 68
 
-    # Group by Region if 6+ slides (handles dynamic carousels of 6, 7, 8, 9, 10 slides)
+    # Group by Region if 6+ slides (handles dynamic carousels of 5, 6, 7, 8, 9, 10 slides)
     for idx, item in enumerate(top_slides, start=1):
         headline = shorten_headline_without_truncation(item.get("headline", ""), max_title_len)
         body_lines.append(f"<b>{idx}.</b> {headline}")
@@ -304,7 +306,7 @@ def build_bulletproof_caption(today_date_str, top_slides, extra_highlights, plat
     if extra_highlights and card_count <= 6:
         body_lines.append("\n📌 <b>MORE IMPORTANT NEWS:</b>")
         for highlight in extra_highlights[:2]:
-            h_text = shorten_headline_without_truncation(highlight, 55)
+            h_text = shorten_headline_without_truncation(highlight, 95)
             body_lines.append(f"🔹 {h_text}")
 
     body_text = "\n".join(body_lines)

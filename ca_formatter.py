@@ -232,6 +232,9 @@ def classify_news_category(headline: str, bullets: list = None, raw_category: st
     text = f"{headline} " + " ".join(bullets if isinstance(bullets, list) else [])
     t_lower = text.lower()
 
+    def has_any_kw(kw_list):
+        return any(re.search(rf'\b{re.escape(k)}\b', t_lower) for k in kw_list)
+
     # 1. SPORTS (Must have genuine sports terms)
     SPORTS_KW = [
         'cricket', 'test match', 'test journey', 'test series', 'run win', 'wicket', 'stadium', 'olympic', 'world cup',
@@ -240,23 +243,24 @@ def classify_news_category(headline: str, bullets: list = None, raw_category: st
         'trophy', 'tournament', 'medalist', 'sports', 'shuttler', 'grandmaster', 'khel ratna', 'arjuna award',
         'asian games', 'commonwealth', 'title winner', 'archery', 'boxing', 'wrestling', 'sprint', 'race'
     ]
-    has_sports = any(kw in t_lower for kw in SPORTS_KW)
+    has_sports = has_any_kw(SPORTS_KW)
 
     # 2. ODISHA STATE AFFAIRS
     ODISHA_KW = [
-        'odisha', 'bhubaneswar', 'cuttack', 'puri', 'opsc', 'ossc', 'osssc', 'opprb', 'majhi', 'naveen',
+        'odisha', 'orissa', 'bhubaneswar', 'cuttack', 'puri', 'opsc', 'ossc', 'osssc', 'opprb', 'majhi', 'naveen',
         'sambalpur', 'balasore', 'koraput', 'ganjam', 'rourkela', 'chilika', 'hirakud', 'similipal', 'malkangiri',
-        'subhadra', 'mission shakti', 'bsky', 'kalia', 'srimandir', 'ekamra', 'samalei'
+        'kalahandi', 'bolangir', 'kendujhar', 'keonjhar', 'mayurbhanj', 'dhenkanal', 'angul', 'jharsuguda', 'bargarh',
+        'subhadra', 'mission shakti', 'bsky', 'kalia', 'srimandir', 'ekamra', 'samalei', 'utkal', 'kalinga'
     ]
-    has_odisha = any(kw in t_lower for kw in ODISHA_KW)
+    has_odisha = has_any_kw(ODISHA_KW)
 
     # 3. SCIENCE, SPACE & DEFENSE
     SCI_KW = [
-        'isro', 'nasa', 'satellite', 'rocket', 'ai ', 'artificial intelligence', 'quantum', 'biotech',
+        'isro', 'nasa', 'satellite', 'rocket', 'ai', 'artificial intelligence', 'quantum', 'biotech',
         'cybersecurity', 'defense tech', 'missile', 'drdo', 'invention', 'tech discovery', 'space research',
-        'spacecraft', 'lunar', 'solar mission', 'supercomputer', 'semiconductor', 'nuclear reactor', 'ins '
+        'spacecraft', 'lunar', 'solar mission', 'supercomputer', 'semiconductor', 'nuclear reactor', 'ins'
     ]
-    has_science = any(kw in t_lower for kw in SCI_KW)
+    has_science = has_any_kw(SCI_KW)
 
     # 4. ECONOMY, BANKING & TRADE
     ECON_KW = [
@@ -264,7 +268,7 @@ def classify_news_category(headline: str, bullets: list = None, raw_category: st
         'fiscal', 'repo rate', 'banking', 'bank', 'merger', 'monetary', 'corporate finance', 'union budget',
         'trade deficit', 'forex', 'fdi', 'export', 'import', 'monetary policy'
     ]
-    has_economy = any(kw in t_lower for kw in ECON_KW)
+    has_economy = has_any_kw(ECON_KW)
 
     # 5. ENVIRONMENT & ECOLOGY
     ENV_KW = [
@@ -272,7 +276,7 @@ def classify_news_category(headline: str, bullets: list = None, raw_category: st
         'ramsar', 'tiger reserve', 'cyclone', 'earthquake', 'ecological', 'environment', 'forest',
         'iucn', 'species', 'carbon emission', 'wetland', 'conservation'
     ]
-    has_env = any(kw in t_lower for kw in ENV_KW)
+    has_env = has_any_kw(ENV_KW)
 
     # 6. ART, CULTURE & HERITAGE
     CULTURE_KW = [
@@ -280,15 +284,19 @@ def classify_news_category(headline: str, bullets: list = None, raw_category: st
         'jnanpith', 'padma vibhushan', 'padma bhushan', 'padma shri', 'nobel prize', 'archaeological',
         'excavation', 'temple heritage', 'classical dance', 'folk art'
     ]
-    has_culture = any(kw in t_lower for kw in CULTURE_KW)
+    has_culture = has_any_kw(CULTURE_KW)
 
-    # 7. INTERNATIONAL RELATIONS
+    # 7. INTERNATIONAL RELATIONS / WORLD NEWS
     INTL_KW = [
-        'unsc', 'united nations', 'g20', 'g7', 'asean', 'brics', 'quad', 'nato', 'who', 'wto',
-        'bilateral', 'envoy', 'ambassador', 'diplomatic', 'foreign minister', 'geopolitics',
-        'world news', 'foreign policy', 'international relations', 'summit'
+        'international', 'world', 'global', 'summit', 'bilateral', 'multilateral', 'geopolitics',
+        'unsc', 'unga', 'united nations', 'g20', 'g7', 'asean', 'brics', 'quad', 'nato',
+        'who', 'wto', 'imf', 'world bank', 'icj', 'icc', 'interpol', 'iaea', 'wef', 'oecd',
+        'bimstec', 'saarc', 'diplomatic', 'diplomacy', 'envoy', 'ambassador', 'foreign minister',
+        'foreign secretary', 'foreign ministry', 'foreign policy', 'external affairs', 'mea',
+        'world news', 'international relations', 'treaty', 'accord', 'pentagon', 'white house',
+        'state department', 'european union', 'defense pact', 'dialogue'
     ]
-    has_intl = any(kw in t_lower for kw in INTL_KW)
+    has_intl = has_any_kw(INTL_KW)
 
     # 8. NATIONAL POLITY & GOVERNANCE
     GOV_KW = [
@@ -296,7 +304,7 @@ def classify_news_category(headline: str, bullets: list = None, raw_category: st
         'lok sabha', 'rajya sabha', 'ministry', 'national', 'governance', 'welfare',
         'supreme court', 'high court', 'election commission', 'cag', 'niti aayog', 'bill passed', 'act notified'
     ]
-    has_gov = any(kw in t_lower for kw in GOV_KW)
+    has_gov = has_any_kw(GOV_KW)
 
     # Resolve optimal category tag
     raw_clean = str(raw_category or "").strip().upper().replace(" ", "_")
@@ -306,6 +314,8 @@ def classify_news_category(headline: str, bullets: list = None, raw_category: st
     if raw_clean in ["SPORTS", "SPORTS_AWARDS"] and not has_sports:
         if has_odisha:
             return "ODISHA"
+        elif has_intl:
+            return "INTERNATIONAL RELATIONS"
         elif has_science:
             return "SCIENCE_TECH"
         elif has_economy:
@@ -314,8 +324,6 @@ def classify_news_category(headline: str, bullets: list = None, raw_category: st
             return "ENVIRONMENT"
         elif has_culture:
             return "CULTURE"
-        elif has_intl:
-            return "WORLD"
         elif has_gov:
             return "NATIONAL"
         return "NATIONAL"
@@ -325,6 +333,8 @@ def classify_news_category(headline: str, bullets: list = None, raw_category: st
         return "ODISHA"
     if has_sports:
         return "SPORTS"
+    if has_intl:
+        return "INTERNATIONAL RELATIONS"
     if has_science:
         return "SCIENCE_TECH"
     if has_economy:
@@ -333,11 +343,11 @@ def classify_news_category(headline: str, bullets: list = None, raw_category: st
         return "ENVIRONMENT"
     if has_culture:
         return "CULTURE"
-    if has_intl:
-        return "WORLD"
     if has_gov:
         return "NATIONAL"
 
+    if raw_clean in ["WORLD", "INTERNATIONAL", "INTERNATIONAL_RELATIONS"]:
+        return "INTERNATIONAL RELATIONS"
     # Fallback to sanitized raw tag or NATIONAL
     if raw_clean and raw_clean not in BAD_TAGS:
         return raw_clean
@@ -388,13 +398,23 @@ SOVEREIGN_EXAM_ENTITIES = {
     'biosphere reserve', 'iucn red list', 'project tiger', 'project elephant', 'project cheetah',
     'project lion', 'project dolphin', 'state of forest report', 'isfr', 'cop29', 'cop30', 'cop16',
     
-    # 🌐 Tier 6: Global Multilateral, UN Specialized Agencies & International Bodies
+    # 🌐 Tier 6: Global Multilateral, UN Specialized Agencies, International Bodies & World Diplomacy
     'unga', 'unsc', 'unesco', 'unep', 'undp', 'unicef', 'wto', 'fao', 'ilo',
     'wipo', 'wmo', 'imo', 'icao', 'iaea', 'unhcr', 'imf', 'world bank', 'ibrd', 'ida',
     'adb', 'aiib', 'ndb', 'wef', 'fatf', 'oecd', 'g20', 'g7', 'brics', 'sco', 'asean',
     'bimstec', 'saarc', 'iora', 'quad', 'i2u2', 'international solar alliance', 'isa', 'cdri',
     'iucn', 'ramsar', 'unfccc', 'icj', 'icc', 'interpol', 'wwf',
-    'human development index', 'global innovation index', 'world happiness report', 'global hunger index'
+    'human development index', 'global innovation index', 'world happiness report', 'global hunger index',
+    'united nations', 'un general assembly', 'un security council', 'general assembly', 'security council',
+    'international court of justice', 'international criminal court', 'permanent court of arbitration',
+    'world health organization', 'world trade organization', 'international monetary fund', 'world bank group',
+    'pentagon', 'white house', 'state department', 'ministry of external affairs', 'mea',
+    'external affairs ministry', 'foreign ministry', 'foreign minister', 'foreign secretary',
+    'european union', 'european commission', 'european parliament', 'nato',
+    'bilateral pact', 'bilateral treaty', 'bilateral talks', 'bilateral agreement', 'defense pact',
+    'free trade agreement', 'fta', 'cepa', 'ceca', 'extradition treaty', 'diplomatic ties',
+    'united states', 'japan', 'united kingdom', 'russia', 'china', 'france', 'germany',
+    'australia', 'south korea', 'uae', 'saudi arabia', 'israel', 'iran', 'canada', 'brazil', 'south africa'
 }
 
 SOVEREIGN_DYNAMIC_PATTERNS = [
@@ -460,11 +480,16 @@ SOVEREIGN_DYNAMIC_PATTERNS = [
     r'\b(?:tiger\s+reserve|national\s+park|wildlife\s+sanctuary|ramsar\s+site|biosphere\s+reserve|elephant\s+reserve)\b',
     r'\b(?:critically\s+endangered|iucn\s+status|species\s+discovered|wildlife\s+census|tiger\s+census)\b',
     
-    # 8. 🌐 International Treaties, Multilateral Summits, Blocs & Global Indices
-    r'\b(?:treaty|accord|convention|protocol|declaration|pact|mou|bilateral\s+agreement)\s+(?:signed|ratified|adopted)\b',
-    r'\b(?:summit|conference|cop\d+|g20|brics|asean|sco|quad|un\s+general\s+assembly)\s+(?:held|concluded|adopted|hosted)\b',
+    # 8. 🌐 International Treaties, Multilateral Summits, Blocs, World Diplomacy & Global Indices
+    r'\b(?:treaty|accord|convention|protocol|declaration|pact|mou|bilateral\s+agreement|defense\s+pact|trade\s+deal)\s+(?:signed|ratified|adopted|concluded|inked|formalized)\b',
+    r'\b(?:summit|conference|cop\d+|g20|brics|asean|sco|quad|un\s+general\s+assembly|un\s+security\s+council)\s+(?:held|concluded|adopted|hosted|convenes|meets)\b',
     r'\b(?:global\s+[a-z\s]+\s+index|world\s+[a-z\s]+\s+report|human\s+development\s+report)\s+(?:ranked|released|published)\b',
-    r'\b(?:admitted\s+as\s+(?:the\s+)?\d+(?:st|nd|rd|th)?\s+member\s+of)\b'
+    r'\b(?:admitted\s+as\s+(?:the\s+)?\d+(?:st|nd|rd|th)?\s+member\s+of)\b',
+    r'\b(?:ministry\s+of\s+external\s+affairs|external\s+affairs\s+ministry|foreign\s+ministry|foreign\s+secretary|foreign\s+minister)\b',
+    r'\b(?:pentagon|white\s+house|state\s+department)\s+(?:confirms?|announced?|clears?|approves?|stated?)\b',
+    r'\b(?:bilateral|multilateral|diplomatic)\s+(?:talks|meeting|summit|dialogue|ties|relations|partnership|accord|pact|treaty|agreement)\b',
+    r'\b(?:united\s+nations|international\s+court\s+of\s+justice|world\s+health\s+organization|world\s+bank|imf|wto)\b',
+    r'\b(?:called\s+upon\s+india|pact\s+with\s+india|dialogue\s+with\s+india|agreement\s+with\s+india|bilateral\s+trade\s+talks)\b'
 ]
 
 # Pre-compiled word-boundary regexes to prevent substring collision (e.g. 'bee' in 'been', 'who' in 'whose')
@@ -528,6 +553,12 @@ def validate_slide_quality(slides, raw_text_payload):
 
         slide_text_lower = json.dumps(slide).lower()
         has_sovereign_shield = is_sovereign_exam_entity(slide_text_lower)
+        if not has_sovereign_shield and str(slide.get("category", "")).upper() in ["INTERNATIONAL RELATIONS", "WORLD", "WORLD NEWS"]:
+            if any(w in slide_text_lower for w in ['bilateral', 'multilateral', 'summit', 'treaty', 'accord', 'pact', 'ambassador', 'dialogue', 'foreign', 'diplomacy', 'united nations', 'un', 'icj', 'court', 'pentagon', 'agreement']):
+                has_sovereign_shield = True
+        if not has_sovereign_shield and str(slide.get("category", "")).upper() in ["ODISHA", "ODISHA STATE NEWS"]:
+            if any(w in slide_text_lower for w in ['odisha', 'orissa', 'bhubaneswar', 'cuttack', 'puri', 'sambalpur', 'rourkela', 'balasore', 'berhampur', 'baripada', 'koraput', 'mahanadi', 'chilika', 'similipal', 'subhadra', 'kalia', 'bsky', 'majhi', 'biju', 'opsc', 'ossc', 'osssc']):
+                has_sovereign_shield = True
 
         # 1. Generic headline check (Immune if sovereign entity is present)
         if not has_sovereign_shield and any(re.search(pat, h_lower) for pat in GENERIC_PATTERNS):
@@ -668,6 +699,226 @@ def validate_slide_quality(slides, raw_text_payload):
     return valid_slides, dropped_quality
 
 
+def enforce_tri_pillar_quorum(quality_slides, candidate_slides, raw_text_payload, extra_highlights=None):
+    """
+    Enforces the Non-Negotiable Tri-Pillar Quorum (Odisha • India • World):
+    1. At least 1 ODISHA slide (category 'ODISHA' or headline mentions Odisha)
+    2. At least 2 NATIONAL / ALL-INDIA slides (category 'NATIONAL', 'ECONOMY', 'SCIENCE_TECH', 'SPORTS', etc.)
+    3. At least 1 WORLD / INTERNATIONAL RELATIONS slide (category 'INTERNATIONAL RELATIONS' or 'WORLD')
+    4. Total slides between 5 and 7 (never dropping below 5).
+    If any pillar is missing or total slides < 5, rescues candidate slides or synthesizes from extra_highlights.
+    """
+    final_slides = list(quality_slides)
+
+    def is_odisha_slide(s):
+        cat = str(s.get("category", "")).upper()
+        text = (s.get("headline", "") + " " + " ".join(s.get("bullets", []))).lower()
+        return cat in ["ODISHA", "ODISHA STATE NEWS"] or any(w in text for w in ['odisha', 'orissa', 'bhubaneswar', 'cuttack', 'puri', 'subhadra', 'majhi'])
+
+    def is_world_slide(s):
+        cat = str(s.get("category", "")).upper()
+        text = (s.get("headline", "") + " " + " ".join(s.get("bullets", []))).lower()
+        return cat in ["INTERNATIONAL RELATIONS", "WORLD", "WORLD NEWS"] or any(w in text for w in [
+            'international', 'world', 'global', 'foreign', 'bilateral', 'multilateral', 'summit',
+            'unsc', 'unga', 'united nations', 'g20', 'brics', 'icj', 'who', 'treaty', 'pentagon', 'diplomacy'
+        ])
+
+    def is_national_slide(s):
+        return not is_odisha_slide(s) and not is_world_slide(s)
+
+    has_odisha = any(is_odisha_slide(s) for s in final_slides)
+    has_world = any(is_world_slide(s) for s in final_slides)
+    national_count = sum(1 for s in final_slides if is_national_slide(s))
+
+    print(f"📊 [Tri-Pillar Audit] Initial: Total={len(final_slides)}, Odisha={has_odisha}, World={has_world}, National={national_count}")
+
+    # Pool of candidate slides from unique/verified slides that weren't included in quality_slides
+    rescue_candidates = [s for s in candidate_slides if s not in final_slides]
+
+    # Rescue Odisha if missing
+    if not has_odisha:
+        for cs in rescue_candidates:
+            if is_odisha_slide(cs) and len(cs.get("bullets", [])) >= 3:
+                cs["category"] = "ODISHA"
+                final_slides.insert(0, cs)
+                has_odisha = True
+                print(f"🛡️ [Tri-Pillar Rescue] Restored missing ODISHA slide: '{cs.get('headline', '')[:50]}'")
+                break
+
+    # Odisha Payload Fallback — extract directly from raw_text_payload when rescue_candidates is exhausted
+    if not has_odisha and raw_text_payload:
+        raw_odisha_blocks = re.findall(
+            r'\[\d+\]\s+Domain:\s+ODISHA\s*\|\s*Source:\s*([^\n]+)\s*\|\s*Published:\s*([^\n]+)\nTitle:\s*([^\n]+)\nSummary:\s*([^\n]+)',
+            raw_text_payload
+        )
+        for src, pub, title, summary in raw_odisha_blocks:
+            if has_odisha or len(final_slides) >= 7:
+                break
+            if any(s.get("headline", "")[:40] == title.strip()[:40] for s in final_slides):
+                continue
+            sentences = [s.strip() for s in re.split(r'(?<=[.!?])\s+', summary.strip()) if len(s.strip()) > 15]
+            if len(sentences) >= 3:
+                od_bullets = [sentences[0], sentences[1], " ".join(sentences[2:])]
+            elif len(sentences) == 2:
+                od_bullets = [sentences[0], sentences[1],
+                              f"State Significance: Key governance initiative under Odisha administration."]
+            else:
+                od_bullets = [
+                    f"Policy Anchor: {title.strip()[:75]}.",
+                    f"Implementation: {summary.strip()[:120]}.",
+                    f"Exam Relevance: Odisha state governance and competitive exam syllabus anchor."
+                ]
+            od_slide = {
+                "headline": title.strip()[:48],
+                "category": "ODISHA",
+                "bullets": [highlight_keypoint_label(sanitize_zero_truncation(b)) for b in od_bullets],
+                "exam_takeaway": "Static GK: Odisha administrative body, scheme, or constitutional framework referenced in this news."
+            }
+            final_slides.insert(0, od_slide)
+            has_odisha = True
+            print(f"🛡️ [Odisha Payload Fallback] Extracted Odisha slide from raw payload: '{title.strip()[:48]}'")
+
+    # Rescue World if missing
+    if not has_world:
+        for cs in rescue_candidates:
+            if is_world_slide(cs) and len(cs.get("bullets", [])) >= 3:
+                cs["category"] = "INTERNATIONAL RELATIONS"
+                final_slides.append(cs)
+                has_world = True
+                print(f"🛡️ [Tri-Pillar Rescue] Restored missing WORLD slide: '{cs.get('headline', '')[:50]}'")
+                break
+
+    # Rescue National if national_count < 2
+    national_count = sum(1 for s in final_slides if is_national_slide(s))
+    if national_count < 2:
+        for cs in rescue_candidates:
+            if is_national_slide(cs) and len(cs.get("bullets", [])) >= 3 and cs not in final_slides:
+                final_slides.append(cs)
+                national_count += 1
+                print(f"🛡️ [Tri-Pillar Rescue] Restored missing NATIONAL slide: '{cs.get('headline', '')[:50]}'")
+                if national_count >= 2:
+                    break
+
+        if national_count < 2 and extra_highlights:
+            for eh in extra_highlights:
+                if national_count >= 2 or len(final_slides) >= 7:
+                    break
+                eh_clean = str(eh).strip()
+                if len(eh_clean) < 25:
+                    continue
+                if is_odisha_slide({"headline": eh_clean, "bullets": []}) or is_world_slide({"headline": eh_clean, "bullets": []}):
+                    continue
+                eh_cat = classify_news_category(eh_clean)
+                if eh_cat in ["ODISHA", "ODISHA STATE NEWS", "INTERNATIONAL RELATIONS", "WORLD", "WORLD NEWS"]:
+                    continue
+                words = eh_clean.split()
+                eh_headline = " ".join(words[:8]).rstrip('.,;:-')
+                if any(s.get("headline") == eh_headline for s in final_slides):
+                    continue
+                sentences = [s.strip() for s in re.split(r'(?<=[.!?])\s+', eh_clean) if len(s.strip()) > 10]
+                if len(sentences) >= 3:
+                    eh_bullets = [sentences[0], sentences[1], " ".join(sentences[2:])]
+                elif len(sentences) == 2:
+                    eh_bullets = [sentences[0], sentences[1], f"Key Impact: High-yield syllabus benchmark for {eh_cat}."]
+                else:
+                    half = max(4, len(words) // 2)
+                    eh_bullets = [
+                        f"Core Fact: {' '.join(words[:half])}.",
+                        f"Policy Context: {' '.join(words[half:])}.",
+                        f"Exam Relevance: Key administrative milestone for {eh_cat}."
+                    ]
+                rescued_slide = {
+                    "headline": eh_headline,
+                    "category": eh_cat,
+                    "bullets": [highlight_keypoint_label(sanitize_zero_truncation(b)) for b in eh_bullets],
+                    "exam_takeaway": f"Static GK: Key constitutional and institutional framework related to {eh_cat}."
+                }
+                final_slides.append(rescued_slide)
+                national_count += 1
+                print(f"🛡️ [National Highlight Synthesis] Added synthesized National slide: '{eh_headline}'")
+
+        # If national_count STILL < 2, extract a candidate directly from raw_text_payload
+        if national_count < 2 and raw_text_payload:
+            raw_blocks = re.findall(r'\[\d+\]\s+Domain:\s+(?:NATIONAL|ECONOMY|SCIENCE_TECH|SPORTS|GENERAL)\s*\|\s*Source:\s*([^\n]+)\s*\|\s*Published:\s*([^\n]+)\nTitle:\s*([^\n]+)\nSummary:\s*([^\n]+)', raw_text_payload)
+            for src, pub, title, summary in raw_blocks:
+                if national_count >= 2 or len(final_slides) >= 7:
+                    break
+                combined_text = f"{title} {summary}"
+                if not is_odisha_slide({"headline": combined_text, "bullets": []}) and not is_world_slide({"headline": combined_text, "bullets": []}):
+                    nat_cat = classify_news_category(combined_text)
+                    if nat_cat in ["ODISHA", "ODISHA STATE NEWS", "INTERNATIONAL RELATIONS", "WORLD", "WORLD NEWS"]:
+                        nat_cat = "NATIONAL"
+                    sentences = [s.strip() for s in re.split(r'(?<=[.!?])\s+', summary) if len(s.strip()) > 15]
+                    if len(sentences) >= 3:
+                        nat_bullets = [sentences[0], sentences[1], " ".join(sentences[2:])]
+                    elif len(sentences) == 2:
+                        nat_bullets = [sentences[0], sentences[1], f"Statutory Anchor: Official policy initiative reported by {src}."]
+                    else:
+                        nat_bullets = [
+                            f"Policy Anchor: {title[:75]}.",
+                            f"Operational Detail: {summary[:120]}.",
+                            f"Exam Significance: Landmark development under {nat_cat} governance."
+                        ]
+                    nat_slide = {
+                        "headline": title[:48].strip(),
+                        "category": nat_cat,
+                        "bullets": [highlight_keypoint_label(sanitize_zero_truncation(b)) for b in nat_bullets],
+                        "exam_takeaway": f"Static GK: Nodal ministry, statutory mandate, or constitutional article under {nat_cat}."
+                    }
+                    final_slides.append(nat_slide)
+                    national_count += 1
+                    print(f"🛡️ [Payload Fallback Synthesis] Extracted National slide from raw payload: '{title[:48]}'")
+
+    # Ensure total slides >= 5 from rescue candidates
+    if len(final_slides) < 5:
+        for cs in rescue_candidates:
+            if cs not in final_slides and len(cs.get("bullets", [])) >= 3:
+                final_slides.append(cs)
+                print(f"🛡️ [Floor Rescue] Added slide to maintain >= 5 floor: '{cs.get('headline', '')[:50]}'")
+                if len(final_slides) >= 5:
+                    break
+
+    # Auto-synthesize from extra_highlights if still below 5 slides
+    if len(final_slides) < 5 and extra_highlights:
+        for eh in extra_highlights:
+            if len(final_slides) >= 5:
+                break
+            eh_clean = str(eh).strip()
+            if len(eh_clean) < 25:
+                continue
+            words = eh_clean.split()
+            eh_headline = " ".join(words[:8]).rstrip('.,;:-')
+            if any(s.get("headline") == eh_headline for s in final_slides):
+                continue
+            eh_cat = classify_news_category(eh_clean)
+            sentences = [s.strip() for s in re.split(r'(?<=[.!?])\s+', eh_clean) if len(s.strip()) > 10]
+            if len(sentences) >= 3:
+                eh_bullets = [sentences[0], sentences[1], " ".join(sentences[2:])]
+            elif len(sentences) == 2:
+                eh_bullets = [sentences[0], sentences[1], f"Key Impact: High-yield syllabus benchmark for {eh_cat}."]
+            else:
+                half = max(4, len(words) // 2)
+                eh_bullets = [
+                    f"Core Fact: {' '.join(words[:half])}.",
+                    f"Policy Context: {' '.join(words[half:])}.",
+                    f"Exam Relevance: Key administrative milestone for {eh_cat}."
+                ]
+            rescued_slide = {
+                "headline": eh_headline,
+                "category": eh_cat,
+                "bullets": [highlight_keypoint_label(sanitize_zero_truncation(b)) for b in eh_bullets],
+                "exam_takeaway": f"Static GK: Key constitutional and institutional framework related to {eh_cat}."
+            }
+            final_slides.append(rescued_slide)
+            print(f"🛡️ [Highlight Synthesis] Added synthesized 5th slide from extra highlight: '{eh_headline}'")
+
+    # Cap to max 7 slides
+    final_slides = final_slides[:7]
+
+    print(f"✅ [Tri-Pillar Final] Quorum: Total={len(final_slides)}, Odisha={has_odisha}, World={has_world}, National={sum(1 for s in final_slides if is_national_slide(s))}")
+    return final_slides
+
+
 def format_current_affairs(raw_text_payload):
     print("[VERBOSE LOG] Formatting current affairs items via AI API...")
 
@@ -688,13 +939,12 @@ def format_current_affairs(raw_text_payload):
 
 CRITICAL COGNITIVE MANDATE:
 1. SIZING & VOLUME: You MUST generate exactly 5 to 7 high-impact, syllabus-aligned slides (minimum 5 required, target 6-7). NEVER generate fewer than 5 slides.
-2. MULTI-DOMAIN SYLLABUS DECOMPOSITION: Extract a comprehensive, balanced spectrum of current affairs across all examinable domains:
-   - 🏛️ ODISHA STATE AFFAIRS (1-2 slides): Odisha Cabinet decisions, state schemes (Subhadra, KALIA, BSKY, Mission Shakti), infrastructure, cultural heritage, districts, coastal/disaster management.
-   - 🇮🇳 NATIONAL POLITY & GOVERNANCE (1-2 slides): Union Cabinet, Supreme Court/High Court verdicts, Parliament acts/bills, constitutional bodies (ECI, CAG, NITI Aayog).
-   - 💰 ECONOMY, BANKING & TRADE (1 slide): RBI monetary policy, repo rates, GDP metrics, inflation, fiscal deficit, banking mergers, SEBI, foreign trade.
-   - 🚀 SCIENCE, SPACE & DEFENSE (1 slide): ISRO missions, DRDO missile/defense tests, deep tech, AI, quantum, biotech, defense procurements.
-   - 🏆 SPORTS & AWARDS (1 slide): Asian Games, Olympics, National championships, Arjuna/Khel Ratna, Padma awards, major sports milestones.
-   - 🌐 INTERNATIONAL RELATIONS & SUMMITS (1 slide): Bilateral agreements, multilateral summits (UN, G20, BRICS, SCO, ASEAN), geopolitical developments.
+2. MANDATORY TRI-PILLAR SPECTRUM (ODISHA • INDIA • WORLD):
+   Every single edition MUST contain all three geographic/thematic pillars without exception:
+   - 🏛️ PILLAR 1: ODISHA STATE AFFAIRS (MANDATORY 1-2 slides): Odisha Cabinet decisions, state schemes (Subhadra, KALIA, BSKY, Mission Shakti), infrastructure, cultural heritage, districts, coastal/disaster management. (Category: 'ODISHA')
+   - 🇮🇳 PILLAR 2: NATIONAL & ALL-INDIA AFFAIRS (MANDATORY 2-3 slides): Union Cabinet, Supreme Court rulings, Parliament acts, Economy/RBI monetary policy, Science/ISRO/DRDO, Sports milestones. (Category: 'INDIAN POLITY', 'ECONOMY & ENERGY', 'SCIENCE & TECH', or 'SPORTS & GAMES')
+   - 🌐 PILLAR 3: INTERNATIONAL RELATIONS & WORLD NEWS (MANDATORY 1 slide): Bilateral agreements, multilateral summits (UN, G20, BRICS, SCO, ASEAN), geopolitical developments, foreign diplomacy involving India or global governance. (Category: 'INTERNATIONAL RELATIONS')
+   YOU MUST INCLUDE AT LEAST ONE ODISHA SLIDE, AT LEAST TWO NATIONAL SLIDES, AND AT LEAST ONE INTERNATIONAL RELATIONS SLIDE.
 3. FILTERING: Purge local petty crime, political party verbal mudslinging/rally speeches, celebrity gossip, and opinion columns.
 4. BULLET STRUCTURE: Every bullet MUST begin with a 2-3 word capitalized keyword label followed immediately by a colon (e.g., 'Financial Outlay: ...', 'Nodal Ministry: ...', 'Constitutional Article: ...').
 5. EXAM TAKEAWAY: Every slide MUST include an 'exam_takeaway' with 1 high-yield static syllabus fact (e.g. related Constitutional Article, Headquarters, Parent Ministry, or Historical Background).
@@ -707,7 +957,7 @@ Output JSON Schema:
     {{
       "headline": "Short headline under 48 characters",
       "category": "SYLLABUS CATEGORY (e.g. ODISHA STATE NEWS, INDIAN POLITY, ECONOMY & ENERGY, SCIENCE & TECH, SPORTS & GAMES, INTERNATIONAL RELATIONS)",
-      "sovereign_entity": "Entity name (e.g. Odisha Cabinet, ISRO, RBI, Ministry of Finance)",
+      "sovereign_entity": "Entity name (e.g. Odisha Cabinet, ISRO, RBI, Ministry of Finance, United Nations, Ministry of External Affairs)",
       "exam_questionability_fact": "One factual MCQ-testable statement",
       "bullets": [
         "Keyword Anchor (2-3 words): Concrete fact with details.",
@@ -733,9 +983,14 @@ Output JSON Schema:
 
     user_prompt_content = (
         f"Today is: {today_date_str_prompt}.\n\n"
-        f"From the authentic news candidates below, reason like a Senior UPSC/OPSC Current Affairs Editor and extract a complete, multi-domain daily briefing of 5 to 7 high-yield slides (minimum 5 slides required across Odisha, National, Economy, Science, Sports, and International):\n\n"
+        f"From the authentic news candidates below, reason like a Senior UPSC/OPSC Current Affairs Editor and extract a complete, multi-domain daily briefing of 5 to 7 high-yield slides (minimum 5 slides required across Odisha, National, Economy, Science, Sports, and International Relations):\n\n"
         f"{raw_text_payload[:30000]}\n\n"
-        f"CRITICAL: Generate at least 5 slides in 'top_slides'. Output ONLY the pure JSON object starting with '{{' and ending with '}}'."
+        f"CRITICAL TRI-PILLAR VISION GUARANTEE:\n"
+        f"You MUST generate 5 to 7 slides in 'top_slides' ensuring balanced coverage across:\n"
+        f"1. AT LEAST ONE ODISHA STATE slide (tagged 'ODISHA' or 'ODISHA STATE NEWS')\n"
+        f"2. AT LEAST TWO NATIONAL / ALL-INDIA slides (tagged across 'INDIAN POLITY', 'ECONOMY & ENERGY', 'SCIENCE & TECH', or 'SPORTS & GAMES')\n"
+        f"3. AT LEAST ONE INTERNATIONAL RELATIONS / WORLD slide (tagged 'INTERNATIONAL RELATIONS')\n"
+        f"Every edition MUST have Odisha, India, and World representation. Output ONLY the pure JSON object starting with '{{' and ending with '}}'."
     )
 
     # Pass the balanced multi-stream payload
@@ -1009,8 +1264,9 @@ Output JSON Schema:
                 unique_slides, raw_text_payload, today_date_iso, yesterday_date_iso
             )
             quality_slides, dropped_quality = validate_slide_quality(verified_slides, raw_text_payload)
+            final_slides = enforce_tri_pillar_quorum(quality_slides, verified_slides, raw_text_payload, ca_data.get("extra_highlights", []))
 
-            ca_data["top_slides"] = quality_slides
+            ca_data["top_slides"] = final_slides
             ca_data["_dropped_slides"] = dropped_slides
             ca_data["_dropped_quality"] = dropped_quality
 

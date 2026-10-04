@@ -446,5 +446,21 @@
     "correct_option_index": 1,
     "explanation": "Right because for compound interest, if a sum becomes $a$ times in $t$ years, it becomes $a^n$ times in $n \\times t$ years ($27 = 3^3$, so $3 \\times 5 = 15$). 10 years is wrong as it incorrectly applies linear addition instead of geometric progression.",
     "hook": "Master the compound interest shortcut often tested in SSC CGL!"
+  },
+  {
+    "date": "2026-10-04",
+    "exam": "SSC CGL",
+    "content_stage": "EXAM_SPECIFIC",
+    "topic": "quantitative_aptitude_time_and_work_efficiency",
+    "question": "A is 40% more efficient than B. If B alone can complete a piece of work in 28 days, in how many days can A and B working together complete the same work?",
+    "options": [
+      "10 days",
+      "12 days",
+      "14 days",
+      "16 days"
+    ],
+    "correct_option_index": 0,
+    "explanation": "Right because B's 1-day work is 1/28, A's is 1.4 × (1/28), combined work yields 10 days. Trap option 12 days results from incorrect efficiency ratio application.",
+    "hook": "Can you solve this high-yield SSC CGL Time & Work trap in under 30 seconds?"
   }
 ]

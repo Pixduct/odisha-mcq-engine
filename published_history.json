@@ -462,5 +462,21 @@
     "correct_option_index": 0,
     "explanation": "Right because B's 1-day work is 1/28, A's is 1.4 × (1/28), combined work yields 10 days. Trap option 12 days results from incorrect efficiency ratio application.",
     "hook": "Can you solve this high-yield SSC CGL Time & Work trap in under 30 seconds?"
+  },
+  {
+    "date": "2026-10-05",
+    "exam": "OPSC ASO",
+    "content_stage": "EXAM_SPECIFIC",
+    "topic": "quantitative_aptitude_relative_speed",
+    "question": "Two trains of lengths 120 meters and 180 meters are running in opposite directions on parallel tracks at speeds of 50 km/h and 70 km/h respectively. In what time will they completely cross each other?",
+    "options": [
+      "8 seconds",
+      "9 seconds",
+      "10 seconds",
+      "12 seconds"
+    ],
+    "correct_option_index": 1,
+    "explanation": "Right because relative speed is 50+70=120 km/h (100/3 m/s) and total distance is 120+180=300 m, giving time = 300 / (100/3) = 9 s. Trap option 12 seconds occurs if speeds are mistakenly subtracted instead of added for opposite directions.",
+    "hook": "Master the train crossing puzzle for OPSC ASO!"
   }
 ]

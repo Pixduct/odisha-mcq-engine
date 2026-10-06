@@ -1349,5 +1349,30 @@
     "title": "Download PD)LPAI_15092026.pdf",
     "status": "REJECTED_BY_AI",
     "processed_at": "2026-10-05T12:31:34.380201"
+  },
+  "cce1a135b748a6683b2c04372e187147822816cc646984e262db1c3d94f4a7e8": {
+    "portal": "SCERT Odisha",
+    "title": "SCERT",
+    "status": "REJECTED_BY_AI",
+    "processed_at": "2026-10-06T12:08:50.366450"
+  },
+  "2451d22137cf16ea8ee36a4dfe2087d4291755df94f371345c5bbbae9f3917ba": {
+    "portal": "DRDO",
+    "title": "Defence Research and Development Organisation - DRDO",
+    "status": "REJECTED_BY_AI",
+    "processed_at": "2026-10-06T12:10:36.324813"
+  },
+  "5d01682c56c5cffafc9a475bf4a2b190bbe8060e43add857fd32c1bef2f226bc": {
+    "portal": "ISRO",
+    "title": "Advt. No. ISRO:ICRB:02(EMC-CEPO):2026 dated 28-07-2026  - List of candidates screened in for interview Read More",
+    "article_id": "ebad690a-8561-4b86-9d64-14b427a5327f",
+    "status": "PUBLISHED",
+    "processed_at": "2026-10-06T12:11:21.203566"
+  },
+  "1de552830126474887199b126cca91ec00663bd7df6ad9e612534e3aa1d65630": {
+    "portal": "AAI",
+    "title": "Aurangabad",
+    "status": "REJECTED_BY_AI",
+    "processed_at": "2026-10-06T12:14:45.559957"
   }
 }

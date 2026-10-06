@@ -478,5 +478,21 @@
     "correct_option_index": 1,
     "explanation": "Right because relative speed is 50+70=120 km/h (100/3 m/s) and total distance is 120+180=300 m, giving time = 300 / (100/3) = 9 s. Trap option 12 seconds occurs if speeds are mistakenly subtracted instead of added for opposite directions.",
     "hook": "Master the train crossing puzzle for OPSC ASO!"
+  },
+  {
+    "date": "2026-10-06",
+    "exam": "Railway RRB NTPC",
+    "content_stage": "EXAM_SPECIFIC",
+    "topic": "indian_railway_history_first_passenger_train",
+    "question": "The first passenger railway train in India ran between which two stations on April 16, 1853?",
+    "options": [
+      "Howrah and Hooghly",
+      "Bori Bunder (Mumbai) and Thane",
+      "Madras and Arcot",
+      "Delhi and Ghaziabad"
+    ],
+    "correct_option_index": 1,
+    "explanation": "Right because the historic first train ran between Bori Bunder (Bombay) and Thane. Howrah to Hooghly was the first train in Eastern India (1854), a common candidate trap.",
+    "hook": "Test your knowledge of Indian Railway history! Do you know where the wheels first turned in 1853?"
   }
 ]

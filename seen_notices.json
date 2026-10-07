@@ -1404,5 +1404,30 @@
     "title": "EMRS",
     "status": "REJECTED_BY_AI",
     "processed_at": "2026-10-07T12:02:16.404355"
+  },
+  "59928738e94788ee28bf92a73c779aaa1030bb179bfe18fc083ec8cacba4ce8b": {
+    "portal": "SBI",
+    "title": "Hindi (847 KB)",
+    "status": "REJECTED_BY_AI",
+    "processed_at": "2026-10-07T19:11:08.056513"
+  },
+  "5687fb522f4f681425e8d413a7ad7564c2c182489d27dba337c1b5c16c98fa7f": {
+    "portal": "SCERT Odisha",
+    "title": "www.scert.telangana.gov.in",
+    "status": "REJECTED_BY_AI",
+    "processed_at": "2026-10-07T19:13:22.898478"
+  },
+  "06997523cf195c01e9ed1fd1c48394992671cfee98f16662fb81f982c0790a0d": {
+    "portal": "ISRO",
+    "title": "Advt. No. LPSC/03/2026 dated 26.09.2026   - Recruitment to the post of Scientist / Engineer 'SC' Read More",
+    "article_id": "542779f7-eafc-423c-9e96-3741eaf4adc4",
+    "status": "PUBLISHED",
+    "processed_at": "2026-10-07T19:15:35.311975"
+  },
+  "c46532ce4a1e39589504aa411f55a0da3632c94f433b9ba32f7e27dc73b18508": {
+    "portal": "CAPF",
+    "title": "Download 4.79 MB)",
+    "status": "REJECTED_BY_AI",
+    "processed_at": "2026-10-07T19:18:24.440887"
   }
 }

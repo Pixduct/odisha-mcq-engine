@@ -494,5 +494,21 @@
     "correct_option_index": 1,
     "explanation": "Right because the historic first train ran between Bori Bunder (Bombay) and Thane. Howrah to Hooghly was the first train in Eastern India (1854), a common candidate trap.",
     "hook": "Test your knowledge of Indian Railway history! Do you know where the wheels first turned in 1853?"
+  },
+  {
+    "date": "2026-10-07",
+    "exam": "OSSSC RI / AMIN",
+    "content_stage": "EXAM_SPECIFIC",
+    "topic": "odisha_revenue_divisions_hq",
+    "question": "What is the headquarters of the Central Revenue Division of Odisha, which administers districts like Cuttack, Dhenkanal, and Puri?",
+    "options": [
+      "Sambalpur",
+      "Berhampur",
+      "Cuttack",
+      "Bhubaneswar"
+    ],
+    "correct_option_index": 2,
+    "explanation": "Cuttack is the HQ of the Central Revenue Division. Bhubaneswar is a common trap because it is the state capital, but it is not the division's headquarters.",
+    "hook": "Test your knowledge of Odisha's administrative setup for OSSSC RI/AMIN!"
   }
 ]

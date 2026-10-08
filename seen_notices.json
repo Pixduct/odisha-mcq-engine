@@ -1429,5 +1429,35 @@
     "title": "Download 4.79 MB)",
     "status": "REJECTED_BY_AI",
     "processed_at": "2026-10-07T19:18:24.440887"
+  },
+  "044755837f7fb9ea9a31d345b6e60f97727f55b9a0028e0c8040b37bdc6fab18": {
+    "portal": "CAPF",
+    "title": "Download 1.58 MB)",
+    "status": "REJECTED_BY_AI",
+    "processed_at": "2026-10-08T12:11:11.438315"
+  },
+  "64bfc5be0b1ffcaadc92b06c048382f526a9c633473eb82349f0ff5e90a02eaa": {
+    "portal": "Indian Coast Guard",
+    "title": "Home | National Portal of India",
+    "status": "REJECTED_BY_AI",
+    "processed_at": "2026-10-08T12:11:41.465033"
+  },
+  "af5f45d5c4f9c6a8cc376b3893b2e10083dce278c21751e8385cdcd108e4ecf4": {
+    "portal": "AIIMS",
+    "title": "All India Institute of Medical Sciences",
+    "status": "REJECTED_BY_AI",
+    "processed_at": "2026-10-08T12:12:54.613884"
+  },
+  "5e3981e76f9fe7c8be36ca24b65db5c9670ad76a74467884d38611ed77160849": {
+    "portal": "India Post",
+    "title": "Explore India | National Portal of India",
+    "status": "REJECTED_BY_AI",
+    "processed_at": "2026-10-08T12:13:31.361777"
+  },
+  "f3ed4b067e459502fb34c26e04029dbc4361f6b29369a7ad9b9cf482d3fb9d3f": {
+    "portal": "KVS",
+    "title": "KVS - Kendriya Vidyalaya Sangathan, Government of India | India",
+    "status": "REJECTED_BY_AI",
+    "processed_at": "2026-10-08T12:14:57.497040"
   }
 }

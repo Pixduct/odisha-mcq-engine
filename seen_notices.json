@@ -1489,5 +1489,41 @@
     "title": "Welcome to ASRB-OASIS",
     "status": "REJECTED_BY_AI",
     "processed_at": "2026-10-08T19:15:48.568854"
+  },
+  "eac507f9914a4bede6a3afaa7f1c8296ed83703b073298f5da394600cc96e7fe": {
+    "portal": "OSSC",
+    "title": "Odisha Sub-ordinate Staff Selection Commission|OSSSC",
+    "status": "REJECTED_BY_AI",
+    "processed_at": "2026-10-09T11:56:38.412744"
+  },
+  "5eb682f055833815d235ae54f4da36544c2736fbcaf83afef55a39f14aab0fc9": {
+    "portal": "UPSC",
+    "title": "UPSC",
+    "status": "REJECTED_BY_AI",
+    "processed_at": "2026-10-09T11:58:48.053778"
+  },
+  "879262bd516244a1f14b2bc5bda6fb9ac59765ccdb7399599cfc486952ecfca4": {
+    "portal": "Odisha Fire Service",
+    "title": "About Odisha - Government Of Odisha",
+    "status": "REJECTED_BY_AI",
+    "processed_at": "2026-10-09T12:00:19.860851"
+  },
+  "7e3227c06e16d28258be4ececf17e331d708e96dcd4d9aab9a302bca1727358d": {
+    "portal": "CAPF",
+    "title": "Download 4.02 MB)",
+    "status": "REJECTED_BY_AI",
+    "processed_at": "2026-10-09T12:03:22.450403"
+  },
+  "fa56064d95de31b548da0955ee5284db43deb189fc3b1839a75a4cd9a31276fb": {
+    "portal": "ESIC",
+    "title": "ESIC : Portal Application",
+    "status": "REJECTED_BY_AI",
+    "processed_at": "2026-10-09T12:04:29.218892"
+  },
+  "32df27075e12e306a81948ef19006aea5ad40e3f09bc0292dfc5aad6c80809e7": {
+    "portal": "KVS",
+    "title": "KVS - Kendriya Vidyalaya Sangathan, Government of India …",
+    "status": "REJECTED_BY_AI",
+    "processed_at": "2026-10-09T12:07:11.904944"
   }
 }

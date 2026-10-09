@@ -526,5 +526,21 @@
     "correct_option_index": 0,
     "explanation": "Profit ratio = (Capital × Time). A: 3×12 = 36, B: 5×12 = 60, C: (2×5)×6 = 60. Ratio is 36:60:60 = 3:5:5. Trap option 3:5:10 ignores multiplying C's capital by investment period (6 months).",
     "hook": "Master partnership profit-sharing rules tested in IBPS PO Prelims!"
+  },
+  {
+    "date": "2026-10-09",
+    "exam": "Odisha Police SI",
+    "content_stage": "EXAM_SPECIFIC",
+    "topic": "odisha_police_history_administration",
+    "question": "When Odisha became a separate province on April 1, 1936, who was appointed as the first Inspector General (IG) of Odisha Police?",
+    "options": [
+      "J. Carter",
+      "Sir John Austin Hubback",
+      "Mukunda Prasad Das",
+      "Harihar Mohanty"
+    ],
+    "correct_option_index": 0,
+    "explanation": "J. Carter was the first Inspector General of Odisha Police in 1936. Sir John Austin Hubback is the classic trap as he was the first Governor of Odisha, not the police chief.",
+    "hook": "A must-know for every Odisha Police SI aspirant!"
   }
 ]

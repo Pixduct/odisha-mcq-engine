@@ -1558,5 +1558,49 @@
     "article_id": "f7d76f27-d6ba-49be-a8c8-93a62fb08ea4",
     "status": "PUBLISHED",
     "processed_at": "2026-10-09T18:42:56.302628"
+  },
+  "bde3a43a40f29ee763ed6e256897f38d8af9ee3e1e77dacd07f58d534f982145": {
+    "portal": "SSB Odisha",
+    "title": "Notice regarding Advertisement No. 04/2026 dated 03.10.2026 for recruitment to the post of Laboratory Assistant-cum-Storekeeper in Government Degree Colleges and Non-Government Aided Colleges of the State of Odisha New",
+    "article_id": "cad9ee27-5e98-4aa7-b6b1-c700c2ff015e",
+    "status": "PUBLISHED",
+    "processed_at": "2026-10-10T11:14:20.062450"
+  },
+  "8c8572b823d8cc7b77d44b2ee301b80459c590d42d99a3d896a6d998cce2b98e": {
+    "portal": "UPSC",
+    "title": "Union Public Service Commission",
+    "status": "REJECTED_BY_AI",
+    "processed_at": "2026-10-10T11:15:43.848023"
+  },
+  "bcef12ef3c6a09680e777d6ef7b6a09c077743378382999135b6638b95377b3a": {
+    "portal": "Odisha Prisons",
+    "title": "Odisha Tourism: Official Website to Plan Your Travel & Holiday",
+    "status": "REJECTED_BY_AI",
+    "processed_at": "2026-10-10T11:17:14.466962"
+  },
+  "2a6740f620bf189cda2b9c519e19a935ae13dfe78fd6c969e8a549f43b542b60": {
+    "portal": "Odisha Fire Service",
+    "title": "Odisha Tourism: Official Website to Plan Your Travel & Holiday",
+    "status": "REJECTED_BY_AI",
+    "processed_at": "2026-10-10T11:18:01.624650"
+  },
+  "a348246fd4a96bc5c3ce772f1e5d6f74b63d044f3cb3bd729a82061120e7b2a4": {
+    "portal": "DRDO",
+    "title": "Defence Research and Development Organisation - DRDO",
+    "status": "REJECTED_BY_AI",
+    "processed_at": "2026-10-10T11:19:42.173814"
+  },
+  "feb65c14645cb5e948a2f38e672058fb97465da41dcc37272510d4a800804af9": {
+    "portal": "ISRO",
+    "title": "Advt. No. HSFC:02:RMT:2026, Dated:09.10.2026 - Inviting applications for the post\r\n                                    GROUP ‘A’ Medical Officer - SD Read More",
+    "article_id": "6d86fc46-1164-4780-a086-289f02126931",
+    "status": "PUBLISHED",
+    "processed_at": "2026-10-10T11:20:24.476554"
+  },
+  "75f1b4b3e42df340155b40947a86ad8a4fdd4dee7ea8646e8c0ae6dae9d3263a": {
+    "portal": "Intelligence Bureau",
+    "title": "Download 4.02 MB)",
+    "status": "REJECTED_BY_AI",
+    "processed_at": "2026-10-10T11:24:45.569385"
   }
 }

@@ -542,5 +542,21 @@
     "correct_option_index": 0,
     "explanation": "J. Carter was the first Inspector General of Odisha Police in 1936. Sir John Austin Hubback is the classic trap as he was the first Governor of Odisha, not the police chief.",
     "hook": "A must-know for every Odisha Police SI aspirant!"
+  },
+  {
+    "date": "2026-10-10",
+    "exam": "BSE Odisha OTET / OSSTET",
+    "content_stage": "EXAM_SPECIFIC",
+    "topic": "classical_conditioning_extinction_vs_spontaneous_recovery",
+    "question": "In Pavlov's classical conditioning, what term describes the gradual disappearance of a conditioned response when the conditioned stimulus is repeatedly presented without the unconditioned stimulus?",
+    "options": [
+      "Stimulus Discrimination",
+      "Spontaneous Recovery",
+      "Extinction",
+      "Habituation"
+    ],
+    "correct_option_index": 2,
+    "explanation": "Extinction occurs when CS is presented without US, causing CR to vanish. Spontaneous recovery is the sudden reappearance of CR after a rest period, not its disappearance.",
+    "hook": "Master key learning theories for OTET/OSSTET!"
   }
 ]

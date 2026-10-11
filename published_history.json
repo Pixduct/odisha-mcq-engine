@@ -558,5 +558,21 @@
     "correct_option_index": 2,
     "explanation": "Extinction occurs when CS is presented without US, causing CR to vanish. Spontaneous recovery is the sudden reappearance of CR after a rest period, not its disappearance.",
     "hook": "Master key learning theories for OTET/OSSTET!"
+  },
+  {
+    "date": "2026-10-11",
+    "exam": "OSSSC Nursing Officer",
+    "content_stage": "EXAM_SPECIFIC",
+    "topic": "pharmacology_paediatric_dosage_calculation",
+    "question": "A child weighing 20 kg is prescribed a medication at a dose of 0.5 mg/kg body weight. The available syrup concentration is 5 mg/5 mL. How many milliliters should the Nursing Officer administer per dose?",
+    "options": [
+      "5 mL",
+      "10 mL",
+      "15 mL",
+      "20 mL"
+    ],
+    "correct_option_index": 1,
+    "explanation": "Required dose is 20 kg × 0.5 mg/kg = 10 mg. With syrup concentration of 5 mg per 5 mL (1 mg/1 mL), volume is 10 mL. Trap option 5 mL results from forgetting to multiply by weight or syrup ratio.",
+    "hook": "Master clinical dosage calculations for your nursing exam!"
   }
 ]

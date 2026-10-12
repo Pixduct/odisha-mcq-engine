@@ -574,5 +574,21 @@
     "correct_option_index": 1,
     "explanation": "Required dose is 20 kg × 0.5 mg/kg = 10 mg. With syrup concentration of 5 mg per 5 mL (1 mg/1 mL), volume is 10 mL. Trap option 5 mL results from forgetting to multiply by weight or syrup ratio.",
     "hook": "Master clinical dosage calculations for your nursing exam!"
+  },
+  {
+    "date": "2026-10-12",
+    "exam": "Railway RRB NTPC",
+    "content_stage": "EXAM_SPECIFIC",
+    "topic": "physics_semiconductor_temperature_coefficient",
+    "question": "What happens to the electrical resistance of a pure semiconductor (such as Silicon) when its temperature increases?",
+    "options": [
+      "It decreases",
+      "It increases",
+      "It remains unchanged",
+      "It becomes infinite"
+    ],
+    "correct_option_index": 0,
+    "explanation": "Semiconductors have a negative temp coefficient, so heating releases charge carriers and lowers resistance. B is wrong because resistance increases with temp in metallic conductors.",
+    "hook": "Can you spot the conductor vs. semiconductor trap?"
   }
 ]

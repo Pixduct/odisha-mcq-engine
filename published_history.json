@@ -590,5 +590,21 @@
     "correct_option_index": 0,
     "explanation": "Semiconductors have a negative temp coefficient, so heating releases charge carriers and lowers resistance. B is wrong because resistance increases with temp in metallic conductors.",
     "hook": "Can you spot the conductor vs. semiconductor trap?"
+  },
+  {
+    "date": "2026-10-13",
+    "exam": "OSSC CGL",
+    "content_stage": "EXAM_SPECIFIC",
+    "topic": "odisha_gk_constitutional_history",
+    "question": "Who was the first Governor of the newly formed Province of Odisha when it was granted provincial autonomy on April 1, 1936?",
+    "options": [
+      "Sir John Austen Hubback",
+      "Sir Hawthorne Lewis",
+      "Krishna Chandra Gajapati",
+      "Harekrushna Mahatab"
+    ],
+    "correct_option_index": 0,
+    "explanation": "Sir John Austen Hubback was the first Governor of Odisha in 1936. Many students incorrectly select Krishna Chandra Gajapati, who was the first Premier, not the Governor.",
+    "hook": "History buff? Don't confuse the first Premier with the first Governor of Odisha!"
   }
 ]

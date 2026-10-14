@@ -1753,5 +1753,23 @@
     "title": "EPFO: Home",
     "status": "REJECTED_BY_AI",
     "processed_at": "2026-10-13T19:44:51.876756"
+  },
+  "5694b26d8d55b961fd2e00428445e6d9c9d70458cd534600f2d9afb4bbee8f95": {
+    "portal": "SCERT Odisha",
+    "title": "Home | State Council of Educational Research and Trainin…",
+    "status": "REJECTED_BY_AI",
+    "processed_at": "2026-10-14T10:20:23.723987"
+  },
+  "5f8130bc5787c3d4575ac13ca4fa0c7c2273d5123d435c9874f0f76ff3f53411": {
+    "portal": "Intelligence Bureau",
+    "title": "Download 4.79 MB)",
+    "status": "REJECTED_BY_AI",
+    "processed_at": "2026-10-14T10:25:40.725942"
+  },
+  "9dd1b033280e9c740a519b527b6bd4c1a6d9c51c965ebabfb7331fcc3f16dd66": {
+    "portal": "CSIR",
+    "title": "सीएसआईआर-नेशनल केमिकल लेबोरेटरी (सीएसआईआर-एनसीएल), पुणे में डायरेक्टर के पद के लिए विज्ञापन [अंतिम तिथि: 30/11/2026]",
+    "status": "FAILED_INTEGRITY_REJECTED_LACKING_OFFICIAL_EXAM_KEYWORDS",
+    "processed_at": "2026-10-14T10:29:44.072241"
   }
 }

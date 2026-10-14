@@ -606,5 +606,21 @@
     "correct_option_index": 0,
     "explanation": "Sir John Austen Hubback was the first Governor of Odisha in 1936. Many students incorrectly select Krishna Chandra Gajapati, who was the first Premier, not the Governor.",
     "hook": "History buff? Don't confuse the first Premier with the first Governor of Odisha!"
+  },
+  {
+    "date": "2026-10-14",
+    "exam": "IBPS PO & Clerk",
+    "content_stage": "EXAM_SPECIFIC",
+    "topic": "quantitative_aptitude_alligation_mixture",
+    "question": "A vessel contains 80 litres of pure milk. 8 litres of milk is removed and replaced with water. This process is performed two more times. What is the final quantity of milk left in the vessel?",
+    "options": [
+      "58.32 litres",
+      "64.00 litres",
+      "51.20 litres",
+      "58.20 litres"
+    ],
+    "correct_option_index": 0,
+    "explanation": "Formula: Final = Initial * (1 - x/y)^n. Here 80 * (1 - 8/80)^3 = 80 * (0.9)^3 = 58.32 L. Trap option 64 assumes single replacement or linear subtraction.",
+    "hook": "Master the successive replacement shortcut for banking exams!"
   }
 ]

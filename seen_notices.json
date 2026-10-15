@@ -1801,5 +1801,29 @@
     "title": "सीमित विभागीय प्रतियोगी परीक्षा-2026 की प्रारम्भिक सूचना",
     "status": "REJECTED_BY_AI",
     "processed_at": "2026-10-15T10:12:42.725072"
+  },
+  "476acd1dab619a43f5aa1ed7490c7791e6764157650408e8ee712c56053270be": {
+    "portal": "IBPS",
+    "title": "Common Recruitment Process for RRBs (CRP-RRBs-XV) for Recruitme…",
+    "status": "FAILED_INTEGRITY_REJECTED_INSUFFICIENT_YIELD_SCORE (0/100 < 80 -> DROPPED: Lacks active recruitment cycle year)",
+    "processed_at": "2026-10-15T17:26:01.304141"
+  },
+  "a779b6fceb12d617d9d29cb71c810090c5c51cf83fdeba6bde6b7a74803c8cec": {
+    "portal": "OHPC",
+    "title": "Size: 1.65 MB,\r\n                                                                Format: PDF,\r\n                                                                Language: English",
+    "status": "REJECTED_BY_AI",
+    "processed_at": "2026-10-15T17:27:47.063076"
+  },
+  "43f0bab3547986ad07538db7f5416b1c4cc13e0130914fbc0c0b791bf374380d": {
+    "portal": "SCERT Odisha",
+    "title": "CG STATE COUNCIL OF EDUCATIONAL RESEARCH AND TRAINING",
+    "status": "REJECTED_BY_AI",
+    "processed_at": "2026-10-15T17:29:20.857727"
+  },
+  "3c64edb0e08dc6d552968d2001fd5f365f9474aa272264935eeb02ce918cbf5d": {
+    "portal": "India Post",
+    "title": "Home | National Portal of India",
+    "status": "REJECTED_BY_AI",
+    "processed_at": "2026-10-15T17:35:38.009282"
   }
 }

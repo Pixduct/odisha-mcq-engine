@@ -638,5 +638,21 @@
     "correct_option_index": 0,
     "explanation": "Formula: Final = Initial × (1 - x/y)^n = 50 × (1 - 5/50)^2 = 50 × (9/10)^2 = 40.5L. The trap option 40L wrongly assumes a linear reduction of 5L per operation.",
     "hook": "Master the successive replacement shortcut for SSC CGL Quant!"
+  },
+  {
+    "date": "2026-10-16",
+    "exam": "OPSC ASO",
+    "content_stage": "EXAM_SPECIFIC",
+    "topic": "indian_polity_joint_sitting_parliament",
+    "question": "Which of the following categories of bills CANNOT be referred to a joint sitting of both Houses of Parliament under Article 108 of the Indian Constitution?",
+    "options": [
+      "Ordinary Bills",
+      "Financial Bills (containing provisions under Article 110)",
+      "Constitution Amendment Bills",
+      "Both Financial Bills (Article 110) and Constitution Amendment Bills"
+    ],
+    "correct_option_index": 3,
+    "explanation": "Right because joint sittings are restricted to Ordinary and specific Financial bills; Money Bills and Constitution Amendment Bills cannot use this route. Trap option 'Constitution Amendment Bills' misses that Article 368 requires separate passage.",
+    "hook": "Can a deadlock on ANY bill be resolved by a Joint Sitting? Test your Indian Polity concepts for OPSC ASO!"
   }
 ]

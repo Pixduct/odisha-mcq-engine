@@ -654,5 +654,21 @@
     "correct_option_index": 3,
     "explanation": "Right because joint sittings are restricted to Ordinary and specific Financial bills; Money Bills and Constitution Amendment Bills cannot use this route. Trap option 'Constitution Amendment Bills' misses that Article 368 requires separate passage.",
     "hook": "Can a deadlock on ANY bill be resolved by a Joint Sitting? Test your Indian Polity concepts for OPSC ASO!"
+  },
+  {
+    "date": "2026-10-17",
+    "exam": "OSSSC RI / AMIN",
+    "content_stage": "EXAM_SPECIFIC",
+    "topic": "odisha_land_revenue_terminology_sabik_hal",
+    "question": "In Odisha land revenue and survey terminology, which term refers specifically to a plot number assigned during the PREVIOUS (older) settlement survey?",
+    "options": [
+      "Sabik Plot",
+      "Hal Plot",
+      "Chaka Plot",
+      "Khatian Plot"
+    ],
+    "correct_option_index": 0,
+    "explanation": "Sabik refers to old settlement survey plot numbers, while Hal Plot refers to current settlement numbers. Candidates frequently confuse Sabik with Hal.",
+    "hook": "RI & AMIN Aspirants: Can you distinguish between Sabik and Hal land records?"
   }
 ]

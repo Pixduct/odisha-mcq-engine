@@ -1869,5 +1869,42 @@
     "title": "EPFO | Member Passbook - EPF India",
     "status": "REJECTED_BY_AI",
     "processed_at": "2026-10-17T09:32:51.945202"
+  },
+  "fb31450ed8fd9f84e2e74259a084861ab5492b0ea30e4a3dc76758f48c6d99e2": {
+    "portal": "OSSSC",
+    "title": "Notification No. IIE-63/2026-3116/OSSSC dated - 17.10.2026 ----- Publication of Revised Answer Keys & Response Sheet of the Written Test for the posts of RI, ICDS Supervisor, VAW, Junior Assistant, ARI, Amin & SFS under CRE-2025",
+    "article_id": "d34e6fac-f580-4fc5-b42f-1449fb5ae19d",
+    "status": "PUBLISHED",
+    "processed_at": "2026-10-17T15:58:35.938245"
+  },
+  "b7e6d7e06fbd4da7aa4746b87682c0b4f43c51a0e18ce7dfbb4aa82fe85b4c18": {
+    "portal": "SBI",
+    "title": "CTC NEGOTIATION FORM",
+    "status": "REJECTED_BY_AI",
+    "processed_at": "2026-10-17T16:01:59.729284"
+  },
+  "9bd91fad8512353004aae7d36e1eb4512b42bceb1885a1238999fdd7053c17f2": {
+    "portal": "NTA",
+    "title": "NTA",
+    "status": "REJECTED_BY_AI",
+    "processed_at": "2026-10-17T16:03:10.008194"
+  },
+  "03b2792d897ecc3d70e9b0b84169d1ac73499c3181490bbc1a8df18dc1e25526": {
+    "portal": "OHPC",
+    "title": "Size:\r\n                                                                            76.05 KB,\r\n                                                                            Format:\r\n                                                                            PDF,\r\n                                                                            Language:\r\n                                                                            English",
+    "status": "REJECTED_BY_AI",
+    "processed_at": "2026-10-17T16:04:36.257183"
+  },
+  "6972df7d7c322afdf0734998f2189ce69bf94ba6e0e1e7fb8af8a6408efcf922": {
+    "portal": "SCERT Odisha",
+    "title": "CG STATE COUNCIL OF EDUCATIONAL RESEARCH AND TRAINING | India",
+    "status": "REJECTED_BY_AI",
+    "processed_at": "2026-10-17T16:05:08.546275"
+  },
+  "5f1ca6bccc12a650c7e86dbf77ee85faf54580cdeb09fd3f4bd1faa55331bc62": {
+    "portal": "EPFO",
+    "title": "EPFO - UMANG",
+    "status": "REJECTED_BY_AI",
+    "processed_at": "2026-10-17T16:08:55.891890"
   }
 }

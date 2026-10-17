@@ -1857,5 +1857,17 @@
     "article_id": "f2784396-d21b-4b82-b1a6-5c8da9761506",
     "status": "PUBLISHED",
     "processed_at": "2026-10-16T17:10:51.392228"
+  },
+  "5617fc19aefc24a56de10b34da01b8fa7c5778b8708b5e71978bf6e1d9ab5a94": {
+    "portal": "OHPC",
+    "title": "Size:\r\n                                                                            701.06 KB,\r\n                                                                            Format:\r\n                                                                            PDF,\r\n                                                                            Language:\r\n                                                                            English",
+    "status": "REJECTED_BY_AI",
+    "processed_at": "2026-10-17T09:29:24.757651"
+  },
+  "996132927b99f135c1ebe513ffd46762f0a2ae2a2eaedd3b9901b52bea349190": {
+    "portal": "EPFO",
+    "title": "EPFO | Member Passbook - EPF India",
+    "status": "REJECTED_BY_AI",
+    "processed_at": "2026-10-17T09:32:51.945202"
   }
 }

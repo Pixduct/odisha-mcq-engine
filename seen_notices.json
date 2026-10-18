@@ -1906,5 +1906,30 @@
     "title": "EPFO - UMANG",
     "status": "REJECTED_BY_AI",
     "processed_at": "2026-10-17T16:08:55.891890"
+  },
+  "c0d2f9b1948d7acc48b41289d79df65dde6ae771c47a22265772a84c818e5052": {
+    "portal": "OSSSC",
+    "title": "Notification No. IIE-68/2026-3109/OSSSC dated - 17.10.2026 -----Counselling for choice of Post/District for the posts of RI, ICDS Supervisor, ARI, Amin & SFS under CRE-2023 (IV).",
+    "article_id": "a2ce96f3-5a1a-435d-bb38-5ac2a0469b91",
+    "status": "PUBLISHED",
+    "processed_at": "2026-10-18T09:40:49.475730"
+  },
+  "050beecaebba850f6455f35063563265e4ecb5c79fa084f6c7255d20930a8e8f": {
+    "portal": "OHPC",
+    "title": "MoU signing between OHPC and World Skill Centre for setting up a dedicated Green Energy (Solar) Centre of Excell...",
+    "status": "REJECTED_BY_AI",
+    "processed_at": "2026-10-18T09:43:44.810995"
+  },
+  "e9ae625a18878c9f7a787b73db16ab29da8808da5d5f0e569f46b22fabe3463d": {
+    "portal": "EPFO",
+    "title": "EPFO | Member Passbook",
+    "status": "REJECTED_BY_AI",
+    "processed_at": "2026-10-18T09:46:59.592601"
+  },
+  "84ea8ea2c83232302bfe4b85067a15eca69f1cf8af6e9b022a8da3282b101d2a": {
+    "portal": "KVS",
+    "title": "Admission | KVS - Kendriya Vidyalaya Sangathan, Government of India",
+    "status": "REJECTED_BY_AI",
+    "processed_at": "2026-10-18T09:49:08.252237"
   }
 }

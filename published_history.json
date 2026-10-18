@@ -670,5 +670,21 @@
     "correct_option_index": 0,
     "explanation": "Sabik refers to old settlement survey plot numbers, while Hal Plot refers to current settlement numbers. Candidates frequently confuse Sabik with Hal.",
     "hook": "RI & AMIN Aspirants: Can you distinguish between Sabik and Hal land records?"
+  },
+  {
+    "date": "2026-10-18",
+    "exam": "Odisha Police SI",
+    "content_stage": "EXAM_SPECIFIC",
+    "topic": "crpc_arrest_without_warrant",
+    "question": "Under Section 41 of the Code of Criminal Procedure, 1973, in which of the following scenarios can a police officer arrest a person WITHOUT a warrant?",
+    "options": [
+      "For any non-cognizable offence without a magistrate's order",
+      "For a cognizable offence committed in the presence of the police officer",
+      "For a non-cognizable offence if requested by a private citizen",
+      "Only after obtaining prior written permission from a District Magistrate"
+    ],
+    "correct_option_index": 1,
+    "explanation": "Right because Sec 41(1)(a) CrPC empowers police to arrest without warrant for cognizable offences in their presence. Non-cognizable offences strictly require a magistrate's warrant.",
+    "hook": "Know your criminal procedure law for Odisha Police SI!"
   }
 ]

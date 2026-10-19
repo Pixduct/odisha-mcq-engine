@@ -686,5 +686,21 @@
     "correct_option_index": 1,
     "explanation": "Right because Sec 41(1)(a) CrPC empowers police to arrest without warrant for cognizable offences in their presence. Non-cognizable offences strictly require a magistrate's warrant.",
     "hook": "Know your criminal procedure law for Odisha Police SI!"
+  },
+  {
+    "date": "2026-10-19",
+    "exam": "BSE Odisha OTET / OSSTET",
+    "content_stage": "EXAM_SPECIFIC",
+    "topic": "pedagogy_diagnostic_vs_formative_evaluation",
+    "question": "Before starting a new unit, a teacher conducts an ungraded test specifically to pinpoint students' underlying skill deficits and pre-requisite knowledge gaps. Which type of evaluation is this?",
+    "options": [
+      "Placement Evaluation",
+      "Diagnostic Evaluation",
+      "Formative Evaluation",
+      "Summative Evaluation"
+    ],
+    "correct_option_index": 1,
+    "explanation": "Diagnostic evaluation identifies specific underlying learning gaps and difficulties. Formative evaluation continuously monitors ongoing learning progress during classroom instruction.",
+    "hook": "Master this essential OTET/OSSTET evaluation trap!"
   }
 ]

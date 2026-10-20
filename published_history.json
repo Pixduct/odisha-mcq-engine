@@ -702,5 +702,21 @@
     "correct_option_index": 1,
     "explanation": "Diagnostic evaluation identifies specific underlying learning gaps and difficulties. Formative evaluation continuously monitors ongoing learning progress during classroom instruction.",
     "hook": "Master this essential OTET/OSSTET evaluation trap!"
+  },
+  {
+    "date": "2026-10-20",
+    "exam": "OSSSC Nursing Officer",
+    "content_stage": "EXAM_SPECIFIC",
+    "topic": "clinical_nursing_vital_signs_assessment",
+    "question": "When assessing the vital signs of an adult patient admitted with severe dehydration and acute gastroenteritis, which of the following findings should the Nursing Officer identify as an early indicator of hypovolemic shock?",
+    "options": [
+      "Bounding pulse and flushed skin",
+      "Tachycardia and narrowed pulse pressure",
+      "Bradycardia and elevated systolic blood pressure",
+      "Rapidly increasing urine output"
+    ],
+    "correct_option_index": 1,
+    "explanation": "Tachycardia and narrowed pulse pressure are early compensatory signs of fluid volume deficit. Bradycardia is a trap as the body initially mounts a sympathetic response increasing heart rate, not decreasing it.",
+    "hook": "Spot the early warning sign of hypovolemic shock!"
   }
 ]

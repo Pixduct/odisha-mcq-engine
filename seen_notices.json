@@ -1993,5 +1993,36 @@
     "title": "Arms Licensing Services",
     "status": "REJECTED_BY_AI",
     "processed_at": "2026-10-19T19:01:50.205765"
+  },
+  "96c3e379d5c49d7a1a30e9552d64da10ef0b9958fb49d014ca92f43ee9149412": {
+    "portal": "Odisha Police",
+    "title": "Odisha - incredibleindia.gov.in",
+    "status": "REJECTED_BY_AI",
+    "processed_at": "2026-10-20T10:08:32.287287"
+  },
+  "fa7296fdc66e4e4747689da4134f08bab68891bb58a8ab88b9124e829a16db36": {
+    "portal": "ISRO",
+    "title": "ADVT NO. ISRO:ICRB:01(A-JPA):2026 DATED 27.07.2026 - Date of conducting\r\n                                    the Skill Test: 01 st November, 2026 Read More",
+    "article_id": "f1685367-410d-48da-a6d8-656fa7ce4500",
+    "status": "PUBLISHED",
+    "processed_at": "2026-10-20T10:13:34.463686"
+  },
+  "aa331ec16fd1eb28d1d36eca76f821ff150e252012876c9428ffdd94b1c769a7": {
+    "portal": "CAPF",
+    "title": "FCRA Service",
+    "status": "REJECTED_BY_AI",
+    "processed_at": "2026-10-20T10:14:38.025764"
+  },
+  "25ab51ee60a4511c0b12e15ba511b8bcf949ba65213d0575dff6f1f27734af1e": {
+    "portal": "Intelligence Bureau",
+    "title": "Arms Licensing Services",
+    "status": "REJECTED_BY_AI",
+    "processed_at": "2026-10-20T10:17:16.007760"
+  },
+  "61ab397128492e5609e592636ac39d8b440ddb259ac13c052ea3decb4f0e66e2": {
+    "portal": "CSIR",
+    "title": "सीएसआईआर-केंद्रीय कांच एवं सिरेमिक अनुसंधान संस्थान (सीएसआईआर-सीजीसीआरआई), कोलकाता में निदेशक के पद के लिए विज्ञापन [अंतिम तिथि: 30/11/2026]",
+    "status": "FAILED_INTEGRITY_REJECTED_LACKING_OFFICIAL_EXAM_KEYWORDS",
+    "processed_at": "2026-10-20T10:20:19.328342"
   }
 }

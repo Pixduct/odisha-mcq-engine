@@ -2024,5 +2024,41 @@
     "title": "सीएसआईआर-केंद्रीय कांच एवं सिरेमिक अनुसंधान संस्थान (सीएसआईआर-सीजीसीआरआई), कोलकाता में निदेशक के पद के लिए विज्ञापन [अंतिम तिथि: 30/11/2026]",
     "status": "FAILED_INTEGRITY_REJECTED_LACKING_OFFICIAL_EXAM_KEYWORDS",
     "processed_at": "2026-10-20T10:20:19.328342"
+  },
+  "7ac4dfbc4d432fcf680725f5588f10341b29ab4595ca8a36b2199bed8353e654": {
+    "portal": "BSE Odisha",
+    "title": "About the Departement",
+    "status": "REJECTED_BY_AI",
+    "processed_at": "2026-10-21T10:16:08.307993"
+  },
+  "d9dfd865bf2a2765c1deea340914611ea8b473ac84a5ae6147852c9c4ed2c659": {
+    "portal": "UPSC",
+    "title": "UPSC",
+    "status": "REJECTED_BY_AI",
+    "processed_at": "2026-10-21T10:17:42.014194"
+  },
+  "7bb31b616df2fb49d74a58d0b06e4a33510180a86ca62cfee9592408cc4f54e7": {
+    "portal": "DRDO",
+    "title": "DRDO",
+    "status": "REJECTED_BY_AI",
+    "processed_at": "2026-10-21T10:21:41.351753"
+  },
+  "5dfb03cefce0d3b1b38982ea148aaa378c2a9aab1c358829c1a6edb0a913e27a": {
+    "portal": "CAPF",
+    "title": "Foreigners Registration",
+    "status": "REJECTED_BY_AI",
+    "processed_at": "2026-10-21T10:22:56.837448"
+  },
+  "52b5ed1ea8a856ae3bad3cf1bbe170faf6113b1f3d56bfa8ade86641ce1fc886": {
+    "portal": "Intelligence Bureau",
+    "title": "FCRA Service",
+    "status": "REJECTED_BY_AI",
+    "processed_at": "2026-10-21T10:25:35.818581"
+  },
+  "8bf8312bee0de5d23c05f399627833063820a0ffec8cb744f504f2fe0651e076": {
+    "portal": "KVS",
+    "title": "KVS - Kendriya Vidyalaya Sangathan, Government of India | India",
+    "status": "REJECTED_BY_AI",
+    "processed_at": "2026-10-21T10:27:35.905369"
   }
 }

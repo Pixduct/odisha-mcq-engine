@@ -718,5 +718,21 @@
     "correct_option_index": 1,
     "explanation": "Tachycardia and narrowed pulse pressure are early compensatory signs of fluid volume deficit. Bradycardia is a trap as the body initially mounts a sympathetic response increasing heart rate, not decreasing it.",
     "hook": "Spot the early warning sign of hypovolemic shock!"
+  },
+  {
+    "date": "2026-10-21",
+    "exam": "Railway RRB NTPC",
+    "content_stage": "EXAM_SPECIFIC",
+    "topic": "polity_constitutional_amendment_voting_age",
+    "question": "Which Constitutional Amendment Act reduced the voting age for Lok Sabha and Legislative Assembly elections in India from 21 to 18 years?",
+    "options": [
+      "61st Constitutional Amendment Act",
+      "42nd Constitutional Amendment Act",
+      "44th Constitutional Amendment Act",
+      "73rd Constitutional Amendment Act"
+    ],
+    "correct_option_index": 0,
+    "explanation": "Right because 61st Amendment (1988) lowered voting age from 21 to 18. Trap option 42nd Amendment is wrong because it added words like 'Secular' to the Preamble.",
+    "hook": "Test your Indian Polity knowledge for RRB NTPC!"
   }
 ]

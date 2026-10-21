@@ -2060,5 +2060,35 @@
     "title": "KVS - Kendriya Vidyalaya Sangathan, Government of India | India",
     "status": "REJECTED_BY_AI",
     "processed_at": "2026-10-21T10:27:35.905369"
+  },
+  "af86f6c040705de2e76509f98008b59daa4a5827e82118446c02ea73bebc2501": {
+    "portal": "BSE Odisha",
+    "title": "Achievements",
+    "status": "REJECTED_BY_AI",
+    "processed_at": "2026-10-21T17:42:49.943431"
+  },
+  "2f7376fb3b5f6a34de3c83adac47a97ef3860c534a3b4d720a8617f0066dbc6a": {
+    "portal": "NTA",
+    "title": "National Testing Agency | NTA | India",
+    "status": "REJECTED_BY_AI",
+    "processed_at": "2026-10-21T17:44:15.219411"
+  },
+  "0e8d5ec71e6c671331f223a53797e1139452d69e05cac8b8ceddc8e6bf352341": {
+    "portal": "CAPF",
+    "title": "Indian Citizenship",
+    "status": "REJECTED_BY_AI",
+    "processed_at": "2026-10-21T17:48:24.707984"
+  },
+  "80803b1d1a9a4c43ac814741fbe7f1d4914957becbbdc46977250808a10738ae": {
+    "portal": "ESIC",
+    "title": "ESIC - Employees' State Insurance Corporation | Ministry of Labour ...",
+    "status": "REJECTED_BY_AI",
+    "processed_at": "2026-10-21T17:50:37.810117"
+  },
+  "caf3564e113ab1b4d689b0bd86028233f5d5f5ed977b5d78470ff000a4e3efd4": {
+    "portal": "Intelligence Bureau",
+    "title": "Foreigners Registration",
+    "status": "REJECTED_BY_AI",
+    "processed_at": "2026-10-21T17:52:57.164188"
   }
 }

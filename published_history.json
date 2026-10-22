@@ -734,5 +734,21 @@
     "correct_option_index": 0,
     "explanation": "Right because 61st Amendment (1988) lowered voting age from 21 to 18. Trap option 42nd Amendment is wrong because it added words like 'Secular' to the Preamble.",
     "hook": "Test your Indian Polity knowledge for RRB NTPC!"
+  },
+  {
+    "date": "2026-10-22",
+    "exam": "SSC CGL",
+    "content_stage": "EXAM_SPECIFIC",
+    "topic": "quantitative_aptitude_boats_and_streams",
+    "question": "A man rows downstream at 15 km/h and upstream at 9 km/h. What is the speed of the stream?",
+    "options": [
+      "3 km/h",
+      "6 km/h",
+      "12 km/h",
+      "24 km/h"
+    ],
+    "correct_option_index": 0,
+    "explanation": "Right because stream speed = (Downstream - Upstream) / 2 = (15 - 9)/2 = 3 km/h. Trap option 6 km/h is (15-9), forgetting to divide by 2.",
+    "hook": "Master the downstream-upstream shortcut for SSC CGL Tier-1!"
   }
 ]

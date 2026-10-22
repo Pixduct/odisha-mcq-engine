@@ -2133,5 +2133,24 @@
     "title": "Indian Citizenship",
     "status": "REJECTED_BY_AI",
     "processed_at": "2026-10-22T10:25:48.466141"
+  },
+  "7ea1259d18e4331a57893eea625cd393610fdcea962ad499a543b6d648f24630": {
+    "portal": "BSE Odisha",
+    "title": "Download Forms",
+    "status": "REJECTED_BY_AI",
+    "processed_at": "2026-10-22T17:40:34.119080"
+  },
+  "0b59eba7a02b1ac292a1fe63b913f0111729a4640a3a8a5b09adeae664c3d537": {
+    "portal": "DRDO",
+    "title": "Recruitment & Assessment Centre | RAC, DRDO",
+    "status": "REJECTED_BY_AI",
+    "processed_at": "2026-10-22T17:44:25.389665"
+  },
+  "2e7ff604daf633a90cf510173d88acf1e758fe440a0c4d1425012320cff721b5": {
+    "portal": "ISRO",
+    "title": "Advt. No. ISRO:ICRB:03(EMC):2026 dated 27-08-2026 - Download Admit Card for Computer\r\n                                    Based Test (CBT) Read More",
+    "article_id": "e1128546-a008-4129-a276-4994626ab881",
+    "status": "PUBLISHED",
+    "processed_at": "2026-10-22T17:45:46.323972"
   }
 }

@@ -2090,5 +2090,48 @@
     "title": "Foreigners Registration",
     "status": "REJECTED_BY_AI",
     "processed_at": "2026-10-21T17:52:57.164188"
+  },
+  "5dd01aa4c5dce85a2cec6338c8236c174232ff6cf299438d7355ecfbfa1c9672": {
+    "portal": "BSE Odisha",
+    "title": "Organogram",
+    "status": "REJECTED_BY_AI",
+    "processed_at": "2026-10-22T10:17:00.602393"
+  },
+  "4cbc383044e8a4f789bb6f01896189621e809531251e928be4742605999b319e": {
+    "portal": "SSC",
+    "title": "Home | Staff Selection Commission | GoI",
+    "status": "REJECTED_BY_AI",
+    "processed_at": "2026-10-22T10:18:02.763572"
+  },
+  "12e195ec2053db1ce3e18a7a88d9b92070be3830ee4e46f8f5c51fd54d70f78d": {
+    "portal": "ISRO",
+    "title": "Selection Panel for the post of Scientist/Engineer 'SC' (Mechanical) against\r\n                                    Advertisement No. ISRO:ICRB:02(EMC):2025 dated 27.05.2025. Read More",
+    "article_id": "fc6371d8-7daa-449b-930a-f3d379f09127",
+    "status": "PUBLISHED",
+    "processed_at": "2026-10-22T10:21:29.032390"
+  },
+  "03e5a6e290221fd2cd7f75b88dbfc8d5c5195fcbc5e7cf19f1379abb43c54087": {
+    "portal": "CAPF",
+    "title": "Indian VISA Services",
+    "status": "REJECTED_BY_AI",
+    "processed_at": "2026-10-22T10:22:10.036609"
+  },
+  "5956758cfbc1aaf70a852ef0c520a2fb9862be2ea4dfd1702d98f10633e7763b": {
+    "portal": "EPFO",
+    "title": "Member Home",
+    "status": "REJECTED_BY_AI",
+    "processed_at": "2026-10-22T10:23:10.994577"
+  },
+  "7fce66aa2835ee2ab079c346d91c854426faa13cc869c6c1ab4e5fc39be0555b": {
+    "portal": "ASRB",
+    "title": "ASRB - Agricultural Scientists Recruitment Board",
+    "status": "REJECTED_BY_AI",
+    "processed_at": "2026-10-22T10:24:45.780481"
+  },
+  "5358167b60e6d78e4964fb8ab4a3f7f781f687da7f1e825cc53295de4e9c05b7": {
+    "portal": "Intelligence Bureau",
+    "title": "Indian Citizenship",
+    "status": "REJECTED_BY_AI",
+    "processed_at": "2026-10-22T10:25:48.466141"
   }
 }

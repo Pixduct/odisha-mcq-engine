@@ -750,5 +750,21 @@
     "correct_option_index": 0,
     "explanation": "Right because stream speed = (Downstream - Upstream) / 2 = (15 - 9)/2 = 3 km/h. Trap option 6 km/h is (15-9), forgetting to divide by 2.",
     "hook": "Master the downstream-upstream shortcut for SSC CGL Tier-1!"
+  },
+  {
+    "date": "2026-10-23",
+    "exam": "IBPS PO & Clerk",
+    "content_stage": "EXAM_PREPARATION",
+    "topic": "banking_awareness_priority_sector_lending_targets",
+    "question": "Under Reserve Bank of India (RBI) guidelines, what is the overall Priority Sector Lending (PSL) target for Domestic Commercial Banks in India, expressed as a percentage of Adjusted Net Bank Credit (ANBC)?",
+    "options": [
+      "40%",
+      "75%",
+      "32%",
+      "18%"
+    ],
+    "correct_option_index": 0,
+    "explanation": "Domestic commercial banks must allocate 40% of ANBC to PSL. 75% is the target for RRBs/SFBs, while 18% is specifically sub-targeted for agriculture.",
+    "hook": "Master RBI PSL targets for your IBPS General Awareness preparation!"
   }
 ]

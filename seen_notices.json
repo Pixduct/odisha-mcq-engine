@@ -2200,5 +2200,31 @@
     "title": "Indian VISA Services",
     "status": "REJECTED_BY_AI",
     "processed_at": "2026-10-23T10:20:59.582614"
+  },
+  "6cca4565a506e5d16c881c23a959ad45376dfea19ff9317607f49aa901881387": {
+    "portal": "OSSSC",
+    "title": "Notification No. IIE-68/2026-316/OSSSC dated - 23.10.2026 -----Publication of Provisional Screening List (additional) for Document Verification for the posts of RI, ICDS Supervisor, ARI, Amin & SFS under CRE-2023 (IV).",
+    "article_id": "b99b6aba-a0e0-4cf0-bf08-b4317468defe",
+    "status": "PUBLISHED",
+    "processed_at": "2026-10-23T17:32:54.810859"
+  },
+  "a87d4d71761c795a3a778a807b456ac841abc97a5d62d484a4351d618284cfa3": {
+    "portal": "OSSC",
+    "title": "Admission_Link",
+    "article_id": "e8451731-53f7-4414-96b4-50606fd90dd7",
+    "status": "PUBLISHED",
+    "processed_at": "2026-10-23T17:35:01.977084"
+  },
+  "62a584c3aac722b6c61d0f07bea34d6099a61a92c7be5319cb11873301659f57": {
+    "portal": "BSE Odisha",
+    "title": "State Portal of Odisha",
+    "status": "REJECTED_BY_AI",
+    "processed_at": "2026-10-23T17:37:28.428984"
+  },
+  "f779c167451d3b16d049e8c371f4af3e73550d66886ac0a3624e9e50a214976b": {
+    "portal": "OHPC",
+    "title": "Size:\r\n                                                                            672.07 KB,\r\n                                                                            Format:\r\n                                                                            PDF,\r\n                                                                            Language:\r\n                                                                            English",
+    "status": "REJECTED_BY_AI",
+    "processed_at": "2026-10-23T17:40:37.189032"
   }
 }

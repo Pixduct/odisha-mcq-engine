@@ -2152,5 +2152,53 @@
     "article_id": "e1128546-a008-4129-a276-4994626ab881",
     "status": "PUBLISHED",
     "processed_at": "2026-10-22T17:45:46.323972"
+  },
+  "a2736f8373a767e98188ed98142ede728c421275d9d0291652c0ad064c68840e": {
+    "portal": "BSE Odisha",
+    "title": "National Portal of India",
+    "status": "REJECTED_BY_AI",
+    "processed_at": "2026-10-23T10:10:15.870210"
+  },
+  "694c7d6c390ebbf1d77997bfd544c0173198deba5962b574c589d5a8bec19c19": {
+    "portal": "IBPS",
+    "title": "Common Recruitment Process for RRBs (CRP-RRBs-XV) for Recruit…",
+    "status": "FAILED_INTEGRITY_REJECTED_INSUFFICIENT_YIELD_SCORE (60/100 < 80 -> Score: 60/100 -> Milestone Keyword (+25: recruitment), Active Year Anchor (+20: 2026/2025), Nodal Authority (+15))",
+    "processed_at": "2026-10-23T10:11:34.453098"
+  },
+  "3ea24f5087a683f6f5984c553dcacd11e4e67f63a1bc6ccd4aa5756ffd0507cc": {
+    "portal": "RBI",
+    "title": "Engagement of Part- Time Bank’s Medical Consultants (BMC) on Contract Basis with Fixed Hourly Remuneration at Reserve Bank of India, Thiruvananthapuram",
+    "status": "REJECTED_BY_AI",
+    "processed_at": "2026-10-23T10:12:17.002418"
+  },
+  "7b433f4f843875c7ca409ff754511144ed9e55d24f23bde45d47840a9ba36db4": {
+    "portal": "OHPC",
+    "title": "Size: 153.61 KB,\r\n                                                                Format: PDF,\r\n                                                                Language: English",
+    "status": "REJECTED_BY_AI",
+    "processed_at": "2026-10-23T10:12:44.158636"
+  },
+  "325038b5fd33c39dec3285230e57df98087ffc9c56990107a1c21c62d026e13d": {
+    "portal": "CAPF",
+    "title": "MHA Identity Card",
+    "status": "REJECTED_BY_AI",
+    "processed_at": "2026-10-23T10:16:05.401095"
+  },
+  "266e16d583ebf165a8cee0627d77ab87871d2ce88ca1187caac2f494865ae7c0": {
+    "portal": "ESIC",
+    "title": "ESIC : Portal Application",
+    "status": "REJECTED_BY_AI",
+    "processed_at": "2026-10-23T10:17:38.215395"
+  },
+  "caf3f82017bd1fa2cfb87a4a7d8eb95cde266ab92fb9da5e07a6d9741be4450b": {
+    "portal": "AIIMS",
+    "title": "All India Institute of Medical Sciences",
+    "status": "REJECTED_BY_AI",
+    "processed_at": "2026-10-23T10:19:23.474799"
+  },
+  "0ae211209d1f8a97d6fc18844a25aeda9df19d380801588c9b6ce11ae2f54735": {
+    "portal": "Intelligence Bureau",
+    "title": "Indian VISA Services",
+    "status": "REJECTED_BY_AI",
+    "processed_at": "2026-10-23T10:20:59.582614"
   }
 }

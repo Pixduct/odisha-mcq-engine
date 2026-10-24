@@ -2226,5 +2226,41 @@
     "title": "Size:\r\n                                                                            672.07 KB,\r\n                                                                            Format:\r\n                                                                            PDF,\r\n                                                                            Language:\r\n                                                                            English",
     "status": "REJECTED_BY_AI",
     "processed_at": "2026-10-23T17:40:37.189032"
+  },
+  "f4507fb78627faa09dea31e9bd9bb9b7ced14bbddefb74601284b44b69737517": {
+    "portal": "BSE Odisha",
+    "title": "District Portal of Odisha",
+    "status": "REJECTED_BY_AI",
+    "processed_at": "2026-10-24T09:36:48.154136"
+  },
+  "38de6b600fc635520a89199e9669662cd084a043a73aa2f4ef28ccdf4f619586": {
+    "portal": "OHPC",
+    "title": "Size:\r\n                                                                            581.85 KB,\r\n                                                                            Format:\r\n                                                                            PDF,\r\n                                                                            Language:\r\n                                                                            English",
+    "status": "REJECTED_BY_AI",
+    "processed_at": "2026-10-24T09:38:15.049056"
+  },
+  "ec7abc049ec336c105a50cb2dfc614a2a9975a319fb80574bf49f5b2603c7911": {
+    "portal": "CAPF",
+    "title": "MHA Smart Identity Card",
+    "status": "REJECTED_BY_AI",
+    "processed_at": "2026-10-24T09:41:11.930931"
+  },
+  "897eba98d627cbb5b3322cb0a168952b1d26579730b9e2f09e55eda4d74fab39": {
+    "portal": "Intelligence Bureau",
+    "title": "MHA Identity Card",
+    "status": "REJECTED_BY_AI",
+    "processed_at": "2026-10-24T09:43:18.876926"
+  },
+  "7dc2aa562bfe4c50fe33e5c5a257f9bf2832dabb882a896446a812e0ec74aa97": {
+    "portal": "KVS",
+    "title": "80वें स्वतंत्रता दिवस की हार्दिक शुभकामनाएँ!",
+    "status": "REJECTED_BY_AI",
+    "processed_at": "2026-10-24T09:44:00.027539"
+  },
+  "6af49a2151d41f305b5461a2f0c8ab6678fad2c51d4cd4e3a0ce993d2b04bb7d": {
+    "portal": "CSIR",
+    "title": "प्रोजेक्ट कर्मियों की नियुक्ति के लिए वॉक-इन-इंटरव्यू का विज्ञापन [दिनांक: 03/11/2026]",
+    "status": "FAILED_INTEGRITY_REJECTED_LACKING_OFFICIAL_EXAM_KEYWORDS",
+    "processed_at": "2026-10-24T09:46:38.526325"
   }
 }

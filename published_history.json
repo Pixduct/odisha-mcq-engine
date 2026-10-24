@@ -766,5 +766,21 @@
     "correct_option_index": 0,
     "explanation": "Domestic commercial banks must allocate 40% of ANBC to PSL. 75% is the target for RRBs/SFBs, while 18% is specifically sub-targeted for agriculture.",
     "hook": "Master RBI PSL targets for your IBPS General Awareness preparation!"
+  },
+  {
+    "date": "2026-10-24",
+    "exam": "OSSC CGL",
+    "content_stage": "EXAM_SPECIFIC",
+    "topic": "computer_awareness_osi_model_layers",
+    "question": "In the OSI reference model, which layer is responsible for logical addressing (IP addressing) and routing packets across different networks?",
+    "options": [
+      "Data Link Layer",
+      "Network Layer",
+      "Transport Layer",
+      "Session Layer"
+    ],
+    "correct_option_index": 1,
+    "explanation": "Network Layer handles IP addressing and packet routing across networks. Transport Layer is wrong as it manages process-to-process delivery via port numbers.",
+    "hook": "Master OSI model layers for OSSC CGL Computer Awareness!"
   }
 ]

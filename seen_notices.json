@@ -2262,5 +2262,36 @@
     "title": "प्रोजेक्ट कर्मियों की नियुक्ति के लिए वॉक-इन-इंटरव्यू का विज्ञापन [दिनांक: 03/11/2026]",
     "status": "FAILED_INTEGRITY_REJECTED_LACKING_OFFICIAL_EXAM_KEYWORDS",
     "processed_at": "2026-10-24T09:46:38.526325"
+  },
+  "799d8b99b76b8c0c37ab0153ffec94373f982af23fcd0b3eb4f89b93940eecc7": {
+    "portal": "BSE Odisha",
+    "title": "Class 10 English Teaching Video",
+    "status": "REJECTED_BY_AI",
+    "processed_at": "2026-10-24T16:18:00.392398"
+  },
+  "6eb3f11c3bc4c4d737e5b336a272e7386682d7dc5e75cb3f1b26010f355703e7": {
+    "portal": "OHPC",
+    "title": "Size:\r\n                                                                            524.28 KB,\r\n                                                                            Format:\r\n                                                                            PDF,\r\n                                                                            Language:\r\n                                                                            English",
+    "status": "REJECTED_BY_AI",
+    "processed_at": "2026-10-24T16:20:40.155551"
+  },
+  "6f1801b23d1fd7c59ec37959cd85518770167b0f4c6e48bff6899c23d6e624f1": {
+    "portal": "ISRO",
+    "title": "ADVT  NO. ISRO:ICRB:01(A-JPA):2026 DATED 27.07.2026: - List of candidates short-listed for  Skill Test [Results of Computer Based Test conducted on 21.09.2026],  zone-wise for the post of Assistant and JPA Read More",
+    "article_id": "ceb5abff-f98c-42f9-96af-5ddba555516f",
+    "status": "PUBLISHED",
+    "processed_at": "2026-10-24T16:24:46.706973"
+  },
+  "b2bcaa3a7d70d2de6fb4264b41abb4bf524e5a351fef4dff9238432470b3f5c6": {
+    "portal": "CAPF",
+    "title": "MHA Validation Slip",
+    "status": "REJECTED_BY_AI",
+    "processed_at": "2026-10-24T16:27:02.216816"
+  },
+  "364be1beb6f530b245f8834052ff99d46d126b630e3f7bbebb465461bab93a15": {
+    "portal": "EPFO",
+    "title": "EPFO | Member Passbook",
+    "status": "REJECTED_BY_AI",
+    "processed_at": "2026-10-24T16:30:26.992147"
   }
 }

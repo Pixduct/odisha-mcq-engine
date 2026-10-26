@@ -798,5 +798,21 @@
     "correct_option_index": 0,
     "explanation": "Right because the BDO serves as the ex-officio CEO of the Panchayat Samiti. Trap option B is wrong because the Chairman is the elected political head, not the administrative CEO.",
     "hook": "Master Odisha's administrative structure for OSSC CGL!"
+  },
+  {
+    "date": "2026-10-26",
+    "exam": "OSSSC RI / AMIN",
+    "content_stage": "EXAM_SPECIFIC",
+    "topic": "odia_grammar_krudanta_vs_taddhita",
+    "question": "In Odia grammar, what is a word formed by adding a suffix (Pratyaya) directly to a verb root (Dhatu) called?",
+    "options": [
+      "Krudanta (କୃଦନ୍ତ)",
+      "Taddhita (ତଦ୍ଧିତ)",
+      "Samasa (ସମାସ)",
+      "Upasarga (ଉପସର୍ଗ)"
+    ],
+    "correct_option_index": 0,
+    "explanation": "Right because Krudanta words are formed by adding suffixes to verb roots (Dhatu). Taddhita is wrong because Taddhita suffixes attach to nominal stems (Shabda), not verb roots.",
+    "hook": "Master Odia grammar traps for OSSSC RI/AMIN!"
   }
 ]

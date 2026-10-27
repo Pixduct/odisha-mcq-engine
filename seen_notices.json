@@ -2385,5 +2385,24 @@
     "title": "NIELIT",
     "status": "REJECTED_BY_AI",
     "processed_at": "2026-10-26T19:05:52.873366"
+  },
+  "e1549452900a6fb5764e2755f01bd980ba57fd57a644660712ce60ba1f6a18c2": {
+    "portal": "OHPC",
+    "title": "Size:\r\n                                                                            138.80 KB,\r\n                                                                            Format:\r\n                                                                            PDF,\r\n                                                                            Language:\r\n                                                                            English",
+    "status": "REJECTED_BY_AI",
+    "processed_at": "2026-10-27T10:41:08.162000"
+  },
+  "a4a41ab01e4dfdebac4573aa309bd53d63a3369d8c1eb086c7e93278804446a0": {
+    "portal": "ISRO",
+    "title": "ADVT NO. ISRO:ICRB:01(A-JPA):2026 Dated 27.07.2026: - REVISED ANSWER KEYS Read More",
+    "article_id": "340428c5-56c4-4ced-b01f-a23ac6093e1a",
+    "status": "PUBLISHED",
+    "processed_at": "2026-10-27T10:44:31.379371"
+  },
+  "c28c4b5f017610e2414214ad6f787e7bc52807f03349b5462e924c72d78e774d": {
+    "portal": "KVS",
+    "title": "CBSE 12th Result 2026: सीबीएसई 12वीं में केंद्रीय विद्यालय का दबदबा, 98.55% छात्रों की सफलता के साथ टॉप पर",
+    "status": "REJECTED_BY_AI",
+    "processed_at": "2026-10-27T10:47:48.029025"
   }
 }

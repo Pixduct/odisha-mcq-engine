@@ -814,5 +814,21 @@
     "correct_option_index": 0,
     "explanation": "Right because Krudanta words are formed by adding suffixes to verb roots (Dhatu). Taddhita is wrong because Taddhita suffixes attach to nominal stems (Shabda), not verb roots.",
     "hook": "Master Odia grammar traps for OSSSC RI/AMIN!"
+  },
+  {
+    "date": "2026-10-27",
+    "exam": "OPSC ASO",
+    "content_stage": "EXAM_SPECIFIC",
+    "topic": "polity_article169_legislative_council_creation",
+    "question": "Which Article of the Constitution of India empowers Parliament to create or abolish a Legislative Council in a State?",
+    "options": [
+      "Article 168",
+      "Article 169",
+      "Article 170",
+      "Article 171"
+    ],
+    "correct_option_index": 1,
+    "explanation": "Right because Art 169 governs the creation/abolition of State Legislative Councils. Trap option Art 171 is wrong because it specifies the composition and structure of the Council.",
+    "hook": "Avoid this classic Polity trap in OPSC ASO!"
   }
 ]

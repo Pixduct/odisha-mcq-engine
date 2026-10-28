@@ -830,5 +830,21 @@
     "correct_option_index": 1,
     "explanation": "Right because Art 169 governs the creation/abolition of State Legislative Councils. Trap option Art 171 is wrong because it specifies the composition and structure of the Council.",
     "hook": "Avoid this classic Polity trap in OPSC ASO!"
+  },
+  {
+    "date": "2026-10-28",
+    "exam": "BSE Odisha OTET / OSSTET",
+    "content_stage": "EXAM_SPECIFIC",
+    "topic": "gardner_multiple_intelligences_spatial_vs_bodily",
+    "question": "A student excels in reading maps, solving complex mazes, visualizing architectural blueprints, and creating detailed mental images. According to Howard Gardner's Theory of Multiple Intelligences, which specific intelligence is most prominently displayed by this student?",
+    "options": [
+      "Bodily-Kinesthetic Intelligence",
+      "Spatial Intelligence",
+      "Logical-Mathematical Intelligence",
+      "Naturalist Intelligence"
+    ],
+    "correct_option_index": 1,
+    "explanation": "Right because spatial intelligence involves visual perception and mental manipulation of objects. Bodily-kinesthetic trap is wrong as it involves physical body control.",
+    "hook": "Master Howard Gardner's Multiple Intelligences trap!"
   }
 ]

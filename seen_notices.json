@@ -2442,5 +2442,30 @@
     "title": "विज्ञापन संख्या TKDL/08/2026 (सोवा रिग्पा) के संदर्भ में 15.10.2026 को आयोजित साक्षात्कार का परिणाम।",
     "status": "FAILED_INTEGRITY_REJECTED_LACKING_OFFICIAL_EXAM_KEYWORDS",
     "processed_at": "2026-10-28T11:34:15.059371"
+  },
+  "b4dc4789108c0696251e66b770e289c4706356e3d15bfbc59f7d6f6d7c98040f": {
+    "portal": "SSB Odisha",
+    "title": "Link for applying Online Application form for recruitment to the post of Laboratory Assistant-cum-Storekeeper in Government Degree Colleges and Non-Government Aided Colleges of the State of Odisha(Advt.No.04/2026 dated 03.10.2026) New",
+    "status": "FAILED_INTEGRITY_REJECTED_EXPIRED_ACTION_DATE_IN_AI_OUTPUT",
+    "processed_at": "2026-10-28T18:32:33.650271"
+  },
+  "18a825bbedc21ca50d7acaf038b15093d6485f6673ee1ad756690b06a07117e4": {
+    "portal": "OHPC",
+    "title": "Size: 354.36 KB,\r\n                                                                Format: PDF,\r\n                                                                Language: English",
+    "status": "REJECTED_BY_AI",
+    "processed_at": "2026-10-28T18:35:12.073639"
+  },
+  "250099480dfc0a8673fd85cd1bfd646eed7364cb4b513062fa8461a3e7463923": {
+    "portal": "ISRO",
+    "title": "ADVT NO. ISRO:ICRB:01(A-JPA):2026 Dated 27.07.2026: - Final/Revised Response Sheets for the CBT Held on 21-09-2026 for Assistant/UDC and JPA/Stenographer Posts and Redressal of Objections Received Read More",
+    "article_id": "f4a79300-af4b-4ac9-b6b1-e977b1d30b7f",
+    "status": "PUBLISHED",
+    "processed_at": "2026-10-28T18:38:17.413204"
+  },
+  "4b3035611febcaee2a12b08f32459310b5cd0492bff402ee3d1f74e8b8124686": {
+    "portal": "CSIR",
+    "title": "इस्पात मंत्रालय से प्रस्ताव आमंत्रित",
+    "status": "REJECTED_BY_AI",
+    "processed_at": "2026-10-28T18:45:08.220049"
   }
 }

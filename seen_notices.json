@@ -2479,5 +2479,30 @@
     "title": "Size: 376.79 KB,\r\n                                                                Format: PDF,\r\n                                                                Language: English",
     "status": "REJECTED_BY_AI",
     "processed_at": "2026-10-29T11:37:04.740885"
+  },
+  "afbc4a0a2a019b42e4e2c0164f8232df1178498a814bf9a64600024a67921772": {
+    "portal": "OHPC",
+    "title": "Size: 361.43 KB,\r\n                                                                Format: PDF,\r\n                                                                Language: English",
+    "status": "REJECTED_BY_AI",
+    "processed_at": "2026-10-29T18:43:07.705441"
+  },
+  "6d9e7d071478d0014340cfb308eeb24afc821e2e9142b26497e2dbcc39f71f11": {
+    "portal": "ISRO",
+    "title": "ADVT NO. A.26012/1/2023-I (Vol.II) DATED 26.10.2026: - Inviting online applications\r\n                                    for the post of Accounts Officer (Finance). Read More",
+    "article_id": "6d86fc46-1164-4780-a086-289f02126931",
+    "status": "PUBLISHED",
+    "processed_at": "2026-10-29T18:46:34.038318"
+  },
+  "643aa7999c4ba8a66852aebb4fe2391b610eaa65be974c0057c0ee9d60c543ae": {
+    "portal": "Indian Army",
+    "title": "Indian Culture Portal",
+    "status": "REJECTED_BY_AI",
+    "processed_at": "2026-10-29T18:50:47.034784"
+  },
+  "c71ecfafabd1b84b94442fb21e710780c1966ad8d6581b9d6c2ec7244dfc55e9": {
+    "portal": "Indian Navy",
+    "title": "Indian Culture Portal",
+    "status": "REJECTED_BY_AI",
+    "processed_at": "2026-10-29T18:52:23.217593"
   }
 }

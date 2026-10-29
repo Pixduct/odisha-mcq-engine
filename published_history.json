@@ -846,5 +846,21 @@
     "correct_option_index": 1,
     "explanation": "Right because spatial intelligence involves visual perception and mental manipulation of objects. Bodily-kinesthetic trap is wrong as it involves physical body control.",
     "hook": "Master Howard Gardner's Multiple Intelligences trap!"
+  },
+  {
+    "date": "2026-10-29",
+    "exam": "Odisha Police SI",
+    "content_stage": "EXAM_SPECIFIC",
+    "topic": "constitutional_seventh_schedule_police_subject",
+    "question": "Under the Seventh Schedule of the Constitution of India, under which List is 'Police' (including railway and village police) classified?",
+    "options": [
+      "State List (List II)",
+      "Concurrent List (List III)",
+      "Union List (List I)",
+      "Residuary Powers"
+    ],
+    "correct_option_index": 0,
+    "explanation": "Police is in State List (Entry 2). Concurrent List is a trap because while Criminal Procedure is in List III, Police administration is strictly an exclusive State subject.",
+    "hook": "Polity Revision for Odisha SI: Which list governs police administration in India?"
   }
 ]

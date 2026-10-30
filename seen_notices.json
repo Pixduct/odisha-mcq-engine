@@ -2529,5 +2529,31 @@
     "article_id": "ceb5abff-f98c-42f9-96af-5ddba555516f",
     "status": "PUBLISHED",
     "processed_at": "2026-10-30T11:34:33.919881"
+  },
+  "c050524cba974daca67c5decff2312d9b33233ab669ecb52725cec85ea9dc0da": {
+    "portal": "OSSSC",
+    "title": "ADVERTISEMENT No. IIE-103/2026-3226/OSSSC DATED - 30.10.2026 ----- Invitation of online applications for recruitment to the post of Ophthalmic Officer-2026.",
+    "article_id": "e0ee33d5-63a4-4e5d-a105-62cb4fbdfd1a",
+    "status": "PUBLISHED",
+    "processed_at": "2026-10-30T18:15:56.990736"
+  },
+  "a3f721deca1a0700ac0c91f9a9d5fb420aba8f225f6539d49a519013ad40275b": {
+    "portal": "OHPC",
+    "title": "Size:\r\n                                                                        1.06 MB,\r\n                                                                        Format:\r\n                                                                        PDF,\r\n                                                                        Language:\r\n                                                                        English",
+    "article_id": "51b1091d-2b31-47ad-921e-987b4a6f5c88",
+    "status": "PUBLISHED",
+    "processed_at": "2026-10-30T18:19:29.695035"
+  },
+  "cf5b0000539f86c01ae4d3c24c3bbaed5f890edbec903f6169d9cac790c0f2df": {
+    "portal": "ISRO",
+    "title": "Advt No. URSC:04:2026 dated 24.10.2026 - Inviting online applications for the posts\r\n                                    of Technician - B/ Heavy Vehicle Driver - A/ Light Vehicle Driver - A/ Staff Car\r\n                                    Driver- A. Read More",
+    "status": "FAILED_INTEGRITY_REJECTED_EXPIRED_ACTION_DATE_IN_AI_OUTPUT",
+    "processed_at": "2026-10-30T18:23:49.274584"
+  },
+  "30ac9a0e86649d7ad5c867321b2a70fd85b314b702cd74f3928136ba727d5f21": {
+    "portal": "Indian Army",
+    "title": "Home | National Portal of India",
+    "status": "REJECTED_BY_AI",
+    "processed_at": "2026-10-30T18:28:14.083370"
   }
 }

@@ -862,5 +862,21 @@
     "correct_option_index": 0,
     "explanation": "Police is in State List (Entry 2). Concurrent List is a trap because while Criminal Procedure is in List III, Police administration is strictly an exclusive State subject.",
     "hook": "Polity Revision for Odisha SI: Which list governs police administration in India?"
+  },
+  {
+    "date": "2026-10-30",
+    "exam": "Railway RRB NTPC",
+    "content_stage": "EXAM_SPECIFIC",
+    "topic": "physics_optics_convex_mirror_image_characteristics",
+    "question": "When an object is placed at any finite distance in front of a convex mirror, what are the characteristics of the image formed?",
+    "options": [
+      "Virtual, erect, and diminished",
+      "Virtual, erect, and enlarged",
+      "Real, inverted, and diminished",
+      "Real, inverted, and enlarged"
+    ],
+    "correct_option_index": 0,
+    "explanation": "Right: Convex mirrors always form virtual, erect, and diminished images behind the mirror. Option C is wrong because concave mirrors form real and inverted images.",
+    "hook": "Master ray optics for RRB NTPC General Science!"
   }
 ]

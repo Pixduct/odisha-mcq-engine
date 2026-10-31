@@ -878,5 +878,21 @@
     "correct_option_index": 0,
     "explanation": "Right: Convex mirrors always form virtual, erect, and diminished images behind the mirror. Option C is wrong because concave mirrors form real and inverted images.",
     "hook": "Master ray optics for RRB NTPC General Science!"
+  },
+  {
+    "date": "2026-10-31",
+    "exam": "OSSSC Nursing Officer",
+    "content_stage": "EXAM_SPECIFIC",
+    "topic": "obstetric_nursing_placental_separation_signs",
+    "question": "A Nursing Officer is managing the third stage of labor. Which clinical finding is a classic sign of placental separation?",
+    "options": [
+      "Lengthening of the umbilical cord visible at the introitus",
+      "Softening and flattening of the uterine fundus",
+      "Gradual descent of the uterus below the pelvic brim",
+      "Complete cessation of vaginal blood flow"
+    ],
+    "correct_option_index": 0,
+    "explanation": "Right because cord lengthening indicates placenta detachment and descent. Trap is wrong because the uterus becomes firm and globular, not soft and flat.",
+    "hook": "Master 3rd stage of labor clinical signs!"
   }
 ]

@@ -2555,5 +2555,11 @@
     "title": "Home | National Portal of India",
     "status": "REJECTED_BY_AI",
     "processed_at": "2026-10-30T18:28:14.083370"
+  },
+  "1865b69848b55d1b7e011f9ce9eda19acf9185c48a5e6c1fcdf4dd8008c5ed95": {
+    "portal": "CSIR",
+    "title": "सीएसआईआर-टीकेडीएल यूनिट, नई दिल्ली में प्रोजेक्ट GAP-000001 के अंतर्गत फॉरेस्ट्री एंड इकोलॉजी और एनवायर्नमेंटल साइंसेज में 'वॉक-इन इंटरव्यू' के माध्यम से प्रोजेक्ट कर्मियों की नियुक्ति (वॉक-इन इंटरव्यू 12/11/2026)",
+    "status": "FAILED_INTEGRITY_REJECTED_LACKING_OFFICIAL_EXAM_KEYWORDS",
+    "processed_at": "2026-10-31T11:06:43.847473"
   }
 }

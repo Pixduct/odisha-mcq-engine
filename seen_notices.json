@@ -2561,5 +2561,11 @@
     "title": "सीएसआईआर-टीकेडीएल यूनिट, नई दिल्ली में प्रोजेक्ट GAP-000001 के अंतर्गत फॉरेस्ट्री एंड इकोलॉजी और एनवायर्नमेंटल साइंसेज में 'वॉक-इन इंटरव्यू' के माध्यम से प्रोजेक्ट कर्मियों की नियुक्ति (वॉक-इन इंटरव्यू 12/11/2026)",
     "status": "FAILED_INTEGRITY_REJECTED_LACKING_OFFICIAL_EXAM_KEYWORDS",
     "processed_at": "2026-10-31T11:06:43.847473"
+  },
+  "e011ed286b6c0c2c6eb3b8debb86642ec0d495fd9480ec19b26ca1474d53a2a7": {
+    "portal": "OHPC",
+    "title": "Size:\r\n                                                                            556.55 KB,\r\n                                                                            Format:\r\n                                                                            PDF,\r\n                                                                            Language:\r\n                                                                            English",
+    "status": "REJECTED_BY_AI",
+    "processed_at": "2026-10-31T17:28:25.211725"
   }
 }

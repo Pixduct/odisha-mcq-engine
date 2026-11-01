@@ -894,5 +894,21 @@
     "correct_option_index": 0,
     "explanation": "Right because cord lengthening indicates placenta detachment and descent. Trap is wrong because the uterus becomes firm and globular, not soft and flat.",
     "hook": "Master 3rd stage of labor clinical signs!"
+  },
+  {
+    "date": "2026-11-01",
+    "exam": "IBPS PO & Clerk",
+    "content_stage": "EXAM_SPECIFIC",
+    "topic": "banking_awareness_sdf_vs_reverse_repo",
+    "question": "Under the RBI's Liquidity Adjustment Facility framework, what is the primary feature distinguishing the Standing Deposit Facility (SDF) from the traditional Reverse Repo facility?",
+    "options": [
+      "SDF allows liquidity absorption without RBI offering collateral",
+      "SDF requires RBI to pledge government securities as collateral",
+      "SDF operates at an interest rate higher than the Repo Rate",
+      "SDF is accessible only to Non-Banking Financial Companies"
+    ],
+    "correct_option_index": 0,
+    "explanation": "Right because SDF absorbs surplus liquidity without pledging G-Sec collateral. Option B describes Reverse Repo, which requires collateralized liquidity absorption.",
+    "hook": "Master RBI monetary policy tools for your IBPS exam!"
   }
 ]

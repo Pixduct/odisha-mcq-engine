@@ -2635,5 +2635,23 @@
     "title": "Consulate General of India, Los Angeles",
     "status": "REJECTED_BY_AI",
     "processed_at": "2026-11-02T13:46:11.777470"
+  },
+  "e64b7047a4323299b2a6e65877e242b08d9c0cf1bf732386863433eebe0ef6d8": {
+    "portal": "NTA",
+    "title": "Joint Entrance Examination (Main) | India",
+    "status": "REJECTED_BY_AI",
+    "processed_at": "2026-11-02T22:03:09.413904"
+  },
+  "bd044d3e5f1f95b5e438118081db05d765d5176783bec96b3816608cfa593c90": {
+    "portal": "SCERT Odisha",
+    "title": "The Official Website of SCERT C.G.",
+    "status": "REJECTED_BY_AI",
+    "processed_at": "2026-11-02T22:06:49.845424"
+  },
+  "44025ef6d057eaa3eca1ab5fd499f8a7abb7dc4430f9a59fccd07a8689c21c35": {
+    "portal": "EPFO",
+    "title": "EPFO | Member Passbook",
+    "status": "REJECTED_BY_AI",
+    "processed_at": "2026-11-02T22:09:37.533683"
   }
 }

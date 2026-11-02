@@ -910,5 +910,21 @@
     "correct_option_index": 0,
     "explanation": "Right because SDF absorbs surplus liquidity without pledging G-Sec collateral. Option B describes Reverse Repo, which requires collateralized liquidity absorption.",
     "hook": "Master RBI monetary policy tools for your IBPS exam!"
+  },
+  {
+    "date": "2026-11-02",
+    "exam": "SSC CGL",
+    "content_stage": "EXAM_SPECIFIC",
+    "topic": "quantitative_aptitude_boats_and_streams",
+    "question": "A man can row downstream at 18 km/h and upstream at 12 km/h. What is the speed of the man in still water?",
+    "options": [
+      "15 km/h",
+      "3 km/h",
+      "6 km/h",
+      "30 km/h"
+    ],
+    "correct_option_index": 0,
+    "explanation": "Speed in still water is the average of downstream and upstream speeds: (18+12)/2 = 15 km/h. The trap option 3 km/h is half the difference, which gives the stream speed.",
+    "hook": "Don't confuse stream speed with still water speed in this classic speed test!"
   }
 ]

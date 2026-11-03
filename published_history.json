@@ -926,5 +926,21 @@
     "correct_option_index": 0,
     "explanation": "Speed in still water is the average of downstream and upstream speeds: (18+12)/2 = 15 km/h. The trap option 3 km/h is half the difference, which gives the stream speed.",
     "hook": "Don't confuse stream speed with still water speed in this classic speed test!"
+  },
+  {
+    "date": "2026-11-03",
+    "exam": "OSSC CGL",
+    "content_stage": "EXAM_SPECIFIC",
+    "topic": "odisha_history_utkal_sammilani_1903",
+    "question": "Who presided over the inaugural session of the Utkal Union Conference (Utkal Sammilani) held at Cuttack in December 1903?",
+    "options": [
+      "Maharaja Ramachandra Bhanja Deo",
+      "Madhusudan Das",
+      "Maharaja Krushna Chandra Gajapati",
+      "Pandit Gopabandhu Das"
+    ],
+    "correct_option_index": 0,
+    "explanation": "Maharaja Ramachandra Bhanja Deo presided over the 1st session in 1903. Madhusudan Das is wrong because he was the main organizer and founder, not the session's president.",
+    "hook": "Avoid this classic Odisha History trap!"
   }
 ]

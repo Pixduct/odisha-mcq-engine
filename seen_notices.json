@@ -2653,5 +2653,30 @@
     "title": "EPFO | Member Passbook",
     "status": "REJECTED_BY_AI",
     "processed_at": "2026-11-02T22:09:37.533683"
+  },
+  "4dabd43ff7df5b21997287da6d7c22591bc72b32abfa929d2b938bb4112e9f44": {
+    "portal": "OSSSC",
+    "title": "Notification No. IIE-96/2026-3239/OSSSC dated - 02.11.2026 ----- Admission Letters for Candidates Appearing in the Physical Test (Phase-II) for the Posts of Forest Guard & Excise Constable under CRE-2025(II).",
+    "article_id": "10c5a7bf-87db-443c-9231-aa5e8e9bdb26",
+    "status": "PUBLISHED",
+    "processed_at": "2026-11-03T12:50:50.427118"
+  },
+  "bd550e2ddac43c1f08cdec055b70824f455e4e766139682ab6488522c63d4676": {
+    "portal": "NTA",
+    "title": "NATIONAL ELIGIBILITY CUM ENTRANCE TEST | NEET | India",
+    "status": "FAILED_INTEGRITY_REJECTED_LACKING_OFFICIAL_EXAM_KEYWORDS",
+    "processed_at": "2026-11-03T12:53:33.230062"
+  },
+  "56f4cad4ca71129829686319408a8171e76db68bc569f6d98b3bdc3682c075f6": {
+    "portal": "OHPC",
+    "title": "Size:\r\n                                                                            150.82 KB,\r\n                                                                            Format:\r\n                                                                            PDF,\r\n                                                                            Language:\r\n                                                                            English",
+    "status": "REJECTED_BY_AI",
+    "processed_at": "2026-11-03T12:55:03.547411"
+  },
+  "985c4ca75834d40fb52adb50e1f5781bda60b1099986ca88dea1c343b36d55c5": {
+    "portal": "Odisha Prisons",
+    "title": "Odisha Tourism: Official Website to Plan Your Travel & Holiday",
+    "status": "REJECTED_BY_AI",
+    "processed_at": "2026-11-03T12:56:07.134209"
   }
 }

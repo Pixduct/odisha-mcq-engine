@@ -2715,5 +2715,30 @@
     "title": "Click Here",
     "status": "REJECTED_BY_AI",
     "processed_at": "2026-11-04T13:11:32.978706"
+  },
+  "c3cc64e9b5055fba705a0e3982b573aed3804b744e344ea6a9265d7bdcef52b8": {
+    "portal": "SBI",
+    "title": "English (864 KB)",
+    "article_id": "6a91ecfe-a477-4046-b31e-8bb696960f26",
+    "status": "PUBLISHED",
+    "processed_at": "2026-11-04T20:06:52.455798"
+  },
+  "890dada8b120560d599d866fd670e1e936b05276898713048f0774065515bf5a": {
+    "portal": "OHPC",
+    "title": "Size:\r\n                                                                            113.26 KB,\r\n                                                                            Format:\r\n                                                                            PDF,\r\n                                                                            Language:\r\n                                                                            English",
+    "status": "REJECTED_BY_AI",
+    "processed_at": "2026-11-04T20:07:45.687016"
+  },
+  "8e11e1e3bd75d58f8da46409d0e82344ac03dcd3fdeb36e413b05f99e329ebb7": {
+    "portal": "LIC",
+    "title": "Pay Your Life Insurance Premiums Online | Official website of Life ...",
+    "status": "REJECTED_BY_AI",
+    "processed_at": "2026-11-04T20:10:54.445760"
+  },
+  "f32716164b3fd1292265f402b70e7be7637f0a9472a783148736c17d1a8a19f4": {
+    "portal": "DRDO",
+    "title": "HOME | Defence Research and Development Organisation - DRDO",
+    "status": "REJECTED_BY_AI",
+    "processed_at": "2026-11-04T20:13:30.098327"
   }
 }

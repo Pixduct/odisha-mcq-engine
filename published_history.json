@@ -942,5 +942,21 @@
     "correct_option_index": 0,
     "explanation": "Maharaja Ramachandra Bhanja Deo presided over the 1st session in 1903. Madhusudan Das is wrong because he was the main organizer and founder, not the session's president.",
     "hook": "Avoid this classic Odisha History trap!"
+  },
+  {
+    "date": "2026-11-04",
+    "exam": "OSSSC RI / AMIN",
+    "content_stage": "EXAM_SPECIFIC",
+    "topic": "odisha_land_revenue_terminology_sabik_hal",
+    "question": "In the land records and settlement terminology of Odisha, which term is officially used to designate the current or newly revised settlement plot number?",
+    "options": [
+      "Sabik",
+      "Hal",
+      "Khatian",
+      "Bhogadakhil"
+    ],
+    "correct_option_index": 1,
+    "explanation": "'Hal' refers to the current/new settlement plot number, whereas 'Sabik' refers to the old settlement plot number. Candidates often confuse Sabik as the current record.",
+    "hook": "Master essential Odisha land revenue terms before your OSSSC RI / AMIN exam!"
   }
 ]

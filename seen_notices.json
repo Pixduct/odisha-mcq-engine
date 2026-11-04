@@ -2696,5 +2696,24 @@
     "title": "EPFO",
     "status": "REJECTED_BY_AI",
     "processed_at": "2026-11-03T19:58:48.518655"
+  },
+  "f886797021095f8c276edcbfa88365ff4b48ded76ee9f20192b3c7ae6a8f302c": {
+    "portal": "SBI",
+    "title": "English (1 MB)",
+    "article_id": "d76f7204-553e-4c5e-9ee5-1474f48e0c54",
+    "status": "PUBLISHED",
+    "processed_at": "2026-11-04T13:05:57.192756"
+  },
+  "a54a7892278c72d2eeed5e58e898209b6f22efb3458881e3d6f598bfbb0fd39a": {
+    "portal": "OHPC",
+    "title": "Size: 1.59 MB,\r\n                                                                Format: PDF,\r\n                                                                Language: English",
+    "status": "REJECTED_BY_AI",
+    "processed_at": "2026-11-04T13:08:19.372448"
+  },
+  "d6de710fc56ddda59042238edd47f2fe5098542e47e163a23b18889fc1a36d4f": {
+    "portal": "NIACL",
+    "title": "Click Here",
+    "status": "REJECTED_BY_AI",
+    "processed_at": "2026-11-04T13:11:32.978706"
   }
 }

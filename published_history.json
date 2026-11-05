@@ -958,5 +958,21 @@
     "correct_option_index": 1,
     "explanation": "'Hal' refers to the current/new settlement plot number, whereas 'Sabik' refers to the old settlement plot number. Candidates often confuse Sabik as the current record.",
     "hook": "Master essential Odisha land revenue terms before your OSSSC RI / AMIN exam!"
+  },
+  {
+    "date": "2026-11-05",
+    "exam": "Odisha Police SI",
+    "content_stage": "EXAM_SPECIFIC",
+    "topic": "odisha_geography_river_tributaries",
+    "question": "Which of the following rivers is a major LEFT-BANK tributary of the Mahanadi River within the state of Odisha?",
+    "options": [
+      "Ib",
+      "Tel",
+      "Ong",
+      "Jonk"
+    ],
+    "correct_option_index": 0,
+    "explanation": "Ib is a left-bank tributary joining Mahanadi near Hirakud. Tel, Ong, and Jonk are right-bank tributaries; students often confuse them due to their significant discharge volume.",
+    "hook": "Master your Odisha Geography before the SI exam!"
   }
 ]

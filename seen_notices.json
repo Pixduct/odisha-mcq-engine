@@ -2824,5 +2824,36 @@
     "article_id": "17f3827b-6024-4fbe-a08e-7681c3c645d9",
     "status": "PUBLISHED",
     "processed_at": "2026-11-06T13:07:50.811337"
+  },
+  "404e42edb44f0ec91849706473d2cbe19e88bf1afa80889ccdc95184c26e1173": {
+    "portal": "OSSSC",
+    "title": "Notification No. IIE-63/2026-3286/OSSSC dated - 05.11.2026 ----- Postponement of Physical Test (Phase-II) in respect of Baleshwar District under CRE-2025(II)",
+    "article_id": "9c0d05b0-6324-4858-8beb-2d752e578d07",
+    "status": "PUBLISHED",
+    "processed_at": "2026-11-06T19:43:52.027574"
+  },
+  "4e2a34d0f912524fe80006e8d56fe28bbe15620f21b682f492791cd13736211f": {
+    "portal": "SSB Odisha",
+    "title": "Details regarding use  of PwD Scribe and its online registration with undertakings New",
+    "status": "FAILED_INTEGRITY_REJECTED_LACKING_OFFICIAL_EXAM_KEYWORDS",
+    "processed_at": "2026-11-06T19:45:49.613026"
+  },
+  "2daede710f55e10c9b897cde7b6c0b9c1303da176cc85b8301b89b224b7d7228": {
+    "portal": "OHPC",
+    "title": "Size: 86.46 KB,\r\n                                                                Format: PDF,\r\n                                                                Language: English",
+    "status": "REJECTED_BY_AI",
+    "processed_at": "2026-11-06T19:48:24.847087"
+  },
+  "4f6a17fa316b8d6c9ebdeeeb41d3fbdbe701ac1405936bcb7c02db7d68e07dfa": {
+    "portal": "SCERT Odisha",
+    "title": "Goa - SCERT",
+    "status": "REJECTED_BY_AI",
+    "processed_at": "2026-11-06T19:49:59.108934"
+  },
+  "88b364e4d471e174f2f833ffc902e50825dfa592af9368bdfa23cd5d8f17e649": {
+    "portal": "ISRO",
+    "title": "Extension of time for receipt of applications to the post of Medical Officer 'SD' -\r\n                                    HSFC Advt. No.HSFC:02:RMT:2026 dated 09.10.2026 Read More",
+    "status": "FAILED_INTEGRITY_REJECTED_EXPIRED_ACTION_DATE_IN_AI_OUTPUT",
+    "processed_at": "2026-11-06T19:53:51.438297"
   }
 }

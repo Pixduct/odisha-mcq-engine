@@ -974,5 +974,21 @@
     "correct_option_index": 0,
     "explanation": "Ib is a left-bank tributary joining Mahanadi near Hirakud. Tel, Ong, and Jonk are right-bank tributaries; students often confuse them due to their significant discharge volume.",
     "hook": "Master your Odisha Geography before the SI exam!"
+  },
+  {
+    "date": "2026-11-06",
+    "exam": "BSE Odisha OTET / OSSTET",
+    "content_stage": "EXAM_SPECIFIC",
+    "topic": "educational_psychology_thorndike_laws_of_learning",
+    "question": "A teacher provides immediate praise and rewards to students whenever they answer a question correctly, strengthening the connection between the stimulus and the desired response. According to Edward Thorndike's Connectionism theory, which primary law of learning is primarily being applied here?",
+    "options": [
+      "Law of Effect",
+      "Law of Exercise",
+      "Law of Readiness",
+      "Law of Association"
+    ],
+    "correct_option_index": 0,
+    "explanation": "Right because the Law of Effect states that responses followed by satisfying outcomes (praise/rewards) are strengthened. Trap option Law of Exercise relates to repetition and practice, not immediate reinforcement.",
+    "hook": "Master Thorndike's core laws to ace OTET child psychology!"
   }
 ]

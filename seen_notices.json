@@ -2855,5 +2855,37 @@
     "title": "Extension of time for receipt of applications to the post of Medical Officer 'SD' -\r\n                                    HSFC Advt. No.HSFC:02:RMT:2026 dated 09.10.2026 Read More",
     "status": "FAILED_INTEGRITY_REJECTED_EXPIRED_ACTION_DATE_IN_AI_OUTPUT",
     "processed_at": "2026-11-06T19:53:51.438297"
+  },
+  "012d9534700db7e05434d23f116de5e4fdf791c00eb82c2b35ebb3f324a503ff": {
+    "portal": "OSSSC",
+    "title": "Notification No. IIE-63/2026-3283/OSSSC dated - 05.11.2026 ----- Publication of Final Revised Answer Keys & Response Sheet of the Written Test for the posts of RI, ICDS Supervisor, VAW, Junior Assistant, ARI, Amin & SFS under CRE-2025",
+    "article_id": "ae3aa83f-1685-4320-a4aa-2987d1cf6b60",
+    "status": "PUBLISHED",
+    "processed_at": "2026-11-07T11:47:03.524368"
+  },
+  "88d622ede960f5db99d36ff914eab03982bf1e76600f3d1553210747204e1026": {
+    "portal": "OHPC",
+    "title": "Size:\r\n                                                                            314.45 KB,\r\n                                                                            Format:\r\n                                                                            PDF,\r\n                                                                            Language:\r\n                                                                            English",
+    "status": "REJECTED_BY_AI",
+    "processed_at": "2026-11-07T11:51:10.631562"
+  },
+  "2f5198d0175febbe0fbd8d30334c7d6512a8645d36667ae7ca398632992dd180": {
+    "portal": "ISRO",
+    "title": "Advt No.ISRO:ICRB:02(EMC-CEPO):2026 dated 28.07.2026 - Selection Panel for the post\r\n                                    of Scientist/Engineer 'SC' (Mechanical,Computer Science) Read More",
+    "article_id": "5a17db07-56ba-4bcd-a07a-2fd04113220b",
+    "status": "PUBLISHED",
+    "processed_at": "2026-11-07T11:54:55.336827"
+  },
+  "66dab6c331d8d6b7218ee024bc3b504e9904c44a9b09b80c1a7785ba6db0760b": {
+    "portal": "ESIC",
+    "title": "ESIC - Employees' State Insurance Corporation | Ministry of Labour ...",
+    "status": "REJECTED_BY_AI",
+    "processed_at": "2026-11-07T11:57:14.339202"
+  },
+  "7de04a85fb00f87bd03bdbacf0f9142fb1b4d35416b36e1d63c1a04665a61532": {
+    "portal": "ASRB",
+    "title": "",
+    "status": "FAILED_INTEGRITY_REJECTED_INSUFFICIENT_YIELD_SCORE (75/100 < 80 -> Score: 75/100 -> Milestone Keyword (+25: si), Active Year Anchor (+20: 2026/2025), Nodal Authority (+15), PDF Attachment (+15))",
+    "processed_at": "2026-11-07T11:58:04.502787"
   }
 }

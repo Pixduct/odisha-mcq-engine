@@ -2887,5 +2887,30 @@
     "title": "",
     "status": "FAILED_INTEGRITY_REJECTED_INSUFFICIENT_YIELD_SCORE (75/100 < 80 -> Score: 75/100 -> Milestone Keyword (+25: si), Active Year Anchor (+20: 2026/2025), Nodal Authority (+15), PDF Attachment (+15))",
     "processed_at": "2026-11-07T11:58:04.502787"
+  },
+  "ff54adb38bf0467e2abf8d867bec46082a3a2b2f4d75012c91328b9a64a76e8f": {
+    "portal": "OHPC",
+    "title": "SECI and OHPC Sign Binding Term Sheet for 50:50 Joint Venture Floating Solar-BESS Projects",
+    "status": "REJECTED_BY_AI",
+    "processed_at": "2026-11-07T17:55:50.287321"
+  },
+  "6c12fb3cbd41659f7ba3633b273e198d181da9ffa2efcf0ad768bc79fe5f1204": {
+    "portal": "ISRO",
+    "title": "ADVT NO. ISTRAC:02:2026 dated 27.06.2026: - Revised Answer Key and Post-Objection\r\n                                    Response Sheets Read More",
+    "article_id": "7edbebc9-03a8-4564-9e89-d1fec53523e0",
+    "status": "PUBLISHED",
+    "processed_at": "2026-11-07T17:59:41.141709"
+  },
+  "58ae736aab9d03f8e4ed63baaca8cb873e073e74af12dd22621afcdbedb72c3c": {
+    "portal": "Indian Coast Guard",
+    "title": "Explore India | National Portal of India",
+    "status": "REJECTED_BY_AI",
+    "processed_at": "2026-11-07T18:01:52.257773"
+  },
+  "e26c018a6642332c701792842cd71430da9e4b4f0b779a504235b05b45dc64a7": {
+    "portal": "Indian Navy",
+    "title": "Explore India | National Portal of India",
+    "status": "REJECTED_BY_AI",
+    "processed_at": "2026-11-07T18:05:23.403285"
   }
 }

@@ -1006,5 +1006,21 @@
     "correct_option_index": 0,
     "explanation": "Right because Tel is a major right-bank tributary joining Mahanadi at Sonepur. Ib is wrong as it is a left-bank tributary.",
     "hook": "Test your Odisha river system knowledge for OPSC ASO!"
+  },
+  {
+    "date": "2026-11-08",
+    "exam": "Railway RRB NTPC",
+    "content_stage": "EXAM_SPECIFIC",
+    "topic": "chemistry_periodic_table_electron_affinity",
+    "question": "Which element possesses the highest electron affinity in the Periodic Table?",
+    "options": [
+      "Fluorine",
+      "Chlorine",
+      "Oxygen",
+      "Bromine"
+    ],
+    "correct_option_index": 1,
+    "explanation": "Right because Chlorine has the highest electron affinity. Fluorine is wrong; it has the highest electronegativity, but lower affinity due to 2p orbital electron-electron repulsion.",
+    "hook": "Don't fall for the Fluorine vs Chlorine trap!"
   }
 ]

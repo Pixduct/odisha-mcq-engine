@@ -1022,5 +1022,21 @@
     "correct_option_index": 1,
     "explanation": "Right because Chlorine has the highest electron affinity. Fluorine is wrong; it has the highest electronegativity, but lower affinity due to 2p orbital electron-electron repulsion.",
     "hook": "Don't fall for the Fluorine vs Chlorine trap!"
+  },
+  {
+    "date": "2026-11-09",
+    "exam": "SSC CGL",
+    "content_stage": "EXAM_SPECIFIC",
+    "topic": "quantitative_aptitude_boats_and_streams",
+    "question": "A man can row downstream at 20 km/h and upstream at 12 km/h. What is the speed of the man in still water?",
+    "options": [
+      "16 km/h",
+      "4 km/h",
+      "32 km/h",
+      "8 km/h"
+    ],
+    "correct_option_index": 0,
+    "explanation": "Right because speed in still water = (Downstream + Upstream) / 2 = (20 + 12) / 2 = 16 km/h. Trap option 4 km/h is wrong as it calculates the speed of the stream instead ((20 - 12) / 2).",
+    "hook": "Master Boats & Streams shortcuts for SSC CGL Tier-1!"
   }
 ]

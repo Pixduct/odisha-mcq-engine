@@ -3001,5 +3001,35 @@
     "article_id": "4b818667-e1bc-4f8b-9b77-fa3a96589ab7",
     "status": "PUBLISHED",
     "processed_at": "2026-11-09T22:45:26.423344"
+  },
+  "7b6f1764870326b3a2518e942711e2720f398405d32bfb79ffb0c47a3cd4906e": {
+    "portal": "SSC",
+    "title": "Candidate Portal | Staff Selection Commission | GoI",
+    "status": "REJECTED_BY_AI",
+    "processed_at": "2026-11-10T13:34:09.306149"
+  },
+  "729b1994c1ada673c2db61124c3b6cd7681110f08ab478716e2a67dc31ee7355": {
+    "portal": "RRB",
+    "title": "RRB",
+    "status": "REJECTED_BY_AI",
+    "processed_at": "2026-11-10T13:34:51.977941"
+  },
+  "e040f32d6bccdc42daa335cbde74fb1eef7c64621937e341f484732038a61e53": {
+    "portal": "OHPC",
+    "title": "Size: 109.64 KB,\r\n                                                                Format: PDF,\r\n                                                                Language: English",
+    "status": "REJECTED_BY_AI",
+    "processed_at": "2026-11-10T13:36:31.410728"
+  },
+  "c28b1184d45d060c11dba05edc47bc8804f118111670091d8631eb20934d968f": {
+    "portal": "LIC",
+    "title": "LIC PORTAL - Life Insurance Corporation of India",
+    "status": "REJECTED_BY_AI",
+    "processed_at": "2026-11-10T13:39:30.205458"
+  },
+  "6565ec804c4ae6f7ce0b213fd20c9804e3978b7af532375a339304825646e004": {
+    "portal": "CTET",
+    "title": "Introduction | Central Teacher Eligibility Test | India - CTET",
+    "status": "REJECTED_BY_AI",
+    "processed_at": "2026-11-10T13:44:37.886105"
   }
 }

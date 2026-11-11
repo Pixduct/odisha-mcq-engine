@@ -1054,5 +1054,21 @@
     "correct_option_index": 0,
     "explanation": "Speed in still water is half the sum of downstream and upstream speeds: (24 + 16)/2 = 20 km/h. Trap 4 km/h calculates the stream speed instead.",
     "hook": "Master the core formula for boats and streams to crack IBPS quantitative aptitude!"
+  },
+  {
+    "date": "2026-11-11",
+    "exam": "OSSSC Nursing Officer",
+    "content_stage": "EXAM_SPECIFIC",
+    "topic": "pharmacology_anti_tubercular_drugs_side_effects",
+    "question": "A patient on Anti-Tubercular Therapy (ATT) notices orange-red discoloration of their urine, sweat, and tears. The Nursing Officer explains that this is a benign side effect of which drug?",
+    "options": [
+      "Isoniazid",
+      "Rifampicin",
+      "Ethambutol",
+      "Pyrazinamide"
+    ],
+    "correct_option_index": 1,
+    "explanation": "Right because Rifampicin characteristically turns urine, tears, and sweat orange-red. Ethambutol is wrong as it causes optic neuritis and visual impairment, not fluid discoloration.",
+    "hook": "Master high-yield ATT side effects for your Nursing Officer exam!"
   }
 ]

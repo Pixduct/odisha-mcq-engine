@@ -3049,5 +3049,23 @@
     "title": "सीएसआईआर-एचआरडीजी, नई दिल्ली में 'वॉक-इन इंटरव्यू' के माध्यम से प्रोजेक्ट कर्मियों की नियुक्ति - प्रोजेक्ट 'सीएसआईआर जिज्ञासा: आर&डी आउटरीच और इनोवेशन के लिए वैज्ञानिकों और स्कूली छात्रों को जोड़ना' (HCP002601) के अंतर्गत (वॉक-इन इंटरव्यू 30/11/2026)",
     "status": "FAILED_INTEGRITY_REJECTED_LACKING_OFFICIAL_EXAM_KEYWORDS",
     "processed_at": "2026-11-11T12:58:40.577372"
+  },
+  "4b6852f21772b5ff993e95a73a2af95ed41305b04b0c7e29347d975f67ba98a5": {
+    "portal": "IBPS",
+    "title": "Common Recruitment Process for RRBs (CRP RRBs XIV) for Recruitment …",
+    "status": "REJECTED_BY_AI",
+    "processed_at": "2026-11-11T19:56:37.517850"
+  },
+  "331956f91aa5e470bc0dbb213ac491ee3e0d877e6e67fbd94fef53aa3460c420": {
+    "portal": "NVS",
+    "title": "Navodaya Vidyalaya Samiti - NVS",
+    "status": "REJECTED_BY_AI",
+    "processed_at": "2026-11-11T20:02:57.347714"
+  },
+  "3beb5da70c106eb0e93a71bd61d66afa3014cc7dceeb449a621081b318cf5195": {
+    "portal": "NIELIT",
+    "title": "Student Information and Enrollment System, NIELIT",
+    "status": "REJECTED_BY_AI",
+    "processed_at": "2026-11-11T20:05:28.483875"
   }
 }

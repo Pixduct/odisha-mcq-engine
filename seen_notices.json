@@ -3037,5 +3037,17 @@
     "title": "Size: 259.20 KB,\r\n                                                                Format: PDF,\r\n                                                                Language: English",
     "status": "REJECTED_BY_AI",
     "processed_at": "2026-11-10T20:04:58.361176"
+  },
+  "7a36a08ca34f00e9df1826afb33153d3a228fe6e2b1adfa49f5bc81ac3507ec5": {
+    "portal": "OHPC",
+    "title": "Size: 35.50 KB,\r\n                                                                Format: PDF,\r\n                                                                Language: English",
+    "status": "REJECTED_BY_AI",
+    "processed_at": "2026-11-11T12:51:04.227640"
+  },
+  "022aaf5d06bef1afff2cfba12f77a109a7d5bee4cbad4bb9022021de42a9eaee": {
+    "portal": "CSIR",
+    "title": "सीएसआईआर-एचआरडीजी, नई दिल्ली में 'वॉक-इन इंटरव्यू' के माध्यम से प्रोजेक्ट कर्मियों की नियुक्ति - प्रोजेक्ट 'सीएसआईआर जिज्ञासा: आर&डी आउटरीच और इनोवेशन के लिए वैज्ञानिकों और स्कूली छात्रों को जोड़ना' (HCP002601) के अंतर्गत (वॉक-इन इंटरव्यू 30/11/2026)",
+    "status": "FAILED_INTEGRITY_REJECTED_LACKING_OFFICIAL_EXAM_KEYWORDS",
+    "processed_at": "2026-11-11T12:58:40.577372"
   }
 }

@@ -3118,5 +3118,24 @@
     "article_id": "52f624fa-c15f-40af-8e9d-1f4060ccfbba",
     "status": "PUBLISHED",
     "processed_at": "2026-11-12T14:02:43.268266"
+  },
+  "086c578c85a2afc90e547f0774af62ed659f5324598b698fe3098b8e417d5f56": {
+    "portal": "Odisha High Court",
+    "title": "Advertisement No.06 of 2026 for recruitment to 33 posts of Jr. Stenographer, 2026",
+    "article_id": "625e5e38-3ec8-4c10-892e-a58b26ecaaa3",
+    "status": "PUBLISHED",
+    "processed_at": "2026-11-12T20:31:18.797874"
+  },
+  "65adf1171161ad3f0699299b838721d57476dc0d6e29d5072f8c583b372b9922": {
+    "portal": "OHPC",
+    "title": "Size: 80.62 KB,\r\n                                                                Format: PDF,\r\n                                                                Language: English",
+    "status": "REJECTED_BY_AI",
+    "processed_at": "2026-11-12T20:33:20.308395"
+  },
+  "e26149e2b3fad6a66bf0b84b92b70dc63c8ed8ba4ee94d50439ecaf147d06b8e": {
+    "portal": "CSIR",
+    "title": "एलडीसीई-2026: अभ्यर्थियों के लिए सामान्य अनुदेश",
+    "status": "REJECTED_BY_AI",
+    "processed_at": "2026-11-12T20:40:28.787749"
   }
 }

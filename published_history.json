@@ -1070,5 +1070,21 @@
     "correct_option_index": 1,
     "explanation": "Right because Rifampicin characteristically turns urine, tears, and sweat orange-red. Ethambutol is wrong as it causes optic neuritis and visual impairment, not fluid discoloration.",
     "hook": "Master high-yield ATT side effects for your Nursing Officer exam!"
+  },
+  {
+    "date": "2026-11-12",
+    "exam": "OSSC CGL",
+    "content_stage": "EXAM_SPECIFIC",
+    "topic": "indian_polity_writs_jurisdiction",
+    "question": "Under Article 32 and Article 226 of the Constitution of India, which of the following writs is issued by a higher court to a lower court or tribunal to prevent it from exceeding its jurisdiction?",
+    "options": [
+      "Habeas Corpus",
+      "Mandamus",
+      "Prohibition",
+      "Quo-Warranto"
+    ],
+    "correct_option_index": 2,
+    "explanation": "Prohibition is issued to a lower court to prevent exceeding jurisdiction. Mandamus commands public officials to perform a duty, making it a common trap for jurisdictional errors.",
+    "hook": "Test your grasp on Constitutional Writs for OSSC CGL General Awareness!"
   }
 ]

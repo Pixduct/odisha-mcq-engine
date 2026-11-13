@@ -3168,5 +3168,36 @@
     "title": "एलडीसीई-2026: परीक्षा के लिए अनंतिम रूप से अनुमति प्राप्त उम्मीदवारों की सूची",
     "status": "REJECTED_BY_AI",
     "processed_at": "2026-11-13T13:21:48.460095"
+  },
+  "99596d28736174467ce926677d2055533a0313f8926e74b4f213e7b9f9836318": {
+    "portal": "SSC",
+    "title": "Examination Calendar| Staff Selection Commission | GoI",
+    "status": "FAILED_INTEGRITY_REJECTED_INSUFFICIENT_YIELD_SCORE (60/100 < 80 -> Score: 60/100 -> Milestone Keyword (+25: si), Active Year Anchor (+20: 2026/2025), Nodal Authority (+15))",
+    "processed_at": "2026-11-13T20:06:39.033719"
+  },
+  "059395887589074de93c6044f9ab27d924433414d6756792077eb685989ed490": {
+    "portal": "OHPC",
+    "title": "Size: 356.90 KB,\r\n                                                                Format: PDF,\r\n                                                                Language: English",
+    "status": "REJECTED_BY_AI",
+    "processed_at": "2026-11-13T20:07:40.476244"
+  },
+  "dd65348261b7f93cef164600c097d06e628c9b66b9f247257cdd3d3c3ebc353d": {
+    "portal": "ISRO",
+    "title": "Advt No. URSC:04:2026 dated 24.10.2026: The last date for receipt of application and making payment is extended till 20.11.2026 (05.00 PM). Read More",
+    "article_id": "bf89bfec-7538-4813-9f34-8df0e8e3da58",
+    "status": "PUBLISHED",
+    "processed_at": "2026-11-13T20:11:24.747053"
+  },
+  "54f0c2d3c52ac356ef5c680c760858dd8fedd613d14256b2dbc98302037d21a7": {
+    "portal": "KVS",
+    "title": "नई दिल्ली: प्रह्लाद जोशी ने केवीएस की डिजिटल पहल शुरू की।",
+    "status": "REJECTED_BY_AI",
+    "processed_at": "2026-11-13T20:15:10.821121"
+  },
+  "4a22e599f4396a99f8f3807d40153d4f0a6cfc22ffb895eefc804dd62ff8a95d": {
+    "portal": "CSIR",
+    "title": "विज्ञापन संख्या TKDL/08/2026 (यूनानी और पेटेंट) के संदर्भ में 16.10.2026 और 23.10.2026 को आयोजित साक्षात्कार का परिणाम",
+    "status": "FAILED_INTEGRITY_REJECTED_LACKING_OFFICIAL_EXAM_KEYWORDS",
+    "processed_at": "2026-11-13T20:18:06.735908"
   }
 }

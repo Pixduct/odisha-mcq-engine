@@ -3137,5 +3137,36 @@
     "title": "एलडीसीई-2026: अभ्यर्थियों के लिए सामान्य अनुदेश",
     "status": "REJECTED_BY_AI",
     "processed_at": "2026-11-12T20:40:28.787749"
+  },
+  "56a173d770a0562e375fd7e6e5b1277f877ef343bbb5689b0c29c3630d5afc3f": {
+    "portal": "NTA",
+    "title": "Online Application Form for JEE (Main) 2027 – Session 1",
+    "status": "FAILED_INTEGRITY_REJECTED_INSUFFICIENT_YIELD_SCORE (60/100 < 80 -> Score: 60/100 -> Milestone Keyword (+25: main), Active Year Anchor (+20: 2026/2025), Nodal Authority (+15))",
+    "processed_at": "2026-11-13T13:13:06.970314"
+  },
+  "8a534803e6efcb92c35470377b0dbaf2e29f0596b4b29909a949d13184f0f7c0": {
+    "portal": "OHPC",
+    "title": "Size: 334.44 KB,\r\n                                                                Format: PDF,\r\n                                                                Language: English",
+    "status": "REJECTED_BY_AI",
+    "processed_at": "2026-11-13T13:13:49.814133"
+  },
+  "ba899ffa9d378ed69089ed5371d8e364feb024b6f7d5d378e3397f5e62793f98": {
+    "portal": "ISRO",
+    "title": "Advt No.ISRO:ICRB:02(EMC-CEPO):2026 dated 28.07.2026 - Selection Panel for the post of Scientist/Engineer 'SC' (Electronics) Read More",
+    "article_id": "f00de364-804c-4051-b418-bf5e353ba825",
+    "status": "PUBLISHED",
+    "processed_at": "2026-11-13T13:17:11.320258"
+  },
+  "1a25688b84a8a61a721237cd6aec6ba2f14454119a5111e644d38e4b2128eaf2": {
+    "portal": "KVS",
+    "title": "केवीएस ने स्कूली शिक्षा में सुधार के लिए तीन डिजिटल पहल शुरू कीं।",
+    "status": "REJECTED_BY_AI",
+    "processed_at": "2026-11-13T13:19:46.147004"
+  },
+  "d1f3b62d61d87a2e69da2b0434be2ed346c26c70a092a37e72ae8756b797a72d": {
+    "portal": "CSIR",
+    "title": "एलडीसीई-2026: परीक्षा के लिए अनंतिम रूप से अनुमति प्राप्त उम्मीदवारों की सूची",
+    "status": "REJECTED_BY_AI",
+    "processed_at": "2026-11-13T13:21:48.460095"
   }
 }

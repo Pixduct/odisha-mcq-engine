@@ -1086,5 +1086,21 @@
     "correct_option_index": 2,
     "explanation": "Prohibition is issued to a lower court to prevent exceeding jurisdiction. Mandamus commands public officials to perform a duty, making it a common trap for jurisdictional errors.",
     "hook": "Test your grasp on Constitutional Writs for OSSC CGL General Awareness!"
+  },
+  {
+    "date": "2026-11-14",
+    "exam": "Odisha Police SI",
+    "content_stage": "EXAM_SPECIFIC",
+    "topic": "indian_evidence_act_section27_admissibility",
+    "question": "Under Section 27 of the Indian Evidence Act, 1872, which portion of a statement made by an accused while in police custody is admissible as evidence?",
+    "options": [
+      "The entire confession statement if recorded in writing",
+      "Only so much of the information as relates distinctly to the fact thereby discovered",
+      "The entire statement if signed in the presence of two independent witnesses",
+      "Any oral confession made prior to formal arrest"
+    ],
+    "correct_option_index": 1,
+    "explanation": "Right because Sec 27 permits only information distinctly leading to a fact discovery. Trap C is wrong as witness signatures do not override Sec 25's bar on police confessions.",
+    "hook": "Master key evidence rules for Odisha Police SI!"
   }
 ]

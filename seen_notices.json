@@ -3296,5 +3296,23 @@
     "title": "KVS ने 3 नई डिजिटल पहल शुरू कीं: AI टूल, पैरेंट कनेक्ट ऐप और एलुमनाई पोर्टल देखें।",
     "status": "REJECTED_BY_AI",
     "processed_at": "2026-11-15T12:56:17.782719"
+  },
+  "09871346747cba794879a05512a3ca294e45f1a942edb0e6029aa63310cab832": {
+    "portal": "SSC",
+    "title": "Answer Key | Staff Selection Commission | GoI",
+    "status": "FAILED_INTEGRITY_REJECTED_INSUFFICIENT_YIELD_SCORE (60/100 < 80 -> Score: 60/100 -> Milestone Keyword (+25: answer key), Active Year Anchor (+20: 2026/2025), Nodal Authority (+15))",
+    "processed_at": "2026-11-15T19:09:41.111861"
+  },
+  "021f93407a53ea0618d27277ece0d62547655a6b0b607bc819df33871eaa8e77": {
+    "portal": "OHPC",
+    "title": "Size:\r\n                                                                            105.65 KB,\r\n                                                                            Format:\r\n                                                                            PDF,\r\n                                                                            Language:\r\n                                                                            English",
+    "status": "REJECTED_BY_AI",
+    "processed_at": "2026-11-15T19:10:43.870704"
+  },
+  "2c3fd5c9d385d37d1f1fccc6bdd781d831d6e5492de404b8e81fa60b4b8a7fa3": {
+    "portal": "DRDO",
+    "title": "Recruitment & Assessment Centre | RAC, DRDO",
+    "status": "REJECTED_BY_AI",
+    "processed_at": "2026-11-15T19:13:07.357337"
   }
 }

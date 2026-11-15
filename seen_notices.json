@@ -3260,5 +3260,41 @@
     "title": "प्रह्लाद जोशी ने KVS AI लर्निंग ट्रैकर, पैरेंट ऐप और एलुमनाई पोर्टल का उद्घाटन किया।",
     "status": "REJECTED_BY_AI",
     "processed_at": "2026-11-14T18:43:30.428943"
+  },
+  "bcd3545a4a0560efb8fe2b4c4503c22ef6c515c431669ac2a195c6f53297c6c7": {
+    "portal": "UPSC",
+    "title": "Examination | UPSC",
+    "status": "REJECTED_BY_AI",
+    "processed_at": "2026-11-15T12:49:55.873215"
+  },
+  "e07339b5dcce16e2cbafcd7bb36e2e4fd5913709272749eb5ced547a0c5dd22e": {
+    "portal": "OHPC",
+    "title": "Size:\r\n                                                                            348.67 KB,\r\n                                                                            Format:\r\n                                                                            PDF,\r\n                                                                            Language:\r\n                                                                            English",
+    "status": "REJECTED_BY_AI",
+    "processed_at": "2026-11-15T12:50:27.394553"
+  },
+  "0acf8cf530a9b8ed4e6a24da67101c8a3c41d7bf22c379579c49b932a734e526": {
+    "portal": "NABARD",
+    "title": "NABARD",
+    "status": "REJECTED_BY_AI",
+    "processed_at": "2026-11-15T12:52:05.634238"
+  },
+  "ddfd4aa18c80585f98da83b84fe102dd6160b7b3ab0f585aea9ac3e0e9a5ae49": {
+    "portal": "LIC",
+    "title": "LICLogin",
+    "status": "REJECTED_BY_AI",
+    "processed_at": "2026-11-15T12:52:44.357436"
+  },
+  "defd9130d084848c83832a3d889cec5ed1f31ccd340a66c13b7627e58a42c781": {
+    "portal": "DRDO",
+    "title": "Schemes and Services | Defence Research and Development ... - DRDO",
+    "status": "REJECTED_BY_AI",
+    "processed_at": "2026-11-15T12:53:57.773195"
+  },
+  "0ea1be09bbde49495a20a424c0a9d9ee61f574196784ea1d6d11bf80b2625f3d": {
+    "portal": "KVS",
+    "title": "KVS ने 3 नई डिजिटल पहल शुरू कीं: AI टूल, पैरेंट कनेक्ट ऐप और एलुमनाई पोर्टल देखें।",
+    "status": "REJECTED_BY_AI",
+    "processed_at": "2026-11-15T12:56:17.782719"
   }
 }

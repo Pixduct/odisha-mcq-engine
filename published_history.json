@@ -1102,5 +1102,21 @@
     "correct_option_index": 1,
     "explanation": "Right because Sec 27 permits only information distinctly leading to a fact discovery. Trap C is wrong as witness signatures do not override Sec 25's bar on police confessions.",
     "hook": "Master key evidence rules for Odisha Police SI!"
+  },
+  {
+    "date": "2026-11-15",
+    "exam": "BSE Odisha OTET / OSSTET",
+    "content_stage": "EXAM_SPECIFIC",
+    "topic": "piaget_cognitive_development_accommodation_vs_assimilation",
+    "question": "A child modifies her existing schema of 'four-legged animals' to create a distinct category for cats after learning they meow. According to Jean Piaget, which cognitive process did the child demonstrate?",
+    "options": [
+      "Assimilation",
+      "Accommodation",
+      "Conservation",
+      "Egocentrism"
+    ],
+    "correct_option_index": 1,
+    "explanation": "Accommodation modifies mental schemas for new info. Assimilation fits new info into existing schemas without altering them.",
+    "hook": "Master Piaget's core concepts for OTET & OSSTET!"
   }
 ]

@@ -1118,5 +1118,21 @@
     "correct_option_index": 1,
     "explanation": "Accommodation modifies mental schemas for new info. Assimilation fits new info into existing schemas without altering them.",
     "hook": "Master Piaget's core concepts for OTET & OSSTET!"
+  },
+  {
+    "date": "2026-11-16",
+    "exam": "OSSSC RI / AMIN",
+    "content_stage": "EXAM_SPECIFIC",
+    "topic": "odia_grammar_samasa_bahubrihi_vs_dvigu",
+    "question": "In Odia grammar, if the first word of a compound is a numeral (Sankhyavachaka) but the compound word denotes an external third entity (e.g., 'Trinayana'), which Samasa is formed?",
+    "options": [
+      "Bahubrihi Samasa",
+      "Dvigu Samasa",
+      "Karmadharaya Samasa",
+      "Tatpurusha Samasa"
+    ],
+    "correct_option_index": 0,
+    "explanation": "Bahubrihi is correct as the compound word denotes an external entity. Dvigu is a trap because Dvigu requires a collective sense (Samahara), not a third-person referent.",
+    "hook": "Avoid the numeral trap in Odia Samasa!"
   }
 ]

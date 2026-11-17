@@ -1134,5 +1134,21 @@
     "correct_option_index": 0,
     "explanation": "Bahubrihi is correct as the compound word denotes an external entity. Dvigu is a trap because Dvigu requires a collective sense (Samahara), not a third-person referent.",
     "hook": "Avoid the numeral trap in Odia Samasa!"
+  },
+  {
+    "date": "2026-11-17",
+    "exam": "Railway RRB NTPC",
+    "content_stage": "EXAM_SPECIFIC",
+    "topic": "General Science - Physics",
+    "question": "A passenger on a train moving at a constant velocity throws a ball vertically upward. Ignoring air resistance, where will the ball land relative to the passenger's hand?",
+    "options": [
+      "It will land behind the passenger.",
+      "It will land in the passenger's hand.",
+      "It will land in front of the passenger.",
+      "It will land outside the train window."
+    ],
+    "correct_option_index": 1,
+    "explanation": "Right because the ball retains the horizontal inertia of the train. Trap: Thinking the train 'moves away' from the ball ignores the principle of relative motion and inertia.",
+    "hook": "Test your physics intuition on this classic Railway exam motion trap!"
   }
 ]

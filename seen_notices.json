@@ -3359,5 +3359,25 @@
     "article_id": "c2d05d9d-f58e-4d25-8e64-f0237f970f35",
     "status": "PUBLISHED",
     "processed_at": "2026-11-17T21:33:40.741772"
+  },
+  "6a425e7c1ec3932e9633246d7c0b43f26cef57c600e03f3444ad0b58a227740d": {
+    "portal": "OSSSC",
+    "title": "Notification No. IIE-105/2026-3482/OSSSC dated - 18.11.2026 ----- Publication of Answer Keys and view/download Response sheet of Written Test for the post Radiographer-2026",
+    "article_id": "d9f4e178-ca2b-4ae0-8854-11e54b952572",
+    "status": "PUBLISHED",
+    "processed_at": "2026-11-18T14:10:15.443522"
+  },
+  "deceaaf70498012e309ac194c821752a2f537a1fd7be79b1512181be68ed58e5": {
+    "portal": "SSB Odisha",
+    "title": "Examination Notice wrt Cyclone “ AKVAN” for Advt No. 01/2026 New",
+    "article_id": "c7e24289-da15-4076-aea2-69b31b35c25a",
+    "status": "PUBLISHED",
+    "processed_at": "2026-11-18T14:13:22.356121"
+  },
+  "1817528a43f5d000627b5b29eeeea23992be12c283f1a0c1298460348f97d4aa": {
+    "portal": "Odisha Fire Service",
+    "title": "About Odisha | Government Of Odisha",
+    "status": "REJECTED_BY_AI",
+    "processed_at": "2026-11-18T14:17:20.688856"
   }
 }

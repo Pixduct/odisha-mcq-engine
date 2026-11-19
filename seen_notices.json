@@ -3400,5 +3400,24 @@
     "article_id": "e5a1d7c4-231a-4633-aeeb-4e2a97e60ce6",
     "status": "PUBLISHED",
     "processed_at": "2026-11-18T21:05:05.467074"
+  },
+  "da03de425ddb612534241b31f78bd898d0c9b717b241d476a51f4e761de2325d": {
+    "portal": "OSSSC",
+    "title": "Notification No. IIE-96/2026-8509/OSSSC dated - 19.11.2026 ----- Downloading of Admission Letters for the Physical Test (Phase-II) for the Post of Excise Constable under CRE-2025(II) in the districts of Baleshwar and Ganjam.",
+    "article_id": "10c5a7bf-87db-443c-9231-aa5e8e9bdb26",
+    "status": "PUBLISHED",
+    "processed_at": "2026-11-19T14:33:01.487591"
+  },
+  "5b3dcae330c41568e62a3930c7449ac6eff828a4aa88d1f7bc7ecb850c665bad": {
+    "portal": "SSC",
+    "title": "Home | Staff Selection Commission | GoI",
+    "status": "REJECTED_BY_AI",
+    "processed_at": "2026-11-19T14:40:57.071583"
+  },
+  "3a7680ec7036d083e7898af6faa809c5cf82fcdd02255409117bf137c8c3e500": {
+    "portal": "SBI",
+    "title": "CTC NEGOTIATION FORM",
+    "status": "REJECTED_BY_AI",
+    "processed_at": "2026-11-19T14:43:07.403906"
   }
 }

@@ -3419,5 +3419,30 @@
     "title": "CTC NEGOTIATION FORM",
     "status": "REJECTED_BY_AI",
     "processed_at": "2026-11-19T14:43:07.403906"
+  },
+  "060008b0fb9dd7c20c40f8c648b7facfae6ee55db6c0857a82bbeb85c81e585a": {
+    "portal": "SSB Odisha",
+    "title": "Download City Intimation Slip for Advt. No.01/2026 New",
+    "article_id": "1e52cc31-2963-4b01-a0b9-7adc319d24cf",
+    "status": "PUBLISHED",
+    "processed_at": "2026-11-19T21:01:38.393097"
+  },
+  "a28c2d915108b9c918fd1ee8c36dc5e2f740b1c0bbd20f4b3b2f448d59712e3c": {
+    "portal": "NTA",
+    "title": "Candidate home - National Testing Agency",
+    "status": "REJECTED_BY_AI",
+    "processed_at": "2026-11-19T21:03:04.300275"
+  },
+  "b85734ddc6e1eac235a91ef1314ba2ab50dbda4052145721ec8dd659f6f2128a": {
+    "portal": "OHPC",
+    "title": "Size:\r\n                                                                            914.02 KB,\r\n                                                                            Format:\r\n                                                                            PDF,\r\n                                                                            Language:\r\n                                                                            English",
+    "status": "REJECTED_BY_AI",
+    "processed_at": "2026-11-19T21:04:57.978285"
+  },
+  "4044b32449e4559d235ac1fc61df98abb6d46bcbaf7818237cc86dc40da9d988": {
+    "portal": "DRDO",
+    "title": "Defence Research and Development Organisation - DRDO",
+    "status": "REJECTED_BY_AI",
+    "processed_at": "2026-11-19T21:08:25.338599"
   }
 }

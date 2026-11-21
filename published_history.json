@@ -1198,5 +1198,21 @@
     "correct_option_index": 1,
     "explanation": "Ib is a major left-bank tributary joining Mahanadi near Hirakud. Tel, Ong, and Jonk are right-bank tributaries, a frequent exam trap.",
     "hook": "Master your Odisha Geography before the OPSC ASO exam!"
+  },
+  {
+    "date": "2026-11-21",
+    "exam": "OSSC CGL",
+    "content_stage": "EXAM_SPECIFIC",
+    "topic": "quantitative_aptitude_boats_and_streams",
+    "question": "A man can row downstream at 16 km/h and upstream at 10 km/h. What is the speed of the man in still water?",
+    "options": [
+      "13 km/h",
+      "3 km/h",
+      "6 km/h",
+      "8 km/h"
+    ],
+    "correct_option_index": 0,
+    "explanation": "Speed in still water is half the sum of downstream and upstream speeds: (16 + 10)/2 = 13 km/h. Trap option 3 km/h is half their difference (stream speed).",
+    "hook": "Master boat and stream speeds for OSSC CGL!"
   }
 ]

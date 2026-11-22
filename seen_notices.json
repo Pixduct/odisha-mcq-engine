@@ -3578,5 +3578,36 @@
     "title": "ESIC",
     "status": "REJECTED_BY_AI",
     "processed_at": "2026-11-21T20:00:24.951007"
+  },
+  "61bd2d939776ee384a4fddd0eb2e50522303e82fba396997863a35f1732b52aa": {
+    "portal": "UPSC",
+    "title": "About UPSC | Union Public Service Commission",
+    "status": "REJECTED_BY_AI",
+    "processed_at": "2026-11-22T13:26:53.503769"
+  },
+  "4c01ba9bb1b1ae3e02668dd36b29531a3eb8c431ad1177cbb5f7024ade473920": {
+    "portal": "OHPC",
+    "title": "Size:\r\n                                                                            557.74 KB,\r\n                                                                            Format:\r\n                                                                            PDF,\r\n                                                                            Language:\r\n                                                                            English",
+    "status": "REJECTED_BY_AI",
+    "processed_at": "2026-11-22T13:28:08.618558"
+  },
+  "c323b98fc047acaf1067d3d36814864c72c520cd7e6eb5653e67c577749f0b8e": {
+    "portal": "NABARD",
+    "title": "Welcome to Delhi Tourism: Official Tourism Website for Government …",
+    "status": "REJECTED_BY_AI",
+    "processed_at": "2026-11-22T13:30:10.757386"
+  },
+  "e2ef83e3bf583ca0b39d351eed17c1d16bbb2813f9c7d41488dc04fa14d24436": {
+    "portal": "ISRO",
+    "title": "Advt No. ISRO:ICRB:03(EMC):2026 dated 27-08-2026: - Link for raising Objections on\r\n                                    Answer Keys Read More",
+    "article_id": "52f624fa-c15f-40af-8e9d-1f4060ccfbba",
+    "status": "PUBLISHED",
+    "processed_at": "2026-11-22T13:32:28.958105"
+  },
+  "9d70216d25f8b80ee09925353b3df06b9759a46032b7ed210fe7e7baba92429e": {
+    "portal": "CTET",
+    "title": "OBSERVER CONSENT for Dec 12,13 2026",
+    "status": "REJECTED_BY_AI",
+    "processed_at": "2026-11-22T13:36:29.408373"
   }
 }

@@ -3658,5 +3658,24 @@
     "title": "Size: 497.71 KB,\r\n                                                                Format: PDF,\r\n                                                                Language: English",
     "status": "REJECTED_BY_AI",
     "processed_at": "2026-11-24T16:05:46.967832"
+  },
+  "5d8d4d98bfc8fdb71fd38bddece9fc12a0dc271c5b0fc135f3e93dca59344ce2": {
+    "portal": "SBI",
+    "title": "Hindi (482 KB)",
+    "article_id": "7289ddf9-2236-4880-b0b0-4536bc4965f5",
+    "status": "PUBLISHED",
+    "processed_at": "2026-11-24T22:48:57.603630"
+  },
+  "29e86fde39003f9fd205c68b509ebf6cac3acebeaab61ce736ea6c90b9fd9be1": {
+    "portal": "OHPC",
+    "title": "Size:\r\n                                                                            138.72 KB,\r\n                                                                            Format:\r\n                                                                            PDF,\r\n                                                                            Language:\r\n                                                                            English",
+    "status": "REJECTED_BY_AI",
+    "processed_at": "2026-11-24T22:49:57.156823"
+  },
+  "6e06ea99bebd8d7b25216da1fde0f06605b0b45366c3fb1d35e53bf160b16a20": {
+    "portal": "CSIR",
+    "title": "एलडीसीई-2026: उत्तर कुंजियों का प्रदर्शन और चुनौती प्रबंधन।",
+    "status": "FAILED_INTEGRITY_REJECTED_LACKING_OFFICIAL_EXAM_KEYWORDS",
+    "processed_at": "2026-11-24T22:58:26.302009"
   }
 }

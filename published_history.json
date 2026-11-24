@@ -1230,5 +1230,21 @@
     "correct_option_index": 0,
     "explanation": "Right because for 2 years, CI - SI = P(R/100)^2 -> 400 = P(10/100)^2, giving P = Rs. 40,000. The trap option Rs. 20,000 arises from incorrectly dividing by 2 instead of squaring.",
     "hook": "Master the 2-year CI-SI difference shortcut for IBPS PO!"
+  },
+  {
+    "date": "2026-11-24",
+    "exam": "OSSSC Nursing Officer",
+    "content_stage": "EXAM_SPECIFIC",
+    "topic": "clinical_nursing_parkland_formula_fluid_resuscitation",
+    "question": "A Nursing Officer is calculating fluid resuscitation for a 60 kg adult patient with 40% TBSA burns. According to the Parkland formula (4 mL × kg × % TBSA), how much fluid must be administered in the FIRST 8 hours?",
+    "options": [
+      "2,400 mL",
+      "4,800 mL",
+      "7,200 mL",
+      "9,600 mL"
+    ],
+    "correct_option_index": 1,
+    "explanation": "Right because Parkland formula requires 50% of 24-hr total (4mL×60kg×40=9600mL) in first 8 hrs (4800mL). 9600mL is wrong as it is the total 24-hr volume, not 8-hr amount.",
+    "hook": "Master burn fluid resuscitation math for OSSSC Nursing Officer!"
   }
 ]

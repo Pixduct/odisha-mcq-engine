@@ -3709,5 +3709,11 @@
     "title": "Explore India | National Portal of India",
     "status": "REJECTED_BY_AI",
     "processed_at": "2026-11-25T15:50:36.524857"
+  },
+  "e70edbff23b86d45132b2627d6e16820c4db96f363907814c3ba16845481094f": {
+    "portal": "UPSC",
+    "title": "Union Public Service Commission (UPSC)",
+    "status": "REJECTED_BY_AI",
+    "processed_at": "2026-11-25T22:02:21.599151"
   }
 }

@@ -3677,5 +3677,37 @@
     "title": "एलडीसीई-2026: उत्तर कुंजियों का प्रदर्शन और चुनौती प्रबंधन।",
     "status": "FAILED_INTEGRITY_REJECTED_LACKING_OFFICIAL_EXAM_KEYWORDS",
     "processed_at": "2026-11-24T22:58:26.302009"
+  },
+  "19cc1cfa2ec3cf743fead4d4d8ca1b21505b38798c9ca354b76734a9025f02f1": {
+    "portal": "UPSC",
+    "title": "UPSC - Union Public Service Commission",
+    "status": "REJECTED_BY_AI",
+    "processed_at": "2026-11-25T15:42:10.440963"
+  },
+  "179f17ab8ca604215c5776a7b2b463700e5573fb51f71be221fdd3104c43cec0": {
+    "portal": "SBI",
+    "title": "Hindi (493 KB) )",
+    "article_id": "7289ddf9-2236-4880-b0b0-4536bc4965f5",
+    "status": "PUBLISHED",
+    "processed_at": "2026-11-25T15:42:34.172912"
+  },
+  "d76f11bb5f549bd193d5050f5070ee81acbb09bbdf251a2d168ed9899c7ef52f": {
+    "portal": "OHPC",
+    "title": "Size: 123.74 KB,\r\n                                                                Format: PDF,\r\n                                                                Language: English",
+    "status": "REJECTED_BY_AI",
+    "processed_at": "2026-11-25T15:43:26.815284"
+  },
+  "659136c98b4395f1420a6730c31c03d3f02c749db39c13124b0360a95b7377e1": {
+    "portal": "ISRO",
+    "title": "Advt No.ISTRAC:02:2026 dated 27.06.2026 - Download Skill Test Admit Card for shortlisted candidates Read More",
+    "article_id": "e5a1d7c4-231a-4633-aeeb-4e2a97e60ce6",
+    "status": "PUBLISHED",
+    "processed_at": "2026-11-25T15:46:14.840372"
+  },
+  "22e2dd6c31f07d2b55ccc8f3e9856eaf998733de1237bdb49b5b45536abc01df": {
+    "portal": "Indian Air Force",
+    "title": "Explore India | National Portal of India",
+    "status": "REJECTED_BY_AI",
+    "processed_at": "2026-11-25T15:50:36.524857"
   }
 }

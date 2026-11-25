@@ -1246,5 +1246,21 @@
     "correct_option_index": 1,
     "explanation": "Right because Parkland formula requires 50% of 24-hr total (4mL×60kg×40=9600mL) in first 8 hrs (4800mL). 9600mL is wrong as it is the total 24-hr volume, not 8-hr amount.",
     "hook": "Master burn fluid resuscitation math for OSSSC Nursing Officer!"
+  },
+  {
+    "date": "2026-11-25",
+    "exam": "OSSSC Nursing Officer",
+    "content_stage": "EXAM_SPECIFIC",
+    "topic": "community_health_vaccine_cold_chain_sensitivity",
+    "question": "Which of the following vaccines under the Universal Immunization Programme (UIP) is MOST sensitive to heat and requires storage at freezing temperatures (-20°C) in the cold chain?",
+    "options": [
+      "Oral Polio Vaccine (OPV)",
+      "Hepatitis B vaccine",
+      "Tetanus Toxoid (TT / Td)",
+      "Pentavalent vaccine"
+    ],
+    "correct_option_index": 0,
+    "explanation": "OPV is the most heat-sensitive vaccine under UIP and can be safely frozen. Hepatitis B is wrong because it is highly freeze-sensitive and damaged if frozen.",
+    "hook": "Master vaccine cold-chain rules for OSSSC!"
   }
 ]

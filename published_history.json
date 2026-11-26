@@ -1262,5 +1262,21 @@
     "correct_option_index": 0,
     "explanation": "OPV is the most heat-sensitive vaccine under UIP and can be safely frozen. Hepatitis B is wrong because it is highly freeze-sensitive and damaged if frozen.",
     "hook": "Master vaccine cold-chain rules for OSSSC!"
+  },
+  {
+    "date": "2026-11-26",
+    "exam": "Odisha Police SI",
+    "content_stage": "EXAM_SPECIFIC",
+    "topic": "crpc_arrest_magistrate_production_time_limit",
+    "question": "Under Section 57 of the Code of Criminal Procedure, 1973 (corresponding to Section 58 of BNSS, 2023), what is the maximum time limit within which a police officer must produce an arrested person before a magistrate, excluding the journey time from the place of arrest?",
+    "options": [
+      "12 hours",
+      "24 hours",
+      "48 hours",
+      "72 hours"
+    ],
+    "correct_option_index": 1,
+    "explanation": "Right because Sec 57 CrPC mandates production within 24 hours. The 48-hour option is a common trap confusing it with remand extension limits.",
+    "hook": "Test your CrPC grasp: What's the statutory clock for producing an arrestee?"
   }
 ]

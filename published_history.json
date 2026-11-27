@@ -1278,5 +1278,21 @@
     "correct_option_index": 1,
     "explanation": "Right because Sec 57 CrPC mandates production within 24 hours. The 48-hour option is a common trap confusing it with remand extension limits.",
     "hook": "Test your CrPC grasp: What's the statutory clock for producing an arrestee?"
+  },
+  {
+    "date": "2026-11-27",
+    "exam": "BSE Odisha OTET / OSSTET",
+    "content_stage": "EXAM_PREPARATION",
+    "topic": "bruner_cognitive_representation_enactive_vs_iconic",
+    "question": "A teacher uses real physical blocks and plastic counters to teach basic addition before introducing visual diagrams or digits. According to Jerome Bruner, which mode of cognitive representation is being utilized?",
+    "options": [
+      "Enactive representation",
+      "Iconic representation",
+      "Symbolic representation",
+      "Intuitive representation"
+    ],
+    "correct_option_index": 0,
+    "explanation": "Right because Enactive stage relies on concrete physical action and object manipulation. Trap option Iconic representation uses visual pictures/diagrams, not direct physical handling of objects.",
+    "hook": "Master Bruner's modes of representation for OTET/OSSTET!"
   }
 ]

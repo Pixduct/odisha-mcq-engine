@@ -3753,5 +3753,30 @@
     "title": "View Examination City for CTET Dec 2026 : Link2",
     "status": "FAILED_INTEGRITY_REJECTED_LACKING_OFFICIAL_EXAM_KEYWORDS",
     "processed_at": "2026-11-27T15:21:04.480122"
+  },
+  "d1d752cc8af3b2e96011bc673733ddc509b6477c343d849d9a4ce4f80d9d9c8b": {
+    "portal": "OSSC",
+    "title": "Mock Test Link",
+    "article_id": "78fc2699-164d-4eb6-87ba-f8ed51e031de",
+    "status": "PUBLISHED",
+    "processed_at": "2026-11-27T21:40:13.569127"
+  },
+  "d4a9e86a3bae59da6a966f1890df183b8dc386ffa601df604c8fc3dcdec24532": {
+    "portal": "CTET",
+    "title": "View Examination City for CTET Dec 2026 : Link1",
+    "status": "FAILED_INTEGRITY_REJECTED_LACKING_OFFICIAL_EXAM_KEYWORDS",
+    "processed_at": "2026-11-27T21:48:52.125628"
+  },
+  "f6557972077766e91757512c8ec83885b09d94904d0f0c8a4a8b4ed51d92d46c": {
+    "portal": "Indian Army",
+    "title": "Explore India | National Portal of India",
+    "status": "REJECTED_BY_AI",
+    "processed_at": "2026-11-27T21:49:54.787839"
+  },
+  "2f6b8c3e2c416dde12e2d8b358f47e5d6abde87e0812646c5e1e76eb9200a8ae": {
+    "portal": "CSIR",
+    "title": "सीएसआईआर, भारत-एनएएस, बेलारूस अनुसंधान, विकास और नवाचार परियोजनाओं के लिए कॉल-2027 [अंतिम तिथि: 7th फरवरी 2027]",
+    "status": "REJECTED_BY_AI",
+    "processed_at": "2026-11-27T21:51:02.488161"
   }
 }
